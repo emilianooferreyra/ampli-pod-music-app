@@ -1,22 +1,21 @@
 import { RequestHandler } from "express";
-import jwt from "jsonwebtoken";
-
 import { CreateUser, VerifyEmailRequest } from "#/@types/user";
-import User from "#/models/user";
 import { formatProfile, generateToken } from "#/utils/helper";
 import {
   sendForgetPasswordLink,
   sendPassResetSuccessEmail,
   sendVerificationMail,
 } from "#/utils/mail";
-import EmailVerificationToken from "#/models/emailVerificationToken";
-import PasswordResetToken from "#/models/passwordResetToken";
 import { isValidObjectId } from "mongoose";
-import crypto from "crypto";
 import { JWT_SECRET, PASSWORD_RESET_LINK } from "#/utils/variables";
 import { RequestWithFiles } from "#/middleware/fileParser";
+import EmailVerificationToken from "#/models/emailVerificationToken";
+import PasswordResetToken from "#/models/passwordResetToken";
 import cloudinary from "#/cloud";
 import formidable from "formidable";
+import crypto from "crypto";
+import jwt from "jsonwebtoken";
+import User from "#/models/user";
 
 export const create: RequestHandler = async (req: CreateUser, res) => {
   const { email, password, name } = req.body;

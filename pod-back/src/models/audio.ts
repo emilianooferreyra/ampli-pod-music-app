@@ -1,4 +1,4 @@
-import { categories, categoriesTypes } from "#/utils/audio_category";
+import { categories, categoriesTypes } from "#/utils/audio-category";
 import { Model, models, model, ObjectId, Schema } from "mongoose";
 
 export interface AudioDocument<T = ObjectId> {

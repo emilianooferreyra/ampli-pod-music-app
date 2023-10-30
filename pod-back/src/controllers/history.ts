@@ -101,13 +101,13 @@ export const removeHistory: RequestHandler = async (req, res) => {
 };
 
 export const getHistories: RequestHandler = async (req, res) => {
-  const { limit = "20", pageNo = "0" } = req.query as paginationQuery;
+  const { limit = "20", pageNumber = "0" } = req.query as paginationQuery;
   const histories = await History.aggregate([
     { $match: { owner: req.user.id } },
     {
       $project: {
         all: {
-          $slice: ["$all", parseInt(limit) * parseInt(pageNo), parseInt(limit)],
+          $slice: ["$all", parseInt(limit) * parseInt(pageNumber), parseInt(limit)],
         },
       },
     },

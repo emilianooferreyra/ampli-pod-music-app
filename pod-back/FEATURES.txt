@@ -6,7 +6,7 @@ The plan and features
   - [x] Remove playlist (public-private) 
   - [x] Remove audios 
   - [x] Get latest uploads
-  - [x] Recommneded audios
+  - [x] Recommended audios
   - [x] Auto generated playlist get route
-  - [] Get followers - private and public
-  - [] Get following
+  - [x] Get followers - private and public
+  - [x] Get following

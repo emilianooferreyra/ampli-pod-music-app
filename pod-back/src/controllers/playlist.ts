@@ -3,10 +3,10 @@ import {
   PopulateFavList,
   UpdatePlaylistRequest,
 } from "#/@types/audio";
-import Audio from "#/models/audio";
-import Playlist from "#/models/playlist";
 import { RequestHandler } from "express";
 import { isValidObjectId } from "mongoose";
+import Audio from "#/models/audio";
+import Playlist from "#/models/playlist";
 
 export const createPlaylist: RequestHandler = async (
   req: CreatePlaylistRequest,
@@ -115,8 +115,8 @@ export const removePlaylist: RequestHandler = async (req, res) => {
 };
 
 export const getPlaylistByProfile: RequestHandler = async (req, res) => {
-  const { pageNo = "0", limit = "20" } = req.query as {
-    pageNo: string;
+  const { pageNumber = "0", limit = "20" } = req.query as {
+    pageNumber: string;
     limit: string;
   };
 
@@ -124,7 +124,7 @@ export const getPlaylistByProfile: RequestHandler = async (req, res) => {
     owner: req.user.id,
     visibility: { $ne: "auto" },
   })
-    .skip(parseInt(pageNo) * parseInt(limit))
+    .skip(parseInt(pageNumber) * parseInt(limit))
     .limit(parseInt(limit))
     .sort("-createdAt");
 

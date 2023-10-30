@@ -1,1 +1,1 @@
-export type paginationQuery = { pageNo: string; limit: string };
+export type paginationQuery = { pageNumber: string; limit: string };
