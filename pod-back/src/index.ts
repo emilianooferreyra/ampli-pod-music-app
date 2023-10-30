@@ -1,18 +1,16 @@
 import express from "express";
-import "dotenv/config";
-import "./db";
-
 import authRouter from "./routers/auth";
 import audioRouter from "./routers/audio";
 import favoriteRouter from "./routers/favorite";
 import playlistRouter from "./routers/playlist";
 import profileRouter from "./routers/profile";
 import historyRouter from "./routers/history";
+import "dotenv/config";
+import "./db";
 import "./utils/schedule";
 
 const app = express();
 
-// register our middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static("src/public"));
@@ -29,14 +27,3 @@ const PORT = process.env.PORT || 8989;
 app.listen(PORT, () => {
   console.log("Port is listening on port " + PORT);
 });
-
-/**
- * The plan and features
- * upload audio files
- * listen to single audio
- * add to favorites
- * create playlist
- * remove playlist (public-private)
- * remove audios
- * many more
- * */
