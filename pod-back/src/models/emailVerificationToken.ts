@@ -1,7 +1,6 @@
 import { Model, model, ObjectId, Schema } from "mongoose";
 import { hash, compare } from "bcrypt";
 
-// interface (typescript)
 interface EmailVerificationTokenDocument {
   owner: ObjectId;
   token: string;
@@ -13,7 +12,6 @@ interface Methods {
 }
 
 // expire them after 1 hrs
-
 const emailVerificationTokenSchema = new Schema<
   EmailVerificationTokenDocument,
   {},

@@ -7,6 +7,6 @@ The plan and features
   - [x] Remove audios 
   - [x] Get latest uploads
   - [x] Recommneded audios
-  - [] Auto generated playlist get route
+  - [x] Auto generated playlist get route
   - [] Get followers - private and public
   - [] Get following
