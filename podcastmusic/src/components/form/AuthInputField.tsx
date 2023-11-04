@@ -44,7 +44,8 @@ const AuthInputField = (props: Props) => {
     name,
   } = props;
 
-  const errorMessage = touched[name] && errors[name] ? errors[name] : '';
+  const errorMessage =
+    touched && errors && touched[name] && errors[name] ? errors[name] : '';
 
   const shakeUI = () => {
     inputTransformValue.value = withSequence(
