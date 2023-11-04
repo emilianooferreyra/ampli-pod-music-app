@@ -1,5 +1,6 @@
-import React, {useEffect} from 'react';
+import React, {ReactNode, useEffect} from 'react';
 import {
+  Pressable,
   StyleProp,
   StyleSheet,
   Text,
@@ -26,6 +27,8 @@ interface Props {
   autoCapitalize?: TextInputProps['autoCapitalize'];
   secureTextEntry?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
+  rightIcon?: ReactNode;
+  onRightIconPress?(): void;
 }
 
 const AuthInputField = (props: Props) => {
@@ -42,6 +45,8 @@ const AuthInputField = (props: Props) => {
     secureTextEntry,
     containerStyle,
     name,
+    rightIcon,
+    onRightIconPress,
   } = props;
 
   const errorMessage =
@@ -77,16 +82,22 @@ const AuthInputField = (props: Props) => {
         <Text style={styles.label}>{label}</Text>
         <Text style={styles.errorMsg}>{errorMessage}</Text>
       </View>
-
-      <Input
-        placeholder={placeholder}
-        keyboardType={keyboardType}
-        autoCapitalize={autoCapitalize}
-        secureTextEntry={secureTextEntry}
-        onChangeText={handleChange(name)}
-        value={values[name]}
-        onBlur={handleBlur(name)}
-      />
+      <View>
+        <Input
+          placeholder={placeholder}
+          keyboardType={keyboardType}
+          autoCapitalize={autoCapitalize}
+          secureTextEntry={secureTextEntry}
+          onChangeText={handleChange(name)}
+          value={values[name]}
+          onBlur={handleBlur(name)}
+        />
+        {rightIcon ? (
+          <Pressable onPress={onRightIconPress} style={styles.rightIcon}>
+            {rightIcon}
+          </Pressable>
+        ) : null}
+      </View>
     </Animated.View>
   );
 };
@@ -103,6 +114,15 @@ const styles = StyleSheet.create({
   },
   errorMsg: {
     color: colors.ERROR,
+  },
+  rightIcon: {
+    width: 45,
+    height: 45,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

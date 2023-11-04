@@ -5,6 +5,7 @@ const INACTIVE_CONTRAST = 'rgba(255, 255, 255, 0.5)';
 const ERROR = '#FF5B14';
 const SUCCESS = '#3BEF1E';
 const OVERLAY = 'rgba(45, 35, 35, 0.5)';
+const DARK = '#141416';
 
 const colors = {
   PRIMARY,
@@ -14,6 +15,7 @@ const colors = {
   ERROR,
   SUCCESS,
   OVERLAY,
+  DARK,
 };
 
 export default colors;

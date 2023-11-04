@@ -1,10 +1,15 @@
-import {SafeAreaView, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import * as yup from 'yup';
-import React from 'react';
+import React, {useState} from 'react';
 import colors from '@utils/colors';
 import AuthInputField from '@components/form/AuthInputField';
 import Form from '@components/form';
 import SubmitBtn from '@components/form/SubmitBtn';
+import PasswordVisibilityIcon from '@ui/PasswordVisibilityIcon';
+import Link from '@ui/Link';
+import Icon from 'react-native-vector-icons/Entypo';
+import Icon2 from 'react-native-vector-icons/Ionicons';
+import AuthFormContainer from '@components/AuthFormContainer';
 
 const signupSchema = yup.object({
   name: yup
@@ -35,18 +40,27 @@ const initialValues = {
 };
 
 const SignUp = () => {
+  const [secureEntry, setSecureEntry] = useState(true);
+
+  const togglePasswordView = () => setSecureEntry(!secureEntry);
+
   return (
-    <SafeAreaView style={styles.container}>
-      <Form
-        onSubmit={values => console.log(values)}
-        initialValues={initialValues}
-        validationSchema={signupSchema}>
+    <Form
+      onSubmit={values => console.log(values)}
+      initialValues={initialValues}
+      validationSchema={signupSchema}>
+      <AuthFormContainer
+        heading="Welcome"
+        subHeading="Let's get started by creatingn your account.">
         <View style={styles.formContainer}>
           <AuthInputField
             name="name"
             label="Name"
             placeholder="Name"
-            containerStyle={styles.spacerBottom}
+            containerStyle={styles.spacer}
+            rightIcon={
+              <Icon2 name="person" color={colors.CONTRAST} size={16} />
+            }
           />
           <AuthInputField
             name="email"
@@ -54,36 +68,42 @@ const SignUp = () => {
             placeholder="Username or email address"
             keyboardType="email-address"
             autoCapitalize="none"
-            containerStyle={styles.spacerBottom}
+            containerStyle={styles.spacer}
+            rightIcon={<Icon name="email" color={colors.CONTRAST} size={16} />}
           />
           <AuthInputField
             name="password"
             label="Password"
             placeholder="Password"
             autoCapitalize="none"
-            secureTextEntry
-            containerStyle={styles.spacerBottom}
+            secureTextEntry={secureEntry}
+            containerStyle={styles.spacer}
+            rightIcon={<PasswordVisibilityIcon privateIcon={secureEntry} />}
+            onRightIconPress={togglePasswordView}
           />
           <SubmitBtn title="Sign Up" />
+          <View style={styles.linkContainer}>
+            <Link title="Forgot password?" onPress={() => {}} />
+            <Link title="Sign In" onPress={() => {}} />
+          </View>
         </View>
-      </Form>
-    </SafeAreaView>
+      </AuthFormContainer>
+    </Form>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.PRIMARY,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   formContainer: {
     width: '100%',
-    paddingHorizontal: 15, // padding in the x direction (left and right)
   },
-  spacerBottom: {
+  spacer: {
     marginBottom: 15,
+  },
+  linkContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 20,
   },
 });
 
