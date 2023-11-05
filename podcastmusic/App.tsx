@@ -1,7 +1,5 @@
-import SignUp from '@views/auth/SignUp';
-
 const App = () => {
-  return <SignUp />;
+  return <>podcastmusic</>;
 };
 
 export default App;

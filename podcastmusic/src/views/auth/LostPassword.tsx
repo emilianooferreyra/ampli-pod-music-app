@@ -1,57 +1,36 @@
 import {StyleSheet, View} from 'react-native';
 import * as yup from 'yup';
-import React, {useState} from 'react';
+import React from 'react';
 import colors from '@utils/colors';
 import AuthInputField from '@components/form/AuthInputField';
 import Form from '@components/form';
 import SubmitBtn from '@components/form/SubmitBtn';
-import PasswordVisibilityIcon from '@ui/PasswordVisibilityIcon';
 import Link from '@ui/Link';
 import Icon from 'react-native-vector-icons/Entypo';
-import Icon2 from 'react-native-vector-icons/Ionicons';
 import AuthFormContainer from '@components/AuthFormContainer';
 
-const signupSchema = yup.object({
+const lostPasswordSchema = yup.object({
   email: yup
     .string()
     .trim('Email is missing!')
     .email('Invalid email!')
     .required('Email is required!'),
-  password: yup
-    .string()
-    .trim('Password is missing!')
-    .min(8, 'Password is too short!')
-    .required('Password is required!'),
 });
 
 const initialValues = {
   email: '',
-  password: '',
 };
 
-const SignUp = () => {
-  const [secureEntry, setSecureEntry] = useState(true);
-
-  const togglePasswordView = () => setSecureEntry(!secureEntry);
-
+const LostPassword = () => {
   return (
     <Form
       onSubmit={values => console.log(values)}
       initialValues={initialValues}
-      validationSchema={signupSchema}>
+      validationSchema={lostPasswordSchema}>
       <AuthFormContainer
-        heading="Welcome"
-        subHeading="Let's get started by creatingn your account.">
+        heading="Forget Password!"
+        subHeading="Oops, did you forget your password? Don't worry, we'll help you get back in.">
         <View style={styles.formContainer}>
-          <AuthInputField
-            name="name"
-            label="Name"
-            placeholder="Name"
-            containerStyle={styles.spacer}
-            rightIcon={
-              <Icon2 name="person" color={colors.CONTRAST} size={16} />
-            }
-          />
           <AuthInputField
             name="email"
             label="Email"
@@ -61,19 +40,10 @@ const SignUp = () => {
             containerStyle={styles.spacer}
             rightIcon={<Icon name="email" color={colors.CONTRAST} size={16} />}
           />
-          <AuthInputField
-            name="password"
-            label="Password"
-            placeholder="Password"
-            autoCapitalize="none"
-            secureTextEntry={secureEntry}
-            containerStyle={styles.spacer}
-            rightIcon={<PasswordVisibilityIcon privateIcon={secureEntry} />}
-            onRightIconPress={togglePasswordView}
-          />
-          <SubmitBtn title="Sign Up" />
+
+          <SubmitBtn title="Send link" />
           <View style={styles.linkContainer}>
-            <Link title="Forgot password?" onPress={() => {}} />
+            <Link title="Sign up" onPress={() => {}} />
             <Link title="Sign in" onPress={() => {}} />
           </View>
         </View>
@@ -97,4 +67,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignUp;
+export default LostPassword;

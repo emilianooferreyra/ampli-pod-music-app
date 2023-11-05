@@ -2,8 +2,8 @@ import colors from '@utils/colors';
 import {StyleSheet, View, Text, Image} from 'react-native';
 
 interface Props {
-  heading: string;
-  subHeading: string;
+  heading?: string;
+  subHeading?: string;
   children: React.ReactNode;
 }
 

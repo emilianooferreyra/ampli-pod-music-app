@@ -8,10 +8,14 @@ import SubmitBtn from '@components/form/SubmitBtn';
 import PasswordVisibilityIcon from '@ui/PasswordVisibilityIcon';
 import Link from '@ui/Link';
 import Icon from 'react-native-vector-icons/Entypo';
-import Icon2 from 'react-native-vector-icons/Ionicons';
 import AuthFormContainer from '@components/AuthFormContainer';
 
-const signupSchema = yup.object({
+const signinSchema = yup.object({
+  name: yup
+    .string()
+    .trim('Name is missing!')
+    .min(3, 'Invalid name!')
+    .required('Name is required'),
   email: yup
     .string()
     .trim('Email is missing!')
@@ -21,15 +25,20 @@ const signupSchema = yup.object({
     .string()
     .trim('Password is missing!')
     .min(8, 'Password is too short!')
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+      'Password is too weak!',
+    )
     .required('Password is required!'),
 });
 
 const initialValues = {
+  name: '',
   email: '',
   password: '',
 };
 
-const SignUp = () => {
+const SignIn = () => {
   const [secureEntry, setSecureEntry] = useState(true);
 
   const togglePasswordView = () => setSecureEntry(!secureEntry);
@@ -38,20 +47,9 @@ const SignUp = () => {
     <Form
       onSubmit={values => console.log(values)}
       initialValues={initialValues}
-      validationSchema={signupSchema}>
-      <AuthFormContainer
-        heading="Welcome"
-        subHeading="Let's get started by creatingn your account.">
+      validationSchema={signinSchema}>
+      <AuthFormContainer heading="Welcome back">
         <View style={styles.formContainer}>
-          <AuthInputField
-            name="name"
-            label="Name"
-            placeholder="Name"
-            containerStyle={styles.spacer}
-            rightIcon={
-              <Icon2 name="person" color={colors.CONTRAST} size={16} />
-            }
-          />
           <AuthInputField
             name="email"
             label="Email"
@@ -71,10 +69,10 @@ const SignUp = () => {
             rightIcon={<PasswordVisibilityIcon privateIcon={secureEntry} />}
             onRightIconPress={togglePasswordView}
           />
-          <SubmitBtn title="Sign Up" />
+          <SubmitBtn title="Sign in" />
           <View style={styles.linkContainer}>
             <Link title="Forgot password?" onPress={() => {}} />
-            <Link title="Sign in" onPress={() => {}} />
+            <Link title="Sign up" onPress={() => {}} />
           </View>
         </View>
       </AuthFormContainer>
@@ -97,4 +95,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignUp;
+export default SignIn;
