@@ -9,6 +9,8 @@ import PasswordVisibilityIcon from '@ui/PasswordVisibilityIcon';
 import Link from '@ui/Link';
 import Icon from 'react-native-vector-icons/Entypo';
 import AuthFormContainer from '@components/AuthFormContainer';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {AuthStackParamsList} from '@src/@types/navigation';
 
 const signinSchema = yup.object({
   name: yup
@@ -40,6 +42,7 @@ const initialValues = {
 
 const SignIn = () => {
   const [secureEntry, setSecureEntry] = useState(true);
+  const navigation = useNavigation<NavigationProp<AuthStackParamsList>>();
 
   const togglePasswordView = () => setSecureEntry(!secureEntry);
 
@@ -71,8 +74,18 @@ const SignIn = () => {
           />
           <SubmitBtn title="Sign in" />
           <View style={styles.linkContainer}>
-            <Link title="Forgot password?" onPress={() => {}} />
-            <Link title="Sign up" onPress={() => {}} />
+            <Link
+              title="Forgot password?"
+              onPress={() => {
+                navigation.navigate('LostPassword');
+              }}
+            />
+            <Link
+              title="Sign up"
+              onPress={() => {
+                navigation.navigate('SignUp');
+              }}
+            />
           </View>
         </View>
       </AuthFormContainer>
