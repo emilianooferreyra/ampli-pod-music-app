@@ -11,13 +11,10 @@ import Icon from 'react-native-vector-icons/Entypo';
 import AuthFormContainer from '@components/AuthFormContainer';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {AuthStackParamsList} from '@src/@types/navigation';
+import {FormikHelpers} from 'formik';
+import client from 'src/api/client';
 
 const signinSchema = yup.object({
-  name: yup
-    .string()
-    .trim('Name is missing!')
-    .min(3, 'Invalid name!')
-    .required('Name is required'),
   email: yup
     .string()
     .trim('Email is missing!')
@@ -27,15 +24,15 @@ const signinSchema = yup.object({
     .string()
     .trim('Password is missing!')
     .min(8, 'Password is too short!')
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
-      'Password is too weak!',
-    )
     .required('Password is required!'),
 });
 
+interface SignInUserInfo {
+  email: string;
+  password: string;
+}
+
 const initialValues = {
-  name: '',
   email: '',
   password: '',
 };
@@ -44,11 +41,28 @@ const SignIn = () => {
   const [secureEntry, setSecureEntry] = useState(true);
   const navigation = useNavigation<NavigationProp<AuthStackParamsList>>();
 
-  const togglePasswordView = () => setSecureEntry(!secureEntry);
+  const togglePasswordView = () => {
+    setSecureEntry(!secureEntry);
+  };
+
+  const handleSubmit = async (
+    values: SignInUserInfo,
+    actions: FormikHelpers<SignInUserInfo>,
+  ) => {
+    actions.setSubmitting(true);
+    try {
+      // we want to send these information to our api
+      const {data} = await client.post('/auth/sign-in', {...values});
+      console.log(data);
+    } catch (error) {
+      console.log('Sign in error:', error);
+    }
+    actions.setSubmitting(false);
+  };
 
   return (
     <Form
-      onSubmit={values => console.log(values)}
+      onSubmit={handleSubmit}
       initialValues={initialValues}
       validationSchema={signinSchema}>
       <AuthFormContainer heading="Welcome back">

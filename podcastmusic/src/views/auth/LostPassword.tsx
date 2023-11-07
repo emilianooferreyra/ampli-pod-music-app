@@ -10,6 +10,8 @@ import Icon from 'react-native-vector-icons/Entypo';
 import AuthFormContainer from '@components/AuthFormContainer';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {AuthStackParamsList} from '@src/@types/navigation';
+import {FormikHelpers} from 'formik';
+import client from 'src/api/client';
 
 const lostPasswordSchema = yup.object({
   email: yup
@@ -19,8 +21,27 @@ const lostPasswordSchema = yup.object({
     .required('Email is required!'),
 });
 
+interface InitialValues {
+  email: string;
+}
+
 const initialValues = {
   email: '',
+};
+
+const handleSubmit = async (
+  values: InitialValues,
+  actions: FormikHelpers<InitialValues>,
+) => {
+  actions.setSubmitting(true);
+  try {
+    // we want to send these information to our api
+    const {data} = await client.post('/auth/forget-password', {...values});
+    console.log(data);
+  } catch (error) {
+    console.log('Lost password  error: ', error);
+  }
+  actions.setSubmitting(false);
 };
 
 const LostPassword = () => {
@@ -28,7 +49,7 @@ const LostPassword = () => {
 
   return (
     <Form
-      onSubmit={values => console.log(values)}
+      onSubmit={handleSubmit}
       initialValues={initialValues}
       validationSchema={lostPasswordSchema}>
       <AuthFormContainer

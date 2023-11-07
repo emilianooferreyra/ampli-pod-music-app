@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.PRIMARY,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
   },
   headerContainer: {
     width: '100%',

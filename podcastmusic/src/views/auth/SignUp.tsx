@@ -12,8 +12,15 @@ import Icon2 from 'react-native-vector-icons/Ionicons';
 import AuthFormContainer from '@components/AuthFormContainer';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {AuthStackParamsList} from '@src/@types/navigation';
+import client from 'src/api/client';
+import {FormikHelpers} from 'formik';
 
 const signupSchema = yup.object({
+  name: yup
+    .string()
+    .trim('Name is missing!')
+    .min(3, 'Invalid name!')
+    .required('Name is required!'),
   email: yup
     .string()
     .trim('Email is missing!')
@@ -23,10 +30,21 @@ const signupSchema = yup.object({
     .string()
     .trim('Password is missing!')
     .min(8, 'Password is too short!')
+    .matches(
+      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#\$%\^&\*])[a-zA-Z\d!@#\$%\^&\*]+$/,
+      'Password is too simple!',
+    )
     .required('Password is required!'),
 });
 
+interface NewUser {
+  name: string;
+  email: string;
+  password: string;
+}
+
 const initialValues = {
+  name: '',
   email: '',
   password: '',
 };
@@ -35,11 +53,28 @@ const SignUp = () => {
   const [secureEntry, setSecureEntry] = useState(true);
   const navigation = useNavigation<NavigationProp<AuthStackParamsList>>();
 
-  const togglePasswordView = () => setSecureEntry(!secureEntry);
+  const togglePasswordView = () => {
+    setSecureEntry(!secureEntry);
+  };
+
+  const handleSubmit = async (
+    values: NewUser,
+    actions: FormikHelpers<NewUser>,
+  ) => {
+    actions.setSubmitting(true);
+    try {
+      // we want to send these information to our api
+      const {data} = await client.post('/auth/create', {...values});
+      navigation.navigate('Verification', {userInfo: data.user});
+    } catch (error) {
+      console.log('Sign up error: ', error);
+    }
+    actions.setSubmitting(false);
+  };
 
   return (
     <Form
-      onSubmit={values => console.log(values)}
+      onSubmit={handleSubmit}
       initialValues={initialValues}
       validationSchema={signupSchema}>
       <AuthFormContainer
@@ -100,7 +135,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   spacer: {
-    marginBottom: 15,
+    marginBottom: 10,
   },
   linkContainer: {
     flexDirection: 'row',
