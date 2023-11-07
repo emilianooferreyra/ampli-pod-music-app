@@ -1,15 +1,11 @@
 import nodemailer from "nodemailer";
 import path from "path";
-
-import User from "#/models/user";
-import EmailVerificationToken from "#/models/emailVerificationToken";
 import {
   MAILTRAP_PASS,
   MAILTRAP_USER,
   SIGN_IN_URL,
   VERIFICATION_EMAIL,
 } from "#/utils/variables";
-import { generateToken } from "#/utils/helper";
 import { generateTemplate } from "#/mail/template";
 
 const generateMailTransporter = () => {
