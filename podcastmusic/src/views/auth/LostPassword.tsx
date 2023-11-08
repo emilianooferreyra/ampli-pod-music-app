@@ -58,11 +58,10 @@ const LostPassword = () => {
         <View style={styles.formContainer}>
           <AuthInputField
             name="email"
-            label="Email"
-            placeholder="Username or email address"
+            placeholder="Email address"
             keyboardType="email-address"
             autoCapitalize="none"
-            containerStyle={styles.spacer}
+            containerStyle={styles.spacerButtom}
             rightIcon={<Icon name="email" color={colors.CONTRAST} size={16} />}
           />
 
@@ -91,8 +90,8 @@ const styles = StyleSheet.create({
   formContainer: {
     width: '100%',
   },
-  spacer: {
-    marginBottom: 15,
+  spacerButtom: {
+    marginBottom: 20,
   },
   linkContainer: {
     flexDirection: 'row',

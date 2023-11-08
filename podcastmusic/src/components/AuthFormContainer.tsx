@@ -1,5 +1,5 @@
 import colors from '@utils/colors';
-import {StyleSheet, View, Text, Image} from 'react-native';
+import {StyleSheet, View, Text} from 'react-native';
 
 interface Props {
   heading?: string;
@@ -11,7 +11,6 @@ const AuthFormContainer = ({children, heading, subHeading}: Props) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <Image source={require('../assets/stormtrooper.jpg')} />
         <Text style={styles.heading}>{heading}</Text>
         <Text style={styles.subHeading}>{subHeading}</Text>
       </View>
@@ -43,7 +42,6 @@ const styles = StyleSheet.create({
     color: colors.CONTRAST,
     fontSize: 16,
     fontWeight: 'bold',
-    marginBottom: 20,
   },
 });
 

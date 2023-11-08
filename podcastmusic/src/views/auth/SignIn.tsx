@@ -69,20 +69,18 @@ const SignIn = () => {
         <View style={styles.formContainer}>
           <AuthInputField
             name="email"
-            label="Email"
             placeholder="Username or email address"
             keyboardType="email-address"
+            containerStyle={styles.spacerInput}
             autoCapitalize="none"
-            containerStyle={styles.spacer}
             rightIcon={<Icon name="email" color={colors.CONTRAST} size={16} />}
           />
           <AuthInputField
             name="password"
-            label="Password"
             placeholder="Password"
             autoCapitalize="none"
             secureTextEntry={secureEntry}
-            containerStyle={styles.spacer}
+            containerStyle={styles.spacerButtom}
             rightIcon={<PasswordVisibilityIcon privateIcon={secureEntry} />}
             onRightIconPress={togglePasswordView}
           />
@@ -111,8 +109,11 @@ const styles = StyleSheet.create({
   formContainer: {
     width: '100%',
   },
-  spacer: {
-    marginBottom: 15,
+  spacerInput: {
+    marginBottom: 10,
+  },
+  spacerButtom: {
+    marginBottom: 40,
   },
   linkContainer: {
     flexDirection: 'row',

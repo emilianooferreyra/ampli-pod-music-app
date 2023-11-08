@@ -21,7 +21,6 @@ import colors from '@utils/colors';
 
 interface Props {
   name: string;
-  label?: string;
   placeholder?: string;
   keyboardType?: TextInputProps['keyboardType'];
   autoCapitalize?: TextInputProps['autoCapitalize'];
@@ -39,7 +38,6 @@ const AuthInputField = (props: Props) => {
 
   const {
     placeholder,
-    label,
     keyboardType,
     autoCapitalize,
     secureTextEntry,
@@ -79,7 +77,6 @@ const AuthInputField = (props: Props) => {
   return (
     <Animated.View style={[containerStyle, inputStyle]}>
       <View style={styles.labelContainer}>
-        <Text style={styles.label}>{label}</Text>
         <Text style={styles.errorMsg}>{errorMessage}</Text>
       </View>
       <View>
@@ -108,9 +105,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 5,
-  },
-  label: {
-    color: colors.CONTRAST,
   },
   errorMsg: {
     color: colors.ERROR,

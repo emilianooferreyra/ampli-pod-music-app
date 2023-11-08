@@ -1,4 +1,4 @@
-import {Pressable, StyleSheet, Text} from 'react-native';
+import {Pressable, StyleSheet, Text, ViewStyle, StyleProp} from 'react-native';
 import React from 'react';
 import colors from '@utils/colors';
 import Loader from './Loader';
@@ -7,10 +7,11 @@ interface Props {
   title: string;
   onPress?(): void;
   busy?: boolean;
+  styleCustom?: StyleProp<ViewStyle>;
 }
-const Button = ({title, busy, onPress}: Props) => {
+const Button = ({title, busy, styleCustom, onPress}: Props) => {
   return (
-    <Pressable onPress={onPress} style={styles.container}>
+    <Pressable onPress={onPress} style={[styles.container, styleCustom]}>
       {!busy ? <Text style={styles.title}>{title}</Text> : <Loader />}
     </Pressable>
   );
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
     height: 45,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 25,
+    borderRadius: 30,
     backgroundColor: colors.SECONDARY,
   },
   title: {

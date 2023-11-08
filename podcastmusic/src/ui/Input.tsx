@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: colors.SECONDARY,
     height: 45,
-    borderRadius: 25,
+    borderRadius: 10,
     color: colors.CONTRAST,
     padding: 10,
   },

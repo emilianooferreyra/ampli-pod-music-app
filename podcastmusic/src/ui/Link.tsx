@@ -17,7 +17,7 @@ const Link = ({title, onPress, active}: Props) => {
 
 const styles = StyleSheet.create({
   title: {
-    color: colors.SECONDARY,
+    color: colors.CONTRAST,
   },
 });
 
