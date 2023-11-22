@@ -13,6 +13,9 @@ import {FormikHelpers} from 'formik';
 import client from 'src/api/client';
 import {updateLoggedInState, updateProfile} from 'src/store/auth';
 import {useDispatch} from 'react-redux';
+import {StorageKeys, save} from 'src/lib/storage';
+import catchAsyncError from 'src/api/catchError';
+import {updateNotification} from 'src/store/notification';
 
 const signinSchema = yup.object({
   email: yup
@@ -57,10 +60,13 @@ const SignIn = () => {
         ...values,
       });
 
+      await save(StorageKeys.AuthToken, data.token);
+
       dispatch(updateProfile(data.profile));
       dispatch(updateLoggedInState(true));
     } catch (error) {
-      console.log('Sign in error: ', error);
+      const errorMessage = catchAsyncError(error);
+      dispatch(updateNotification({message: errorMessage, type: 'error'}));
     }
 
     actions.setSubmitting(false);
@@ -75,8 +81,7 @@ const SignIn = () => {
         <View style={styles.formContainer}>
           <AuthInputField
             name="email"
-            placeholder="john@email.com"
-            label="Email"
+            placeholder="Username or email address"
             keyboardType="email-address"
             autoCapitalize="none"
             containerStyle={styles.marginBottom}
@@ -84,7 +89,6 @@ const SignIn = () => {
           <AuthInputField
             name="password"
             placeholder="********"
-            label="Password"
             autoCapitalize="none"
             secureTextEntry={secureEntry}
             containerStyle={styles.marginBottom}
@@ -95,7 +99,7 @@ const SignIn = () => {
 
           <View style={styles.linkContainer}>
             <AppLink
-              title="I Lost My Password"
+              title="Forgot?"
               onPress={() => {
                 navigation.navigate('LostPassword');
               }}

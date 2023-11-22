@@ -1,14 +1,19 @@
-import {NavigationContainer} from '@react-navigation/native';
 import {Provider} from 'react-redux';
-import AuthNavigator from './src/navigation/AuthNavigator';
+import {QueryClient, QueryClientProvider} from 'react-query';
 import store from 'src/store';
+import Navigator from 'src/navigation';
+import AppContainer from '@components/AppContainer';
+
+const queryClient = new QueryClient();
 
 const App = () => {
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <AuthNavigator />
-      </NavigationContainer>
+      <QueryClientProvider client={queryClient}>
+        <AppContainer>
+          <Navigator />
+        </AppContainer>
+      </QueryClientProvider>
     </Provider>
   );
 };

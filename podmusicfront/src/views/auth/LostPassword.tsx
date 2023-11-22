@@ -9,6 +9,9 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {AuthStackParamList} from 'src/@types/navigation';
 import {FormikHelpers} from 'formik';
 import client from 'src/api/client';
+import catchAsyncError from 'src/api/catchError';
+import {updateNotification} from 'src/store/notification';
+import {useDispatch} from 'react-redux';
 
 const lostPasswordSchema = yup.object({
   email: yup
@@ -26,27 +29,30 @@ const initialValues = {
   email: '',
 };
 
-const handleSubmit = async (
-  values: InitialValue,
-  actions: FormikHelpers<InitialValue>,
-) => {
-  actions.setSubmitting(true);
-  try {
-    // we want to send these information to our api
-    const {data} = await client.post('/auth/forget-password', {
-      ...values,
-    });
-
-    console.log(data);
-  } catch (error) {
-    console.log('Lost Password error: ', error);
-  }
-
-  actions.setSubmitting(false);
-};
-
 const LostPassword = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation<NavigationProp<AuthStackParamList>>();
+
+  const handleSubmit = async (
+    values: InitialValue,
+    actions: FormikHelpers<InitialValue>,
+  ) => {
+    actions.setSubmitting(true);
+    try {
+      // we want to send these information to our api
+      const {data} = await client.post('/auth/forget-password', {
+        ...values,
+      });
+
+      console.log(data);
+    } catch (error) {
+      const errorMessage = catchAsyncError(error);
+      dispatch(updateNotification({message: errorMessage, type: 'error'}));
+    }
+
+    actions.setSubmitting(false);
+  };
+
   return (
     <Form
       onSubmit={handleSubmit}
@@ -58,8 +64,7 @@ const LostPassword = () => {
         <View style={styles.formContainer}>
           <AuthInputField
             name="email"
-            placeholder="john@email.com"
-            label="Email"
+            placeholder="Username or email address"
             keyboardType="email-address"
             autoCapitalize="none"
             containerStyle={styles.marginBottom}

@@ -1,16 +1,19 @@
 import AuthInputField from '@components/form/AuthInputField';
 import Form from '@components/form';
 import {useState} from 'react';
+import {useDispatch} from 'react-redux';
 import {StyleSheet, View} from 'react-native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {AuthStackParamList} from 'src/@types/navigation';
+import {FormikHelpers} from 'formik';
 import * as yup from 'yup';
 import SubmitBtn from '@components/form/SubmitBtn';
 import PasswordVisibilityIcon from '@ui/PasswordVisibilityIcon';
 import AppLink from '@ui/Link';
 import AuthFormContainer from '@components/AuthFormContainer';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {AuthStackParamList} from 'src/@types/navigation';
-import {FormikHelpers} from 'formik';
 import client from 'src/api/client';
+import catchAsyncError from 'src/api/catchError';
+import {updateNotification} from 'src/store/notification';
 
 const signupSchema = yup.object({
   name: yup
@@ -49,6 +52,7 @@ const initialValues = {
 const SignUp = () => {
   const [secureEntry, setSecureEntry] = useState(true);
   const navigation = useNavigation<NavigationProp<AuthStackParamList>>();
+  const dispatch = useDispatch();
 
   const togglePasswordView = () => {
     setSecureEntry(!secureEntry);
@@ -67,7 +71,8 @@ const SignUp = () => {
 
       navigation.navigate('Verification', {userInfo: data.user});
     } catch (error) {
-      console.log('Sign up error: ', error);
+      const errorMessage = catchAsyncError(error);
+      dispatch(updateNotification({message: errorMessage, type: 'error'}));
     }
     actions.setSubmitting(false);
   };
@@ -83,22 +88,19 @@ const SignUp = () => {
         <View style={styles.formContainer}>
           <AuthInputField
             name="name"
-            placeholder="John Doe"
-            label="Name"
+            placeholder="Name"
             containerStyle={styles.marginBottom}
           />
           <AuthInputField
             name="email"
-            placeholder="john@email.com"
-            label="Email"
+            placeholder="Username or email address"
             keyboardType="email-address"
             autoCapitalize="none"
             containerStyle={styles.marginBottom}
           />
           <AuthInputField
             name="password"
-            placeholder="********"
-            label="Password"
+            placeholder="Password"
             autoCapitalize="none"
             secureTextEntry={secureEntry}
             containerStyle={styles.marginBottom}

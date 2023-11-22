@@ -21,7 +21,6 @@ import colors from 'src/constants/colors';
 
 interface Props {
   name: string;
-  label?: string;
   placeholder?: string;
   keyboardType?: TextInputProps['keyboardType'];
   autoCapitalize?: TextInputProps['autoCapitalize'];
@@ -39,7 +38,6 @@ const AuthInputField = (props: Props) => {
   }>();
 
   const {
-    label,
     placeholder,
     autoCapitalize,
     keyboardType,
@@ -79,7 +77,6 @@ const AuthInputField = (props: Props) => {
   return (
     <Animated.View style={[containerStyle, inputStyle]}>
       <View style={styles.labelContainer}>
-        <Text style={styles.label}>{label}</Text>
         <Text style={styles.errorMsg}>{errorMsg}</Text>
       </View>
       <View>
@@ -93,11 +90,11 @@ const AuthInputField = (props: Props) => {
           onBlur={handleBlur(name)}
         />
 
-        {rightIcon ? (
+        {rightIcon && (
           <Pressable onPress={onRightIconPress} style={styles.rightIcon}>
             {rightIcon}
           </Pressable>
-        ) : null}
+        )}
       </View>
     </Animated.View>
   );
