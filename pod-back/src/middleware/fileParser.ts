@@ -1,22 +1,18 @@
-import { Request, RequestHandler } from "express";
-import formidable, { Files } from "formidable";
+import { RequestHandler } from "express";
+import multer from "multer";
 
-export interface RequestWithFiles extends Request {
-  files?: Files;
-}
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
-const fileParser: RequestHandler = (req: RequestWithFiles, res, next) => {
-  if (!req.headers["content-type"]?.startsWith("multipart/form-data;"))
-    return res.status(422).json({ error: "Only accepts form-data!" });
-
-  const form = formidable({ multiples: false });
-
-  form.parse(req, (err, fields, files) => {
-    if (err) return next(err);
-
-    req.body = fields;
-    req.files = files;
-
+// Middleware para parsear múltiples campos de archivo
+const fileParser: RequestHandler = (req, res, next) => {
+  upload.fields([
+    { name: "file", maxCount: 1 },
+    { name: "poster", maxCount: 1 },
+  ])(req, res, (err) => {
+    if (err) {
+      return res.status(422).json({ error: err.message });
+    }
     next();
   });
 };

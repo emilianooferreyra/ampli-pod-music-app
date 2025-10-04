@@ -1,116 +1,88 @@
-import * as yup from "yup";
+import { z } from "zod";
 import { isValidObjectId } from "mongoose";
 import { categories } from "./audio-category";
 
-export const CreateUserSchema = yup.object().shape({
-  name: yup
+export const CreateUserSchema = z.object({
+  name: z
     .string()
     .trim()
-    .required("Name is missing!")
     .min(3, "Name is too short!")
     .max(20, "Name is too long!"),
-  email: yup.string().required("Email is missing!").email("Invalid email id!"),
-  password: yup
+  email: z.string().email("Invalid email id!"),
+  password: z
     .string()
     .trim()
-    .required("Password is missing!")
     .min(8, "Password is too short!")
-    .matches(
+    .regex(
       /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#\$%\^&\*])[a-zA-Z\d!@#\$%\^&\*]+$/,
       "Password is too simple!"
     ),
 });
 
-export const TokenAndIDValidation = yup.object().shape({
-  token: yup.string().trim().required("Invalid token!"),
-  userId: yup
-    .string()
-    .transform(function (value) {
-      if (this.isType(value) && isValidObjectId(value)) {
-        return value;
-      }
-      return "";
-    })
-    .required("Invalid userId!"),
+export const TokenAndIDValidation = z.object({
+  token: z.string().trim(),
+  userId: z.string().refine((val) => isValidObjectId(val), {
+    message: "Invalid userId!",
+  }),
 });
 
-export const UpdatePasswordSchema = yup.object().shape({
-  token: yup.string().trim().required("Invalid token!"),
-  userId: yup
-    .string()
-    .transform(function (value) {
-      if (this.isType(value) && isValidObjectId(value)) {
-        return value;
-      }
-      return "";
-    })
-    .required("Invalid userId!"),
-  password: yup
+export const UpdatePasswordSchema = z.object({
+  token: z.string().trim(),
+  userId: z.string().refine((val) => isValidObjectId(val), {
+    message: "Invalid userId!",
+  }),
+  password: z
     .string()
     .trim()
-    .required("Password is missing!")
     .min(8, "Password is too short!")
-    .matches(
+    .regex(
       /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#\$%\^&\*])[a-zA-Z\d!@#\$%\^&\*]+$/,
       "Password is too simple!"
     ),
 });
 
-export const SignInValidationSchema = yup.object().shape({
-  email: yup.string().required("Email is missing!").email("Invalid email id!"),
-  password: yup.string().trim().required("Password is missing!"),
+export const SignInValidationSchema = z.object({
+  email: z.string().email("Invalid email id!"),
+  password: z.string().trim(),
 });
 
-export const AudioValidationSchema = yup.object().shape({
-  title: yup.string().required("Title is missing!"),
-  about: yup.string().required("About is missing!"),
-  category: yup
-    .string()
-    .oneOf(categories, "Invalid category!")
-    .required("Category is missing!"),
-});
-
-export const NewPlaylistValidationSchema = yup.object().shape({
-  title: yup.string().required("Title is missing!"),
-  resId: yup.string().transform(function (value) {
-    return this.isType(value) && isValidObjectId(value) ? value : "";
+export const AudioValidationSchema = z.object({
+  title: z.string(),
+  about: z.string(),
+  category: z.enum(categories, {
+    errorMap: () => ({ message: "Invalid category!" }),
   }),
-  visibility: yup
-    .string()
-    .oneOf(["public", "private"], "Visibility must be public or private!")
-    .required("Visibility is missing!"),
 });
 
-export const OldPlaylistValidationSchema = yup.object().shape({
-  title: yup.string().required("Title is missing!"),
-  // this is going to validate the audio id
-  item: yup.string().transform(function (value) {
-    return this.isType(value) && isValidObjectId(value) ? value : "";
+export const NewPlaylistValidationSchema = z.object({
+  title: z.string(),
+  resId: z.string().refine((val) => isValidObjectId(val), {
+    message: "Invalid resource id!",
+  }).optional(),
+  visibility: z.enum(["public", "private"], {
+    errorMap: () => ({ message: "Visibility must be public or private!" }),
   }),
-  // this is going to validate the playlist id
-  id: yup.string().transform(function (value) {
-    return this.isType(value) && isValidObjectId(value) ? value : "";
-  }),
-  visibility: yup
-    .string()
-    .oneOf(["public", "private"], "Visibility must be public or private!"),
-  // .required("Visibility is missing!"),
 });
 
-export const UpdateHistorySchema = yup.object().shape({
-  audio: yup
-    .string()
-    .transform(function (value) {
-      return this.isType(value) && isValidObjectId(value) ? value : "";
-    })
-    .required("Invalid audio id!"),
-  progress: yup.number().required("History progress is missing!"),
-  date: yup
-    .string()
-    .transform(function (value) {
-      const date = new Date(value);
-      if (date instanceof Date) return value;
-      return "";
-    })
-    .required("Invalid date!"),
+export const OldPlaylistValidationSchema = z.object({
+  title: z.string(),
+  item: z.string().refine((val) => isValidObjectId(val), {
+    message: "Invalid audio id!",
+  }),
+  id: z.string().refine((val) => isValidObjectId(val), {
+    message: "Invalid playlist id!",
+  }),
+  visibility: z.enum(["public", "private"], {
+    errorMap: () => ({ message: "Visibility must be public or private!" }),
+  }).optional(),
+});
+
+export const UpdateHistorySchema = z.object({
+  audio: z.string().refine((val) => isValidObjectId(val), {
+    message: "Invalid audio id!",
+  }),
+  progress: z.number(),
+  date: z.string().refine((val) => !isNaN(new Date(val).getTime()), {
+    message: "Invalid date!",
+  }),
 });

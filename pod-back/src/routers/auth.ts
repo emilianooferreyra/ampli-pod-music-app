@@ -1,3 +1,5 @@
+import { Router } from "express";
+import fileParser from "@/middleware/fileParser";
 import {
   create,
   generateForgetPasswordLink,
@@ -9,17 +11,15 @@ import {
   updatePassword,
   updateProfile,
   verifyEmail,
-} from "#/controllers/auth";
-import { isValidPassResetToken, mustAuth } from "#/middleware/auth";
-import { validate } from "#/middleware/validator";
+} from "@/controllers/auth";
+import { isValidPassResetToken, mustAuth } from "@/middleware/auth";
+import { validate } from "@/middleware/validator";
 import {
   CreateUserSchema,
   SignInValidationSchema,
   TokenAndIDValidation,
   UpdatePasswordSchema,
-} from "#/utils/validationSchema";
-import { Router } from "express";
-import fileParser from "#/middleware/fileParser";
+} from "@/utils/validationSchema";
 
 const router = Router();
 

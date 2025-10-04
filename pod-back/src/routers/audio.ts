@@ -1,13 +1,13 @@
+import { Router } from "express";
+import fileParser from "@/middleware/fileParser";
 import {
   createAudio,
   getLatestUploads,
   updateAudio,
-} from "#/controllers/audio";
-import { isVerified, mustAuth } from "#/middleware/auth";
-import fileParser from "#/middleware/fileParser";
-import { validate } from "#/middleware/validator";
-import { AudioValidationSchema } from "#/utils/validationSchema";
-import { Router } from "express";
+} from "@/controllers/audio";
+import { isVerified, mustAuth } from "@/middleware/auth";
+import { validate } from "@/middleware/validator";
+import { AudioValidationSchema } from "@/utils/validationSchema";
 
 const router = Router();
 

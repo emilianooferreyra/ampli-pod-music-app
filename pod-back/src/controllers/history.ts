@@ -1,6 +1,6 @@
-import { paginationQuery } from "#/@types/misc";
-import History, { historyType } from "#/models/history";
 import { RequestHandler } from "express";
+import { paginationQuery } from "@/types/misc";
+import History, { historyType } from "@/models/history";
 
 export const updateHistory: RequestHandler = async (req, res) => {
   const oldHistory = await History.findOne({ owner: req.user.id });
@@ -107,7 +107,11 @@ export const getHistories: RequestHandler = async (req, res) => {
     {
       $project: {
         all: {
-          $slice: ["$all", parseInt(limit) * parseInt(pageNumber), parseInt(limit)],
+          $slice: [
+            "$all",
+            parseInt(limit) * parseInt(pageNumber),
+            parseInt(limit),
+          ],
         },
       },
     },

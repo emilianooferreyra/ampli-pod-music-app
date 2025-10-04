@@ -1,7 +1,7 @@
-import History from "#/models/history";
-import { UserDocument } from "#/models/user";
 import { Request } from "express";
-import moment from "moment";
+import { subDays } from "date-fns";
+import { UserDocument } from "@/models/user";
+import History from "@/models/history";
 
 export const generateToken = (length = 6) => {
   // declare a variable
@@ -37,7 +37,7 @@ export const getUsersPreviousHistory = async (
       $match: {
         "all.date": {
           // only those histories which are not older than 30 days
-          $gte: moment().subtract(30, "days").toDate(),
+          $gte: subDays(new Date(), 30),
         },
       },
     },

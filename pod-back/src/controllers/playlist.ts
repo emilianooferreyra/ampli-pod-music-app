@@ -1,12 +1,12 @@
+import { RequestHandler } from "express";
+import { isValidObjectId } from "mongoose";
 import {
   CreatePlaylistRequest,
   PopulateFavList,
   UpdatePlaylistRequest,
-} from "#/@types/audio";
-import { RequestHandler } from "express";
-import { isValidObjectId } from "mongoose";
-import Audio from "#/models/audio";
-import Playlist from "#/models/playlist";
+} from "@/types/audio";
+import Audio from "@/models/audio";
+import Playlist from "@/models/playlist";
 
 export const createPlaylist: RequestHandler = async (
   req: CreatePlaylistRequest,

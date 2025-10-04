@@ -1,17 +1,17 @@
+import { Router } from "express";
 import {
   createPlaylist,
   getAudios,
   getPlaylistByProfile,
   removePlaylist,
   updatePlaylist,
-} from "#/controllers/playlist";
-import { isVerified, mustAuth } from "#/middleware/auth";
-import { validate } from "#/middleware/validator";
+} from "@/controllers/playlist";
+import { isVerified, mustAuth } from "@/middleware/auth";
+import { validate } from "@/middleware/validator";
 import {
   NewPlaylistValidationSchema,
   OldPlaylistValidationSchema,
-} from "#/utils/validationSchema";
-import { Router } from "express";
+} from "@/utils/validationSchema";
 
 const router = Router();
 

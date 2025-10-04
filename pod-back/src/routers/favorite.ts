@@ -1,10 +1,10 @@
+import { Router } from "express";
 import {
   getFavorites,
   getIsFavorite,
   toggleFavorite,
-} from "#/controllers/favorite";
-import { isVerified, mustAuth } from "#/middleware/auth";
-import { Router } from "express";
+} from "@/controllers/favorite";
+import { isVerified, mustAuth } from "@/middleware/auth";
 
 const router = Router();
 

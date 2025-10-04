@@ -1,4 +1,4 @@
-import { AudioDocument } from "#/models/audio";
+import { AudioDocument } from "@/models/audio";
 import { Request } from "express";
 import { ObjectId } from "mongoose";
 

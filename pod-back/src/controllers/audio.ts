@@ -1,12 +1,12 @@
-import { RequestWithFiles } from "#/middleware/fileParser";
-import { categoriesTypes } from "#/utils/audio-category";
-import { RequestHandler } from "express";
-import { PopulateFavList } from "#/@types/audio";
-import formidable from "formidable";
-import cloudinary from "#/cloud";
-import Audio from "#/models/audio";
+import { RequestHandler, Request } from "express";
+import { categoriesTypes } from "@/utils/audio-category";
+import { PopulateFavList } from "@/types/audio";
+import cloudinary from "@/cloud";
+import Audio from "@/models/audio";
+import { User } from "@/models/user";
 
-interface CreateAudioRequest extends RequestWithFiles {
+interface CreateAudioRequest extends Request {
+  user: User;
   body: {
     title: string;
     about: string;
@@ -19,16 +19,23 @@ export const createAudio: RequestHandler = async (
   res
 ) => {
   const { title, about, category } = req.body;
-  const poster = req.files?.poster as formidable.File;
-  const audioFile = req.files?.file as formidable.File;
   const ownerId = req.user.id;
+
+  const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+  const audioFile = files.file?.[0];
+  const posterFile = files.poster?.[0];
 
   if (!audioFile)
     return res.status(422).json({ error: "Audio file is missing!" });
 
-  const audioRes = await cloudinary.uploader.upload(audioFile.filepath, {
-    resource_type: "video",
-  });
+  // Subir audio a Cloudinary desde el buffer
+  const audioRes = await cloudinary.uploader.upload(
+    `data:${audioFile.mimetype};base64,${audioFile.buffer.toString("base64")}`,
+    {
+      resource_type: "video",
+    }
+  );
+
   const newAudio = new Audio({
     title,
     about,
@@ -37,13 +44,19 @@ export const createAudio: RequestHandler = async (
     file: { url: audioRes.secure_url, publicId: audioRes.public_id },
   });
 
-  if (poster) {
-    const posterRes = await cloudinary.uploader.upload(poster.filepath, {
-      width: 300,
-      height: 300,
-      crop: "thumb",
-      gravity: "face",
-    });
+  if (posterFile) {
+    // Subir poster a Cloudinary desde el buffer
+    const posterRes = await cloudinary.uploader.upload(
+      `data:${posterFile.mimetype};base64,${posterFile.buffer.toString(
+        "base64"
+      )}`,
+      {
+        width: 300,
+        height: 300,
+        crop: "thumb",
+        gravity: "face",
+      }
+    );
 
     newAudio.poster = {
       url: posterRes.secure_url,
@@ -68,7 +81,6 @@ export const updateAudio: RequestHandler = async (
   res
 ) => {
   const { title, about, category } = req.body;
-  const poster = req.files?.poster as formidable.File;
   const ownerId = req.user.id;
   const { audioId } = req.params;
 
@@ -80,17 +92,26 @@ export const updateAudio: RequestHandler = async (
 
   if (!audio) return res.status(404).json({ error: "Record not found!" });
 
-  if (poster) {
+  const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+  const posterFile = files.poster?.[0];
+
+  if (posterFile) {
     if (audio.poster?.publicId) {
       await cloudinary.uploader.destroy(audio.poster.publicId);
     }
 
-    const posterRes = await cloudinary.uploader.upload(poster.filepath, {
-      width: 300,
-      height: 300,
-      crop: "thumb",
-      gravity: "face",
-    });
+    // Subir nuevo poster a Cloudinary desde el buffer
+    const posterRes = await cloudinary.uploader.upload(
+      `data:${posterFile.mimetype};base64,${posterFile.buffer.toString(
+        "base64"
+      )}`,
+      {
+        width: 300,
+        height: 300,
+        crop: "thumb",
+        gravity: "face",
+      }
+    );
 
     audio.poster = {
       url: posterRes.secure_url,
@@ -114,7 +135,8 @@ export const getLatestUploads: RequestHandler = async (req, res) => {
   const list = await Audio.find()
     .sort("-createdAt")
     .limit(10)
-    .populate<PopulateFavList>("owner");
+    .populate<PopulateFavList>("owner")
+    .lean();
 
   const audios = list.map((item) => {
     return {
