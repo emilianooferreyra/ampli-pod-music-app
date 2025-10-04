@@ -1,0 +1,39 @@
+Backlog: Backend
+  Stage 1: Foundation - Monorepo Setup (No changes, still the essential first step)
+    - Restructure the project into a pnpm workspace with Turborepo []
+    - Move the current pod-back code to packages/backend []
+    - Configure turbo.json and root scripts []
+
+  Stage 2: Pre-migration Refactoring (Goal: Prepare the code so that migration to Hono is as simple as possible)
+    - Implement the Services Layer []
+    - Create a src/services directory []
+    - Move all business logic (interactions with the DB, Cloudinary, sending 
+      emails) from the controllers to the services (auth.service.ts, audio.service.ts, etc.) []
+    - Express controllers will only be responsible for req, res, and calling services []
+    - Validate Environment Variables.
+    - Create a Zod schema for process.env that is validated when the app starts. This is independent of the framework and will give you security from the start.
+
+  Stage 3: Migrating the Framework to Hono.js (Goal: Replace Express.js with Hono.js as the main server)
+    - Install Hono and its dependencies in packages/backend []
+    - Replace the Express server (index.ts) with an instance of Hono []
+    - Convert Express routers and controllers to Hono syntax []
+       * Note: Thanks to the service layer, this will mainly be a syntax change. The business logic in the services will not be touched.
+    - Replace Express-specific middlewares []
+      - `multer` -> `hono/multer`: For file handling []
+      - `helmet` -> `hono/secure-headers`: For header security []
+      - `express-rate-limit` -> `hono/rate-limiter`: For limiting requests []
+      - `error.ts` -> Hono error middleware: Adapt error handling to Hono syntax []
+
+  Stage 4: Improvements and Robustness in Hono (Goal: Leverage the advantages of Hono and ensure the quality of the new backend.)
+    - Implement a Robust Testing Strategy []
+    - Configure Vitest as the test runner []
+    - Write unit tests for services with Vitest []
+    - Write integration tests for endpoints with `hono/testing` []
+    - Generate API Documentation with OpenAPI []
+    - Create a shared types package []
+    - (Optional/Advanced): Implement Network-Level E2E Tests with Supertest []
+       - When to do it: When you need to validate complex network configurations or create a final health check test for your CI/CD pipeline
+         Actions:
+           - Verify CORS configuration by simulating requests from different origins []
+           - Test compression and header security middleware by inspecting actual HTTP responses []
+           - Create a smoke test that starts the actual server to ensure that the application boots correctly before deployment []
