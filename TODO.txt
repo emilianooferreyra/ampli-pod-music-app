@@ -1,0 +1,43 @@
+Backlog:
+  Stage 1: Foundation - Setting up Monorepo with Turborepo (Goal: Create a scalable, high-performance code base)
+      - Restructure the project into a pnpm workspace []
+      - Create a packages/ directory at the root []
+      - Move the current code from pod-back to packages/backend []
+      - Configure pnpm-workspace.yaml to recognize the packages inside packages []
+      - Install and configure Turborepo in the project root []
+      - Add turbo as a development dependency []
+      - Create the turbo.json configuration file with basic pipelines (dev, build, lint) []
+      - Update the scripts in the root package.json to use Turborepo (pnpm dev should run the dev script from the backend (and from the frontend in the future)) []
+      
+  Stage 2: Development - Creating Shared Packages (Goal: Avoid code duplication and maintain consistency)
+      - Create an eslint-config-custom package for ESLint configuration []
+      - Ensure that both the frontend and backend use the same code style rules []
+      - Create a shared types package []
+      - Move the User, Audio, etc. interfaces to this package so that the frontend and backend can import them []
+      - Create a ui package with React Native Components.
+      - Ideal for having consistent buttons, cards, and other visual elements if you plan on more than one web application []
+
+  Stage 3: Development - Frontend Application (Goal: Build the user interface to interact with the API)
+    - Start a new Expo application with TypeScript in packages/frontend []
+    - Connect the frontend with the eslint-config-custom and types packages []
+    - Implement user authentication (Login, Registration, Profile) []
+    - Develop the audio player []
+    - Create the main views: Home, Search, Playlists, Favorites []
+
+  Stage 4: Backend Improvements (Goal: Increase server robustness and reliability.)
+    - Implement a testing strategy []
+    - Add unit tests for controllers and utilities []
+    - Add integration tests for critical endpoints (e.g., auth, audio) []
+    - Generate documentation for the API []
+    - Integrate Swagger or OpenAPI to automatically document endpoints []
+    - Refine error handling and logging []
+    - Create a centralized system to unify the error format and log important events []
+
+  Stage 5: Operations and Deployment (CI/CD) (Goal: Automate project integration and deployment)
+    - Set up a Continuous Integration (CI) pipeline with GitHub Actions []
+    - Run lint and tests on every push or pull request []
+    - Define a deployment strategy []
+    - Frontend: Deploy to a platform such as Vercel, Netlify or EAS []
+    - Backend: Deploy to a service such as Render, Fly.io, or a VPS []
+    - Automate deployment (Continuous Deployment) []
+    - Configure the pipeline so that, after passing the tests in the main branch, it deploys automatically []
