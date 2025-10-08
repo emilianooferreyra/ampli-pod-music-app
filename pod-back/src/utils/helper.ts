@@ -1,15 +1,16 @@
+import crypto from "node:crypto";
 import { Request } from "express";
 import { subDays } from "date-fns";
 import { UserDocument } from "@/models/user";
 import History from "@/models/history";
 
 export const generateToken = (length = 6) => {
-  // declare a variable
+  const digits = "0123456789";
   let otp = "";
 
   for (let i = 0; i < length; i++) {
-    const digit = Math.floor(Math.random() * 10);
-    otp += digit;
+    const randomIndex = crypto.randomInt(0, 10);
+    otp += digits[randomIndex];
   }
 
   return otp;

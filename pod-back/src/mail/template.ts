@@ -7,7 +7,7 @@ interface Options {
   btnTitle: string;
 }
 
-export const generateTemplate = (options: Options) => {
+export const renderEmailTemplate = (options: Options) => {
   const { title, message, link, logo, banner, btnTitle } = options;
 
   return `

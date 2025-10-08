@@ -49,19 +49,18 @@ export const SignInValidationSchema = z.object({
 export const AudioValidationSchema = z.object({
   title: z.string(),
   about: z.string(),
-  category: z.enum(categories, {
-    errorMap: () => ({ message: "Invalid category!" }),
-  }),
+  category: z.enum(categories, "Invalid category!"),
 });
 
 export const NewPlaylistValidationSchema = z.object({
   title: z.string(),
-  resId: z.string().refine((val) => isValidObjectId(val), {
-    message: "Invalid resource id!",
-  }).optional(),
-  visibility: z.enum(["public", "private"], {
-    errorMap: () => ({ message: "Visibility must be public or private!" }),
-  }),
+  resId: z
+    .string()
+    .refine((val) => isValidObjectId(val), {
+      message: "Invalid resource id!",
+    })
+    .optional(),
+  visibility: z.enum(["public", "private"], "Visibility must be public or private!"),
 });
 
 export const OldPlaylistValidationSchema = z.object({
@@ -72,9 +71,9 @@ export const OldPlaylistValidationSchema = z.object({
   id: z.string().refine((val) => isValidObjectId(val), {
     message: "Invalid playlist id!",
   }),
-  visibility: z.enum(["public", "private"], {
-    errorMap: () => ({ message: "Visibility must be public or private!" }),
-  }).optional(),
+  visibility: z
+    .enum(["public", "private"], "Visibility must be public or private!")
+    .optional(),
 });
 
 export const UpdateHistorySchema = z.object({

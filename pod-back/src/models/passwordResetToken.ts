@@ -45,8 +45,8 @@ passwordResetTokenSchema.pre("save", async function (next) {
 });
 
 passwordResetTokenSchema.methods.compareToken = async function (token) {
-  const result = await compare(token, this.token);
-  return result;
+  const isMatch = await compare(token, this.token);
+  return isMatch;
 };
 
 export default model("PasswordResetToken", passwordResetTokenSchema) as Model<

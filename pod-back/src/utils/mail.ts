@@ -1,12 +1,16 @@
-import { Resend } from "resend";
-import {
-  RESEND_API_KEY,
-  SIGN_IN_URL,
-  VERIFICATION_EMAIL,
-} from "@/utils/variables";
-import { generateTemplate } from "@/mail/template";
+import path from "node:path";
+import nodemailer from "nodemailer";
+import { SIGN_IN_URL, VERIFICATION_EMAIL } from "@/utils/variables";
+import { renderEmailTemplate } from "@/mail/template";
 
-const resend = new Resend(RESEND_API_KEY);
+const transport = nodemailer.createTransport({
+  host: process.env.MAILTRAP_HOST,
+  port: parseInt(process.env.MAILTRAP_PORT as string),
+  auth: {
+    user: process.env.MAILTRAP_USER,
+    pass: process.env.MAILTRAP_PASS,
+  },
+});
 
 interface Profile {
   name: string;
@@ -14,30 +18,42 @@ interface Profile {
   userId: string;
 }
 
-export const sendVerificationMail = async (token: string, profile: Profile) => {
-  const { name, email } = profile;
-
-  const welcomeMessage = `Hi ${name}, welcome to Podify! There are so much thing that we do for verified users. Use the given OTP to verify your email.`;
-
-  await resend.emails.send({
-    from: VERIFICATION_EMAIL,
-    to: email,
-    subject: "Welcome to Podify",
-    html: generateTemplate({
-      title: "Welcome to Podify",
-      message: welcomeMessage,
-      logo: "https://your-domain.com/logo.png", // Reemplazar con URL pública
-      banner: "https://your-domain.com/welcome.png", // Reemplazar con URL pública
-      link: "#",
-      btnTitle: token,
-    }),
-  });
-};
-
 interface Options {
   email: string;
   link: string;
 }
+
+export const sendVerificationMail = async (token: string, profile: Profile) => {
+  const { name, email } = profile;
+
+  const welcomeMessage = `Hi ${name}, welcome to IntuneApp! There are so much thing that we do for verified users. Use the given OTP to verify your email.`;
+
+  await transport.sendMail({
+    from: VERIFICATION_EMAIL,
+    to: email,
+    subject: "Welcome to Intune",
+    html: renderEmailTemplate({
+      title: "Welcome to Intune",
+      message: welcomeMessage,
+      logo: "cid:logo",
+      banner: "cid:welcome",
+      link: "#",
+      btnTitle: token,
+    }),
+    attachments: [
+      {
+        filename: "logo.png",
+        path: path.join(__dirname, "../mail/logo.png"),
+        cid: "logo",
+      },
+      {
+        filename: "welcome.png",
+        path: path.join(__dirname, "../mail/welcome.png"),
+        cid: "welcome",
+      },
+    ],
+  });
+};
 
 export const sendForgetPasswordLink = async (options: Options) => {
   const { email, link } = options;
@@ -45,11 +61,11 @@ export const sendForgetPasswordLink = async (options: Options) => {
   const message =
     "We just received a request that you forgot your password. No problem you can use the link below and create brand new password.";
 
-  await resend.emails.send({
+  await transport.sendMail({
     from: VERIFICATION_EMAIL,
     to: email,
     subject: "Reset Password Link",
-    html: generateTemplate({
+    html: renderEmailTemplate({
       title: "Forget Password",
       message,
       logo: "https://your-domain.com/logo.png", // Reemplazar con URL pública
@@ -66,11 +82,11 @@ export const sendPassResetSuccessEmail = async (
 ) => {
   const message = `Dear ${name} we just updated your new password. You can now sign in with your new password.`;
 
-  await resend.emails.send({
+  await transport.sendMail({
     from: VERIFICATION_EMAIL,
     to: email,
     subject: "Password Reset Successfully",
-    html: generateTemplate({
+    html: renderEmailTemplate({
       title: "Password Reset Successfully",
       message,
       logo: "https://your-domain.com/logo.png", // Reemplazar con URL pública

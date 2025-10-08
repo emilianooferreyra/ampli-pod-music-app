@@ -8,7 +8,7 @@ export const categories = [
   "Science",
   "Tech",
   "Others",
-];
+] as const;
 
 export type categoriesTypes =
   | "Arts"

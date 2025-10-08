@@ -1,9 +1,9 @@
 import { RequestHandler, Request } from "express";
+import { User } from "@/models/user";
 import { categoriesTypes } from "@/utils/audio-category";
 import { PopulateFavList } from "@/types/audio";
 import cloudinary from "@/cloud";
 import Audio from "@/models/audio";
-import { User } from "@/models/user";
 
 interface CreateAudioRequest extends Request {
   user: User;
@@ -45,7 +45,6 @@ export const createAudio: RequestHandler = async (
   });
 
   if (posterFile) {
-    // Subir poster a Cloudinary desde el buffer
     const posterRes = await cloudinary.uploader.upload(
       `data:${posterFile.mimetype};base64,${posterFile.buffer.toString(
         "base64"
@@ -100,7 +99,6 @@ export const updateAudio: RequestHandler = async (
       await cloudinary.uploader.destroy(audio.poster.publicId);
     }
 
-    // Subir nuevo poster a Cloudinary desde el buffer
     const posterRes = await cloudinary.uploader.upload(
       `data:${posterFile.mimetype};base64,${posterFile.buffer.toString(
         "base64"

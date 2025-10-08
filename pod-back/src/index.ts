@@ -1,17 +1,16 @@
-import express from "express";
 import "dotenv/config";
-import "express-async-errors";
 import "./db";
+import express from "express";
+import mongoose from "mongoose";
 import authRouter from "./routers/auth";
 import audioRouter from "./routers/audio";
 import favoriteRouter from "./routers/favorite";
 import playlistRouter from "./routers/playlist";
 import profileRouter from "./routers/profile";
 import historyRouter from "./routers/history";
-import mongoose from "mongoose";
+import { errorHandler } from "./middleware/error";
 
 import "./utils/schedule";
-import { errorHandler } from "./middleware/error";
 
 const app = express();
 
@@ -43,7 +42,6 @@ const gracefulShutdown = async () => {
     process.exit(0);
   });
 
-  // Force shutdown after 10 seconds
   setTimeout(() => {
     console.error(
       "Could not close connections in time, forcefully shutting down"

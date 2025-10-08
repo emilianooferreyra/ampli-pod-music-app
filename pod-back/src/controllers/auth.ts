@@ -10,7 +10,7 @@ import {
 } from "@/utils/mail";
 import { isValidObjectId } from "mongoose";
 import { JWT_SECRET, PASSWORD_RESET_LINK } from "@/utils/variables";
-import { RequestWithFiles } from "@/middleware/fileParser";
+import fileParser from "@/middleware/fileParser";
 import EmailVerificationToken from "@/models/emailVerificationToken";
 import PasswordResetToken from "@/models/passwordResetToken";
 import cloudinary from "@/cloud";
@@ -26,7 +26,6 @@ export const create: RequestHandler = async (req: CreateUser, res) => {
 
   const user = await User.create({ name, email, password });
 
-  // send verification email
   const token = generateToken();
   await EmailVerificationToken.create({
     owner: user._id,
@@ -104,9 +103,6 @@ export const generateForgetPasswordLink: RequestHandler = async (req, res) => {
   const user = await User.findOne({ email });
   if (!user) return res.status(404).json({ error: "Account not found!" });
 
-  // generate the link
-  // https://yourapp.com/reset-passwod?token=hfkshf4322hfjkds&userId=67jhfdsahf43
-
   await PasswordResetToken.findOneAndDelete({
     owner: user._id,
   });
@@ -143,9 +139,7 @@ export const updatePassword: RequestHandler = async (req, res) => {
 
   user.password = password;
   await user.save();
-
   await PasswordResetToken.findOneAndDelete({ owner: user._id });
-  // send the success email
 
   sendPassResetSuccessEmail(user.name, user.email);
   res.json({ message: "Password resets successfully." });
@@ -184,12 +178,9 @@ export const signIn: RequestHandler = async (req, res) => {
   });
 };
 
-export const updateProfile: RequestHandler = async (
-  req: RequestWithFiles,
-  res
-) => {
+export const updateProfile: RequestHandler = async (req, res) => {
   const { name } = req.body;
-  const avatar = req.files?.avatar as formidable.File;
+  const avatar = req.file;
 
   const user = await User.findById(req.user.id);
   if (!user) throw new Error("something went wrong, user not found!");
@@ -209,8 +200,10 @@ export const updateProfile: RequestHandler = async (
     }
 
     // upload new avatar file
+    const b64 = Buffer.from(avatar.buffer).toString("base64");
+    const dataURI = "data:" + avatar.mimetype + ";base64," + b64;
     const { secure_url, public_id } = await cloudinary.uploader.upload(
-      avatar.filepath,
+      dataURI,
       {
         width: 300,
         height: 300,

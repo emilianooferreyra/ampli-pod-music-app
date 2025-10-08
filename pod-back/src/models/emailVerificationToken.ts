@@ -11,7 +11,6 @@ interface Methods {
   compareToken(token: string): Promise<boolean>;
 }
 
-// expire them after 1 hrs
 const emailVerificationTokenSchema = new Schema<
   EmailVerificationTokenDocument,
   {},
@@ -28,13 +27,12 @@ const emailVerificationTokenSchema = new Schema<
   },
   createdAt: {
     type: Date,
-    expires: 3600, // 60 min * 60 sec = 3600s
+    expires: 3600,
     default: Date.now(),
   },
 });
 
 emailVerificationTokenSchema.pre("save", async function (next) {
-  // hash the token
   if (this.isModified("token")) {
     this.token = await hash(this.token, 10);
   }
@@ -43,8 +41,8 @@ emailVerificationTokenSchema.pre("save", async function (next) {
 });
 
 emailVerificationTokenSchema.methods.compareToken = async function (token) {
-  const result = await compare(token, this.token);
-  return result;
+  const isMatch = await compare(token, this.token);
+  return isMatch;
 };
 
 export default model(
