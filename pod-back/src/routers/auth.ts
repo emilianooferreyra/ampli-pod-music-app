@@ -19,14 +19,16 @@ import {
   SignInValidationSchema,
   TokenAndIDValidation,
   UpdatePasswordSchema,
+  ReVerifyEmailSchema,
+  ForgetPasswordSchema,
 } from "@/utils/validationSchema";
 
 const router = Router();
 
 router.post("/create", validate(CreateUserSchema), create);
 router.post("/verify-email", validate(TokenAndIDValidation), verifyEmail);
-router.post("/re-verify-email", sendReVerificationToken);
-router.post("/forget-password", generateForgetPasswordLink);
+router.post("/re-verify-email", validate(ReVerifyEmailSchema), sendReVerificationToken);
+router.post("/forget-password", validate(ForgetPasswordSchema), generateForgetPasswordLink);
 router.post(
   "/verify-pass-reset-token",
   validate(TokenAndIDValidation),

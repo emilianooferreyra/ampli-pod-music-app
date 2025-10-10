@@ -8,7 +8,7 @@ export const CreateUserSchema = z.object({
     .trim()
     .min(3, "Name is too short!")
     .max(20, "Name is too long!"),
-  email: z.string().email("Invalid email id!"),
+  email: z.string("Invalid email id!"),
   password: z
     .string()
     .trim()
@@ -42,7 +42,7 @@ export const UpdatePasswordSchema = z.object({
 });
 
 export const SignInValidationSchema = z.object({
-  email: z.string().email("Invalid email id!"),
+  email: z.string("Invalid email id!"),
   password: z.string().trim(),
 });
 
@@ -60,7 +60,10 @@ export const NewPlaylistValidationSchema = z.object({
       message: "Invalid resource id!",
     })
     .optional(),
-  visibility: z.enum(["public", "private"], "Visibility must be public or private!"),
+  visibility: z.enum(
+    ["public", "private"],
+    "Visibility must be public or private!"
+  ),
 });
 
 export const OldPlaylistValidationSchema = z.object({
@@ -84,4 +87,14 @@ export const UpdateHistorySchema = z.object({
   date: z.string().refine((val) => !isNaN(new Date(val).getTime()), {
     message: "Invalid date!",
   }),
+});
+
+export const ReVerifyEmailSchema = z.object({
+  userId: z.string().refine((val) => isValidObjectId(val), {
+    message: "Invalid userId!",
+  }),
+});
+
+export const ForgetPasswordSchema = z.object({
+  email: z.string().trim().email("Invalid email format!"),
 });

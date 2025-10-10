@@ -1,14 +1,21 @@
 import path from "node:path";
 import nodemailer from "nodemailer";
-import { SIGN_IN_URL, VERIFICATION_EMAIL } from "@/utils/variables";
+import {
+  SIGN_IN_URL,
+  VERIFICATION_EMAIL,
+  MAILTRAP_HOST,
+  MAILTRAP_PORT,
+  MAILTRAP_USER,
+  MAILTRAP_PASS,
+} from "@/utils/variables";
 import { renderEmailTemplate } from "@/mail/template";
 
 const transport = nodemailer.createTransport({
-  host: process.env.MAILTRAP_HOST,
-  port: parseInt(process.env.MAILTRAP_PORT as string),
+  host: MAILTRAP_HOST,
+  port: parseInt(MAILTRAP_PORT),
   auth: {
-    user: process.env.MAILTRAP_USER,
-    pass: process.env.MAILTRAP_PASS,
+    user: MAILTRAP_USER,
+    pass: MAILTRAP_PASS,
   },
 });
 
@@ -68,11 +75,23 @@ export const sendForgetPasswordLink = async (options: Options) => {
     html: renderEmailTemplate({
       title: "Forget Password",
       message,
-      logo: "https://your-domain.com/logo.png", // Reemplazar con URL pública
-      banner: "https://your-domain.com/forget_password.png", // Reemplazar con URL pública
+      logo: "cid:logo",
+      banner: "cid:forget_password",
       link,
       btnTitle: "Reset Password",
     }),
+    attachments: [
+      {
+        filename: "logo.png",
+        path: path.join(__dirname, "../mail/logo.png"),
+        cid: "logo",
+      },
+      {
+        filename: "forget_password.png",
+        path: path.join(__dirname, "../mail/forget_password.png"),
+        cid: "forget_password",
+      },
+    ],
   });
 };
 

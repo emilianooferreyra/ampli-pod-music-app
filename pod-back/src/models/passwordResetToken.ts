@@ -30,13 +30,12 @@ const passwordResetTokenSchema = new Schema<
   },
   createdAt: {
     type: Date,
-    expires: 3600, // 60 min * 60 sec = 3600s
-    default: Date.now(),
+    expires: 3600,
+    default: Date.now,
   },
 });
 
 passwordResetTokenSchema.pre("save", async function (next) {
-  // hash the token
   if (this.isModified("token")) {
     this.token = await hash(this.token, 10);
   }

@@ -3,6 +3,8 @@ const { env } = process as { env: { [key: string]: string } };
 export const {
   MONGO_URI,
 
+  MAILTRAP_HOST,
+  MAILTRAP_PORT,
   MAILTRAP_USER,
   MAILTRAP_PASS,
 

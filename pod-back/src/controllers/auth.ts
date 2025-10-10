@@ -8,7 +8,6 @@ import {
   sendPassResetSuccessEmail,
   sendVerificationMail,
 } from "@/utils/mail";
-import { isValidObjectId } from "mongoose";
 import { JWT_SECRET, PASSWORD_RESET_LINK } from "@/utils/variables";
 import fileParser from "@/middleware/fileParser";
 import EmailVerificationToken from "@/models/emailVerificationToken";
@@ -32,7 +31,11 @@ export const create: RequestHandler = async (req: CreateUser, res) => {
     token,
   });
 
-  sendVerificationMail(token, { name, email, userId: user._id.toString() });
+  await sendVerificationMail(token, {
+    name,
+    email,
+    userId: user._id.toString(),
+  });
 
   res.status(201).json({ user: { id: user._id, name, email } });
 };
@@ -64,13 +67,9 @@ export const verifyEmail: RequestHandler = async (
 export const sendReVerificationToken: RequestHandler = async (req, res) => {
   const { userId } = req.body;
 
-  if (!isValidObjectId(userId)) {
-    return res.status(403).json({ error: "Invalid request!" });
-  }
-
   const user = await User.findById(userId);
   if (!user) {
-    return res.status(403).json({ error: "Invalid request!" });
+    return res.status(404).json({ error: "User not found!" });
   }
 
   if (user.verified) {
@@ -88,37 +87,64 @@ export const sendReVerificationToken: RequestHandler = async (req, res) => {
     token,
   });
 
-  sendVerificationMail(token, {
-    name: user?.name,
-    email: user?.email,
-    userId: user?._id.toString(),
+  await sendVerificationMail(token, {
+    name: user.name,
+    email: user.email,
+    userId: user._id.toString(),
   });
 
-  res.json({ message: "Please check you mail." });
+  res.json({ message: "Please check your mail." });
 };
 
 export const generateForgetPasswordLink: RequestHandler = async (req, res) => {
-  const { email } = req.body;
+  try {
+    const { email } = req.body;
 
-  const user = await User.findOne({ email });
-  if (!user) return res.status(404).json({ error: "Account not found!" });
+    console.log("[DEBUG] Forget password request for:", email);
 
-  await PasswordResetToken.findOneAndDelete({
-    owner: user._id,
-  });
+    const user = await User.findOne({ email });
 
-  const token = crypto.randomBytes(36).toString("hex");
+    if (!user) {
+      return res.json({
+        message:
+          "If an account exists with this email, a password reset link has been sent.",
+      });
+    }
 
-  await PasswordResetToken.create({
-    owner: user._id,
-    token,
-  });
+    if (!user.verified) {
+      return res.json({
+        message:
+          "If an account exists with this email, a password reset link has been sent.",
+      });
+    }
 
-  const resetLink = `${PASSWORD_RESET_LINK}?token=${token}&userId=${user._id}`;
+    await PasswordResetToken.findOneAndDelete({
+      owner: user._id,
+    });
 
-  sendForgetPasswordLink({ email: user.email, link: resetLink });
+    const token = crypto.randomBytes(36).toString("hex");
 
-  res.json({ message: "Check you registered mail." });
+    await PasswordResetToken.create({
+      owner: user._id,
+      token,
+    });
+
+    const resetLink = `${PASSWORD_RESET_LINK}?token=${token}&userId=${user._id}`;
+    console.log("[DEBUG] Reset link generated:", resetLink);
+
+    await sendForgetPasswordLink({ email: user.email, link: resetLink });
+
+    res.json({
+      message:
+        "If an account exists with this email, a password reset link has been sent.",
+    });
+  } catch (error) {
+    console.error("[ERROR] Error in generateForgetPasswordLink:", error);
+    res.json({
+      message:
+        "If an account exists with this email, a password reset link has been sent.",
+    });
+  }
 };
 
 export const grantValid: RequestHandler = async (req, res) => {
@@ -141,8 +167,8 @@ export const updatePassword: RequestHandler = async (req, res) => {
   await user.save();
   await PasswordResetToken.findOneAndDelete({ owner: user._id });
 
-  sendPassResetSuccessEmail(user.name, user.email);
-  res.json({ message: "Password resets successfully." });
+  await sendPassResetSuccessEmail(user.name, user.email);
+  res.json({ message: "Password reset successfully." });
 };
 
 export const signIn: RequestHandler = async (req, res) => {
@@ -151,14 +177,14 @@ export const signIn: RequestHandler = async (req, res) => {
   const user = await User.findOne({
     email,
   });
+
   if (!user) return res.status(403).json({ error: "Email/Password mismatch!" });
 
-  // compare the password
   const matched = await user.comparePassword(password);
+
   if (!matched)
     return res.status(403).json({ error: "Email/Password mismatch!" });
 
-  // generate the token for later use.
   const token = jwt.sign({ userId: user._id }, JWT_SECRET);
   user.tokens.push(token);
 
@@ -231,7 +257,6 @@ export const logOut: RequestHandler = async (req, res) => {
   const user = await User.findById(req.user.id);
   if (!user) throw new Error("something went wrong, user not found!");
 
-  // logout from all
   if (fromAll === "yes") user.tokens = [];
   else user.tokens = user.tokens.filter((t) => t !== token);
 
