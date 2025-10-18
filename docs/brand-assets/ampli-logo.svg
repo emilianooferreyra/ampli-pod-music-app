@@ -1,0 +1,21 @@
+<svg width="200" height="100" viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Ampli Full Logo - Icon + Wordmark -->
+
+  <!-- Icon (Waveform "A") -->
+  <g id="icon">
+    <!-- Peak 1 (tallest - left) -->
+    <path d="M 15 85 L 25 15 L 30 30" stroke="#7C3AED" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+    <!-- Peak 2 (medium-tall) -->
+    <path d="M 30 30 L 40 45 L 48 25" stroke="#7C3AED" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+    <!-- Peak 3 (medium) -->
+    <path d="M 48 25 L 58 55 L 68 40" stroke="#7C3AED" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+    <!-- Peak 4 (lowest - right) -->
+    <path d="M 68 40 L 75 60 L 85 85" stroke="#7C3AED" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </g>
+
+  <!-- Wordmark "ampli" -->
+  <text x="105" y="60" font-family="Inter, sans-serif" font-size="36" font-weight="700" fill="#0F172A">ampli</text>
+</svg>
