@@ -6,30 +6,30 @@ import {
   removePlaylist,
   updatePlaylist,
 } from "@/controllers/playlist";
-import { isVerified, mustAuth } from "@/middleware/auth";
+import { isVerified, requireAuth } from "@/middleware/auth";
 import { validate } from "@/middleware/validator";
 import {
   NewPlaylistValidationSchema,
   OldPlaylistValidationSchema,
-} from "@/utils/validationSchema";
+} from "@/utils/validation-schema";
 
 const router = Router();
 
-router.get("/by-profile", mustAuth, getPlaylistByProfile);
-router.get("/:playlistId", mustAuth, getAudios);
+router.get("/by-profile", requireAuth, getPlaylistByProfile);
+router.get("/:playlistId", requireAuth, getAudios);
 router.post(
   "/create",
-  mustAuth,
+  requireAuth,
   isVerified,
   validate(NewPlaylistValidationSchema),
   createPlaylist
 );
 router.patch(
   "/",
-  mustAuth,
+  requireAuth,
   validate(OldPlaylistValidationSchema),
   updatePlaylist
 );
-router.delete("/", mustAuth, removePlaylist);
+router.delete("/", requireAuth, removePlaylist);
 
 export default router;

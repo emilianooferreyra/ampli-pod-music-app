@@ -1,7 +1,7 @@
 {
-  "name": "server",
+  "name": "ampli-api",
   "version": "1.0.0",
-  "description": "server",
+  "description": "Ampli - Free audio platform API for creators to share podcasts, music, and audio content",
   "main": "index.js",
   "scripts": {
     "dev": "tsnd --respawn -r tsconfig-paths/register --pretty --transpile-only ./src/index.ts",
@@ -13,9 +13,17 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "audio",
+    "podcast",
+    "music",
+    "streaming",
+    "ampli",
+    "soundcloud",
+    "creator-platform"
+  ],
+  "author": "Emi",
+  "license": "MIT",
   "dependencies": {
     "@types/jsonwebtoken": "^9.0.10",
     "@types/multer": "^2.0.0",

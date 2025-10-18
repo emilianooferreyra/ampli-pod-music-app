@@ -4,12 +4,12 @@ import {
   getIsFavorite,
   toggleFavorite,
 } from "@/controllers/favorite";
-import { isVerified, mustAuth } from "@/middleware/auth";
+import { isVerified, requireAuth } from "@/middleware/auth";
 
 const router = Router();
 
-router.post("/", mustAuth, isVerified, toggleFavorite);
-router.get("/", mustAuth, getFavorites);
-router.get("/is-fav", mustAuth, getIsFavorite);
+router.post("/", requireAuth, isVerified, toggleFavorite);
+router.get("/", requireAuth, getFavorites);
+router.get("/is-fav", requireAuth, getIsFavorite);
 
 export default router;

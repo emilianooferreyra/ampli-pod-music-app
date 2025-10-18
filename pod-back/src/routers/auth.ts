@@ -12,7 +12,7 @@ import {
   updateProfile,
   verifyEmail,
 } from "@/controllers/auth";
-import { isValidPassResetToken, mustAuth } from "@/middleware/auth";
+import { isValidPassResetToken, requireAuth } from "@/middleware/auth";
 import { validate } from "@/middleware/validator";
 import {
   CreateUserSchema,
@@ -21,14 +21,22 @@ import {
   UpdatePasswordSchema,
   ReVerifyEmailSchema,
   ForgetPasswordSchema,
-} from "@/utils/validationSchema";
+} from "@/utils/validation-schema";
 
 const router = Router();
 
 router.post("/create", validate(CreateUserSchema), create);
 router.post("/verify-email", validate(TokenAndIDValidation), verifyEmail);
-router.post("/re-verify-email", validate(ReVerifyEmailSchema), sendReVerificationToken);
-router.post("/forget-password", validate(ForgetPasswordSchema), generateForgetPasswordLink);
+router.post(
+  "/re-verify-email",
+  validate(ReVerifyEmailSchema),
+  sendReVerificationToken
+);
+router.post(
+  "/forget-password",
+  validate(ForgetPasswordSchema),
+  generateForgetPasswordLink
+);
 router.post(
   "/verify-pass-reset-token",
   validate(TokenAndIDValidation),
@@ -42,9 +50,9 @@ router.post(
   updatePassword
 );
 router.post("/sign-in", validate(SignInValidationSchema), signIn);
-router.get("/is-auth", mustAuth, sendProfile);
+router.get("/is-auth", requireAuth, sendProfile);
 
-router.post("/update-profile", mustAuth, fileParser, updateProfile);
-router.post("/log-out", mustAuth, logOut);
+router.post("/update-profile", requireAuth, fileParser, updateProfile);
+router.post("/log-out", requireAuth, logOut);
 
 export default router;

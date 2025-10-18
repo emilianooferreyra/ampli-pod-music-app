@@ -22,7 +22,7 @@ export const isValidPassResetToken: RequestHandler = async (req, res, next) => {
   next();
 };
 
-export const mustAuth: RequestHandler = async (req, res, next) => {
+export const requireAuth: RequestHandler = async (req, res, next) => {
   const { authorization } = req.headers;
   const token = authorization?.split("Bearer ")[1];
   if (!token) return res.status(403).json({ error: "Unauthorized request!" });

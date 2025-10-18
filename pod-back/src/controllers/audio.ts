@@ -1,12 +1,10 @@
 import { RequestHandler, Request } from "express";
-import { User } from "@/models/user";
 import { categoriesTypes } from "@/utils/audio-category";
 import { PopulateFavList } from "@/types/audio";
 import cloudinary from "@/cloud";
 import Audio from "@/models/audio";
 
 interface CreateAudioRequest extends Request {
-  user: User;
   body: {
     title: string;
     about: string;
@@ -28,7 +26,6 @@ export const createAudio: RequestHandler = async (
   if (!audioFile)
     return res.status(422).json({ error: "Audio file is missing!" });
 
-  // Subir audio a Cloudinary desde el buffer
   const audioRes = await cloudinary.uploader.upload(
     `data:${audioFile.mimetype};base64,${audioFile.buffer.toString("base64")}`,
     {

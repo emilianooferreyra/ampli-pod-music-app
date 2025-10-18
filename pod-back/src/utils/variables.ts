@@ -16,5 +16,4 @@ export const {
   CLOUD_NAME,
   CLOUD_KEY,
   CLOUD_SECRET,
-  RESEND_API_KEY,
 } = env;

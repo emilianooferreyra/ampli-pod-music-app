@@ -5,15 +5,15 @@ import {
   removeHistory,
   updateHistory,
 } from "@/controllers/history";
-import { mustAuth } from "@/middleware/auth";
+import { requireAuth } from "@/middleware/auth";
 import { validate } from "@/middleware/validator";
-import { UpdateHistorySchema } from "@/utils/validationSchema";
+import { UpdateHistorySchema } from "@/utils/validation-schema";
 
 const router = Router();
 
-router.get("/", mustAuth, getHistories);
-router.get("/recently-played", mustAuth, getRecentlyPlayed);
-router.post("/", mustAuth, validate(UpdateHistorySchema), updateHistory);
-router.delete("/", mustAuth, removeHistory);
+router.get("/", requireAuth, getHistories);
+router.get("/recently-played", requireAuth, getRecentlyPlayed);
+router.post("/", requireAuth, validate(UpdateHistorySchema), updateHistory);
+router.delete("/", requireAuth, removeHistory);
 
 export default router;

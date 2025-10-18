@@ -5,15 +5,15 @@ import {
   getLatestUploads,
   updateAudio,
 } from "@/controllers/audio";
-import { isVerified, mustAuth } from "@/middleware/auth";
+import { isVerified, requireAuth } from "@/middleware/auth";
 import { validate } from "@/middleware/validator";
-import { AudioValidationSchema } from "@/utils/validationSchema";
+import { AudioValidationSchema } from "@/utils/validation-schema";
 
 const router = Router();
 
 router.post(
   "/create",
-  mustAuth,
+  requireAuth,
   isVerified,
   fileParser,
   validate(AudioValidationSchema),
@@ -21,7 +21,7 @@ router.post(
 );
 router.patch(
   "/:audioId",
-  mustAuth,
+  requireAuth,
   isVerified,
   fileParser,
   validate(AudioValidationSchema),

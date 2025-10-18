@@ -102,16 +102,28 @@ export const sendPassResetSuccessEmail = async (
   const message = `Dear ${name} we just updated your new password. You can now sign in with your new password.`;
 
   await transport.sendMail({
-    from: VERIFICATION_EMAIL,
     to: email,
+    from: VERIFICATION_EMAIL,
     subject: "Password Reset Successfully",
     html: renderEmailTemplate({
       title: "Password Reset Successfully",
       message,
-      logo: "https://your-domain.com/logo.png", // Reemplazar con URL pública
-      banner: "https://your-domain.com/forget_password.png", // Reemplazar con URL pública
+      logo: "cid:logo",
+      banner: "cid:forget_password",
       link: SIGN_IN_URL,
       btnTitle: "Log in",
     }),
+    attachments: [
+      {
+        filename: "logo.png",
+        path: path.join(__dirname, "../mail/logo.png"),
+        cid: "logo",
+      },
+      {
+        filename: "forget_password.png",
+        path: path.join(__dirname, "../mail/forget_password.png"),
+        cid: "forget_password",
+      },
+    ],
   });
 };
