@@ -1,5 +1,5 @@
 import { Router } from "express";
-import fileParser from "@/middleware/fileParser";
+import { audioFileParser } from "@/middleware/fileParser";
 import {
   createAudio,
   getLatestUploads,
@@ -15,7 +15,7 @@ router.post(
   "/create",
   requireAuth,
   isVerified,
-  fileParser,
+  audioFileParser,
   validate(AudioValidationSchema),
   createAudio
 );
@@ -23,7 +23,7 @@ router.patch(
   "/:audioId",
   requireAuth,
   isVerified,
-  fileParser,
+  audioFileParser,
   validate(AudioValidationSchema),
   updateAudio
 );
