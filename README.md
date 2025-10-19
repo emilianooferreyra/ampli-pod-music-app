@@ -1,33 +1,72 @@
-# Intune App 🔈
+# Ampli 🎵
 
-Welcome music lovers! This is the codebase for **Intune App**, a modern full-stack music platform designed to make streaming, playlists, and discovering new artists seamless and fun.
+A free audio platform for creators to share podcasts, music, and audio content.
 
-Get the app itself (coming soon):
+**Ampli** empowers creators to upload, organize, and share audio content with their audience. Built with modern web technologies and a focus on creator freedom.
+
+Get the app (coming soon):
 
 - **Web:** _(planned)_
 - **iOS / Android:** Available on the App Store and Play Store _(planned)_
 
 ---
 
-## 🎵 Development Resources
+## 🚀 Current Status
 
-Intune App is built with **TypeScript**, with a backend powered by **Hono.js** and a frontend built with **React Native**.
+Ampli is in active development. The backend API is functional with the following features:
 
-The backend provides REST APIs for audio streaming, user authentication, playlists, and more. Everything is structured in a **monorepo** using **pnpm workspaces** and **Turborepo** for high-performance development.
+- User authentication with email verification
+- Audio file uploads with Cloudinary integration
+- Playlist creation and management
+- User profiles with follow/follower system
+- Listening history tracking
+- Favorites and recommendations
+
+### Tech Stack
+
+- **Backend:** Express.js + TypeScript + MongoDB
+- **Authentication:** JWT with bcrypt
+- **File Storage:** Cloudinary
+- **Email:** Nodemailer with Mailtrap
 
 ### Project Structure
 
 ```
-├── packages/
-│ ├── backend/ # Hono.js API for Intune App
-│ └── frontend/ # (Planned) React Native mobile application
-├── package.json
-└── turbo.json
+├── pod-back/           # Express.js API
+│   ├── src/
+│   │   ├── controllers/
+│   │   ├── models/
+│   │   ├── routers/
+│   │   └── middleware/
+│   └── package.json
+└── docs/               # Architecture and migration plans
 ```
 
-**Getting Started:**
-Soon...
+---
 
-**License:** Intune App is open source under the **MIT License**. See `./LICENSE` for details.
+## 📚 Documentation
 
-P.S. Made with ❤️ for music lovers.
+- [Architecture](./docs/ARCHITECTURE.md) - System design and patterns
+- [Development Guide](./docs/DEVELOPMENT.md) - Setup and development workflow
+- [Migration Plan](./docs/MIGRATION-PLAN.md) - Future tech stack migration
+
+---
+
+## 🎯 Roadmap
+
+See [docs/TODO.txt](./docs/TODO.txt) for the full development roadmap, including:
+
+- Monorepo migration with Turborepo
+- Mobile app with React Native (Expo)
+- Migration to Hono.js + PostgreSQL + Drizzle ORM
+- CI/CD pipeline with automated testing
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**. See [LICENSE](./LICENSE) for details.
+
+---
+
+Made with ❤️ for creators and music lovers.
