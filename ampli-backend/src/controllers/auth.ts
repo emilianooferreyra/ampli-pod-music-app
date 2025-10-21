@@ -9,7 +9,6 @@ import {
   sendVerificationMail,
 } from "@/utils/mail";
 import { JWT_SECRET, PASSWORD_RESET_LINK } from "@/utils/variables";
-import fileParser from "@/middleware/fileParser";
 import EmailVerificationToken from "@/models/emailVerificationToken";
 import PasswordResetToken from "@/models/passwordResetToken";
 import cloudinary from "@/cloud";
@@ -99,8 +98,6 @@ export const sendReVerificationToken: RequestHandler = async (req, res) => {
 export const generateForgetPasswordLink: RequestHandler = async (req, res) => {
   try {
     const { email } = req.body;
-
-    console.log("[DEBUG] Forget password request for:", email);
 
     const user = await User.findOne({ email });
 
@@ -219,25 +216,32 @@ export const updateProfile: RequestHandler = async (req, res) => {
   user.name = name;
 
   if (avatar) {
-    // if there is already an avatar file, we want to remove that
-    if (user.avatar?.publicId) {
-      await cloudinary.uploader.destroy(user.avatar?.publicId);
-    }
+    try {
+      // Delete old avatar if exists
+      if (user.avatar?.publicId) {
+        await cloudinary.uploader.destroy(user.avatar.publicId);
+      }
 
-    // upload new avatar file
-    const b64 = Buffer.from(avatar.buffer).toString("base64");
-    const dataURI = "data:" + avatar.mimetype + ";base64," + b64;
-    const { secure_url, public_id } = await cloudinary.uploader.upload(
-      dataURI,
-      {
+      const b64 = Buffer.from(avatar.buffer).toString("base64");
+      const dataURI = "data:" + avatar.mimetype + ";base64," + b64;
+
+      const uploadResult = await cloudinary.uploader.upload(dataURI, {
         width: 300,
         height: 300,
         crop: "thumb",
         gravity: "face",
-      }
-    );
+      });
 
-    user.avatar = { url: secure_url, publicId: public_id };
+      user.avatar = {
+        url: uploadResult.secure_url,
+        publicId: uploadResult.public_id,
+      };
+    } catch (error) {
+      return res.status(500).json({
+        error: "Failed to upload avatar to cloud storage",
+        details: error instanceof Error ? error.message : "Unknown error",
+      });
+    }
   }
 
   await user.save();

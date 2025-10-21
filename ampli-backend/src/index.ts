@@ -9,6 +9,7 @@ import favoriteRouter from "./routers/favorite";
 import playlistRouter from "./routers/playlist";
 import profileRouter from "./routers/profile";
 import historyRouter from "./routers/history";
+import healthRouter from "./routers/health";
 
 import { errorHandler } from "./middleware/error";
 
@@ -26,6 +27,7 @@ app.use("/favorite", favoriteRouter);
 app.use("/playlist", playlistRouter);
 app.use("/profile", profileRouter);
 app.use("/history", historyRouter);
+app.use("/health", healthRouter);
 
 app.use(errorHandler);
 

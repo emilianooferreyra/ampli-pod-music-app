@@ -1,5 +1,5 @@
 import { Router } from "express";
-import fileParser from "@/middleware/fileParser";
+import { avatarFileParser } from "@/middleware/fileParser";
 import {
   create,
   generateForgetPasswordLink,
@@ -52,7 +52,7 @@ router.post(
 router.post("/sign-in", validate(SignInValidationSchema), signIn);
 router.get("/is-auth", requireAuth, sendProfile);
 
-router.post("/update-profile", requireAuth, fileParser, updateProfile);
+router.post("/update-profile", requireAuth, avatarFileParser, updateProfile);
 router.post("/log-out", requireAuth, logOut);
 
 export default router;
