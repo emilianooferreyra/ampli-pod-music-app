@@ -26,7 +26,7 @@ export const createAudio: RequestHandler = async (
   if (!audioFile)
     return res.status(422).json({ error: "Audio file is missing!" });
 
-  const audioRes = await cloudinary.uploader.upload(
+  const cloudinaryAudioUpload = await cloudinary.uploader.upload(
     `data:${audioFile.mimetype};base64,${audioFile.buffer.toString("base64")}`,
     {
       resource_type: "video",
@@ -38,11 +38,14 @@ export const createAudio: RequestHandler = async (
     about,
     category,
     owner: ownerId,
-    file: { url: audioRes.secure_url, publicId: audioRes.public_id },
+    file: {
+      url: cloudinaryAudioUpload.secure_url,
+      publicId: cloudinaryAudioUpload.public_id,
+    },
   });
 
   if (posterFile) {
-    const posterRes = await cloudinary.uploader.upload(
+    const cloudinaryPosterUpload = await cloudinary.uploader.upload(
       `data:${posterFile.mimetype};base64,${posterFile.buffer.toString(
         "base64"
       )}`,
@@ -55,8 +58,8 @@ export const createAudio: RequestHandler = async (
     );
 
     newAudio.poster = {
-      url: posterRes.secure_url,
-      publicId: posterRes.public_id,
+      url: cloudinaryPosterUpload.secure_url,
+      publicId: cloudinaryPosterUpload.public_id,
     };
   }
 

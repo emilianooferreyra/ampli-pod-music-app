@@ -3,13 +3,13 @@ import { paginationQuery } from "@/types/misc";
 import History, { historyType } from "@/models/history";
 
 export const updateHistory: RequestHandler = async (req, res) => {
-  const oldHistory = await History.findOne({ owner: req.user.id });
+  const existingHistory = await History.findOne({ owner: req.user.id });
 
   const { audio, progress, date } = req.body;
 
   const history: historyType = { audio, progress, date };
 
-  if (!oldHistory) {
+  if (!existingHistory) {
     await History.create({
       owner: req.user.id,
       last: history,
@@ -30,7 +30,7 @@ export const updateHistory: RequestHandler = async (req, res) => {
     today.getDate() + 1
   );
 
-  const histories = await History.aggregate([
+  const todayHistories = await History.aggregate([
     { $match: { owner: req.user.id } },
     { $unwind: "$all" },
     {
@@ -49,7 +49,7 @@ export const updateHistory: RequestHandler = async (req, res) => {
     },
   ]);
 
-  const sameDayHistory = histories.find(
+  const sameDayHistory = todayHistories.find(
     ({ audioId }) => audioId.toString() === audio
   );
 
@@ -67,7 +67,7 @@ export const updateHistory: RequestHandler = async (req, res) => {
       }
     );
   } else {
-    await History.findByIdAndUpdate(oldHistory._id, {
+    await History.findByIdAndUpdate(existingHistory._id, {
       $push: { all: { $each: [history], $position: 0 } },
       $set: { last: history },
     });
@@ -84,12 +84,12 @@ export const removeHistory: RequestHandler = async (req, res) => {
     return res.json({ success: true });
   }
 
-  const histories = req.query.histories as string;
-  const ids = JSON.parse(histories) as string[];
+  const historyIds = req.query.histories as string;
+  const historyIdsToRemove = JSON.parse(historyIds) as string[];
   await History.findOneAndUpdate(
     { owner: req.user.id },
     {
-      $pull: { all: { _id: ids } },
+      $pull: { all: { _id: historyIdsToRemove } },
     }
   );
 
@@ -199,7 +199,7 @@ export const getRecentlyPlayed: RequestHandler = async (req, res) => {
 
   const unwindUser = { $unwind: "$owner" };
 
-  const projectResult = {
+  const audioProjection = {
     $project: {
       _id: 0,
       id: "$audioInfo._id",
@@ -223,7 +223,7 @@ export const getRecentlyPlayed: RequestHandler = async (req, res) => {
     unwindAudioInfo,
     userLookup,
     unwindUser,
-    projectResult,
+    audioProjection,
   ]);
 
   res.json({ audios });

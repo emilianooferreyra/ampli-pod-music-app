@@ -217,7 +217,6 @@ export const updateProfile: RequestHandler = async (req, res) => {
 
   if (avatar) {
     try {
-      // Delete old avatar if exists
       if (user.avatar?.publicId) {
         await cloudinary.uploader.destroy(user.avatar.publicId);
       }

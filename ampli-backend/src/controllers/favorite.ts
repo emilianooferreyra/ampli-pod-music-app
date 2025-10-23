@@ -17,12 +17,12 @@ export const toggleFavorite: RequestHandler = async (req, res) => {
     return res.status(404).json({ error: "Resources not found!" });
   }
 
-  const alreadyExists = await Favorite.findOne({
+  const existingFavorite = await Favorite.findOne({
     owner: req.user.id,
     items: audioId,
   });
 
-  if (alreadyExists) {
+  if (existingFavorite) {
     await Favorite.updateOne(
       { owner: req.user.id },
       {
@@ -63,14 +63,14 @@ export const toggleFavorite: RequestHandler = async (req, res) => {
 };
 
 export const getFavorites: RequestHandler = async (req, res) => {
-  const userID = req.user.id;
+  const userId = req.user.id;
   const { limit = "20", pageNumber = "0" } = req.query as paginationQuery;
 
   const favorites = await Favorite.aggregate([
-    { $match: { owner: userID } },
+    { $match: { owner: userId } },
     {
       $project: {
-        audioIds: {
+        paginatedAudioIds: {
           $slice: [
             "$items",
             parseInt(limit) * parseInt(pageNumber),
@@ -79,11 +79,11 @@ export const getFavorites: RequestHandler = async (req, res) => {
         },
       },
     },
-    { $unwind: "$audioIds" },
+    { $unwind: "$paginatedAudioIds" },
     {
       $lookup: {
         from: "audios",
-        localField: "audioIds",
+        localField: "paginatedAudioIds",
         foreignField: "_id",
         as: "audioInfo",
       },
