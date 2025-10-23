@@ -96,5 +96,13 @@ export const ReVerifyEmailSchema = z.object({
 });
 
 export const ForgetPasswordSchema = z.object({
-  email: z.string().trim().email("Invalid email format!"),
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .min(1, "Email cannot be empty")
+    .regex(
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+      "Invalid email format!"
+    ),
 });

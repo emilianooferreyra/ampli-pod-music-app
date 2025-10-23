@@ -258,11 +258,24 @@ export const logOut: RequestHandler = async (req, res) => {
 
   const token = req.token;
   const user = await User.findById(req.user.id);
-  if (!user) throw new Error("something went wrong, user not found!");
+  if (!user) {
+    return res.status(404).json({ error: "User not found!" });
+  }
 
-  if (fromAll === "yes") user.tokens = [];
-  else user.tokens = user.tokens.filter((t) => t !== token);
+  const logoutFromAll = fromAll === "yes";
+
+  if (logoutFromAll) {
+    user.tokens = [];
+  } else {
+    user.tokens = user.tokens.filter((t) => t !== token);
+  }
 
   await user.save();
-  res.json({ success: true });
+
+  res.json({
+    success: true,
+    message: logoutFromAll
+      ? "Logged out from all devices"
+      : "Logged out successfully",
+  });
 };

@@ -2,7 +2,6 @@ import "dotenv/config";
 import "./db";
 import express from "express";
 import mongoose from "mongoose";
-import path from "node:path";
 import authRouter from "./routers/auth";
 import audioRouter from "./routers/audio";
 import favoriteRouter from "./routers/favorite";

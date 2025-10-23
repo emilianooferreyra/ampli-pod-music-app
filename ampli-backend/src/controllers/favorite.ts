@@ -1,9 +1,8 @@
 import { RequestHandler } from "express";
-import { PopulateFavList } from "@/types/audio";
-import Audio, { AudioDocument } from "@/models/audio";
-import { isValidObjectId, ObjectId } from "mongoose";
-import Favorite from "@/models/favorite";
+import { isValidObjectId } from "mongoose";
 import { paginationQuery } from "../types/misc";
+import Audio from "@/models/audio";
+import Favorite from "@/models/favorite";
 
 export const toggleFavorite: RequestHandler = async (req, res) => {
   const audioId = req.query.audioId as string;

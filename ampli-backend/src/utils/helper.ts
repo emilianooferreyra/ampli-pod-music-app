@@ -37,7 +37,6 @@ export const getUsersPreviousHistory = async (
     {
       $match: {
         "all.date": {
-          // only those histories which are not older than 30 days
           $gte: subDays(new Date(), 30),
         },
       },

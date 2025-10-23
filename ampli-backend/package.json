@@ -2,11 +2,18 @@
   "name": "ampli-api",
   "version": "1.0.0",
   "description": "Ampli - Free audio platform API for creators to share podcasts, music, and audio content",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@10.16.1",
   "scripts": {
-    "dev": "tsnd --respawn -r tsconfig-paths/register --pretty --transpile-only ./src/index.ts",
+    "dev": "tsx watch --clear-screen=false ./src/index.ts",
+    "dev:inspect": "tsx watch --inspect ./src/index.ts",
     "build": "tsc && tsc-alias",
     "start": "node dist/index.js",
+    "start:prod": "NODE_ENV=production node dist/index.js",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "test": "jest",
@@ -44,17 +51,13 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
-    "@types/dotenv": "^8.2.3",
     "@types/express": "^5.0.3",
-    "@types/mongoose": "^5.11.97",
     "@types/node": "^24.6.2",
     "@types/node-cron": "^3.0.11",
     "@types/nodemailer": "^7.0.2",
     "@types/pg": "^8.15.5",
     "drizzle-kit": "^0.31.5",
-    "ts-node-dev": "^2.0.0",
     "tsc-alias": "^1.8.16",
-    "tsconfig-paths": "^4.2.0",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3"
   }

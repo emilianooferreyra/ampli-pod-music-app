@@ -12,15 +12,11 @@ export const createPlaylist: RequestHandler = async (
   req: CreatePlaylistRequest,
   res
 ) => {
-  const { title, resId, visibility } = req.body;
+  const { title, initialAudioId, visibility } = req.body;
   const ownerId = req.user.id;
 
-  // while creating playlist there can be request
-  // or user just want to create an empty playlist.
-
-  // with new playlist name and the audio that user wants to store inside that playlist
-  if (resId) {
-    const audio = await Audio.findById(resId);
+  if (initialAudioId) {
+    const audio = await Audio.findById(initialAudioId);
     if (!audio)
       return res.status(404).json({ error: "Could not found the audio!" });
   }
@@ -31,7 +27,7 @@ export const createPlaylist: RequestHandler = async (
     visibility,
   });
 
-  if (resId) newPlaylist.items = [resId as any];
+  if (initialAudioId) newPlaylist.items = [initialAudioId as any];
   await newPlaylist.save();
 
   res.status(201).json({
@@ -47,7 +43,7 @@ export const updatePlaylist: RequestHandler = async (
   req: UpdatePlaylistRequest,
   res
 ) => {
-  const { id, item, title, visibility } = req.body;
+  const { id, addAudioId, title, visibility } = req.body;
 
   const playlist = await Playlist.findOneAndUpdate(
     { _id: id, owner: req.user.id },
@@ -57,14 +53,12 @@ export const updatePlaylist: RequestHandler = async (
 
   if (!playlist) return res.status(404).json({ error: "Playlist not found !" });
 
-  if (item) {
-    const audio = await Audio.findById(item);
+  if (addAudioId) {
+    const audio = await Audio.findById(addAudioId);
     if (!audio) return res.status(404).json({ error: "Audio not found !" });
-    // playlist.items.push(audio._id);
-    // await playlist.save();
 
     await Playlist.findByIdAndUpdate(playlist._id, {
-      $addToSet: { items: item },
+      $addToSet: { items: addAudioId },
     });
   }
 
@@ -78,7 +72,7 @@ export const updatePlaylist: RequestHandler = async (
 };
 
 export const removePlaylist: RequestHandler = async (req, res) => {
-  const { playlistId, resId, all } = req.query;
+  const { playlistId, removeAudioId, all } = req.query;
 
   if (!isValidObjectId(playlistId))
     return res.status(422).json({ error: "Invalid playlist id!" });
@@ -93,8 +87,8 @@ export const removePlaylist: RequestHandler = async (req, res) => {
       return res.status(404).json({ error: "Playlist not found!" });
   }
 
-  if (resId) {
-    if (!isValidObjectId(resId))
+  if (removeAudioId) {
+    if (!isValidObjectId(removeAudioId))
       return res.status(422).json({ error: "Invalid audio id!" });
 
     const playlist = await Playlist.findOneAndUpdate(
@@ -103,7 +97,7 @@ export const removePlaylist: RequestHandler = async (req, res) => {
         owner: req.user.id,
       },
       {
-        $pull: { items: resId },
+        $pull: { items: removeAudioId },
       }
     );
 
