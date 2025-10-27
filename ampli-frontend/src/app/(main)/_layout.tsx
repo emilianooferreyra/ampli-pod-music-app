@@ -1,34 +1,56 @@
 import { Tabs } from "expo-router";
 import React from "react";
-import { Ionicons } from "@expo/vector-icons";
+import { House, Search, Compass, Settings } from "lucide-react-native";
 
 import { HapticTab } from "@/components/ui/haptic-tab";
-import { Colors } from "@/constants/theme";
-import { useColorScheme } from "@/hooks/use-color-scheme";
 
 export default function AppLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        tabBarActiveTintColor: "#FFFFFF",
+        tabBarInactiveTintColor: "#FFFFFF",
+        tabBarStyle: {
+          backgroundColor: "#232323",
+          borderTopColor: "#232323",
+        },
+
         headerShown: false,
         tabBarButton: HapticTab,
       }}
     >
       <Tabs.Screen
-        name="(home)"
+        name="index"
         options={{
-          title: "Home",
-          tabBarIcon: ({ color }) => <Ionicons name="home" size={28} color={color} />,
+          href: null,
         }}
       />
       <Tabs.Screen
-        name="(profile)"
+        name="(home)"
         options={{
-          title: "Profile",
-          tabBarIcon: ({ color }) => <Ionicons name="person" size={28} color={color} />,
+          title: "Home",
+          tabBarIcon: ({ color }) => <House size={28} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="(search)"
+        options={{
+          title: "Search",
+          tabBarIcon: ({ color }) => <Search size={28} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="(explore)"
+        options={{
+          title: "Explore",
+          tabBarIcon: ({ color }) => <Compass size={28} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="(settings)"
+        options={{
+          title: "Settings",
+          tabBarIcon: ({ color }) => <Settings size={28} color={color} />,
         }}
       />
     </Tabs>

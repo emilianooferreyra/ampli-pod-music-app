@@ -12,7 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import type { SvgProps } from "react-native-svg";
 
-import Logo from "@assets/Logo.svg";
+import AmpliLogo from "@assets/ampli-logo-white.svg";
 import Onboarding1 from "@assets/onboarding-1.svg";
 import Onboarding2 from "@assets/onboarding-2.svg";
 
@@ -112,8 +112,7 @@ export default function OnboardingScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <View style={styles.logoContainer}>
-          <Logo />
-          <Text style={styles.logoText}>Ampli</Text>
+          <AmpliLogo width={120} height={40} />
         </View>
 
         <View style={styles.skipButtonContainer}>
@@ -172,7 +171,7 @@ export default function OnboardingScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000000",
+    backgroundColor: "#232323",
   },
   header: {
     flexDirection: "row",

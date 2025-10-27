@@ -1,57 +1,321 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { Link } from "expo-router";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Bell } from "lucide-react-native";
+import { getGreetingByTime } from "@/lib/time";
+
+// Temporary placeholder data
+const moodChips = [
+  {
+    id: "1",
+    title: "Japanese Street Pop 00s",
+    image: "https://picsum.photos/80/80?random=1",
+  },
+  {
+    id: "2",
+    title: "Throwback Rock Music 90s",
+    image: "https://picsum.photos/80/80?random=2",
+  },
+];
+
+const hitsMusic = [
+  {
+    id: "1",
+    title: "Indonesia Hot Hits",
+    image: "https://picsum.photos/200/200?random=3",
+    color: "#E74C3C",
+  },
+  {
+    id: "2",
+    title: "Soft Pop Hits",
+    image: "https://picsum.photos/200/200?random=4",
+    color: "#6C3EDB",
+  },
+  {
+    id: "3",
+    title: "Anime Hot",
+    image: "https://picsum.photos/200/200?random=5",
+    color: "#E91E63",
+  },
+];
+
+const moodbooster = [
+  { id: "1", image: "https://picsum.photos/200/200?random=6" },
+  { id: "2", image: "https://picsum.photos/200/200?random=7" },
+  { id: "3", image: "https://picsum.photos/200/200?random=8" },
+];
 
 export default function HomeScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Home Screen</Text>
-      <Text style={styles.paragraph}>Welcome to Ampli Pod Music App</Text>
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.greeting}>{getGreetingByTime()}</Text>
+          <View style={styles.headerRight}>
+            <TouchableOpacity style={styles.iconButton}>
+              <Bell size={24} color="#FFFFFF" />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.profileButton}>
+              <Image
+                source={{ uri: "https://picsum.photos/40/40" }}
+                style={styles.profileImage}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
 
-      <Link href="/public-profile/123" asChild>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>View Public Profile Example</Text>
-        </TouchableOpacity>
-      </Link>
+        {/* Mood Chips */}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.moodChipsScroll}
+        >
+          {moodChips.map((chip) => (
+            <TouchableOpacity key={chip.id} style={styles.moodChip}>
+              <Image
+                source={{ uri: chip.image }}
+                style={styles.moodChipImage}
+              />
+              <Text style={styles.moodChipText} numberOfLines={2}>
+                {chip.title}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
 
-      <Link href="/profile" asChild>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Go to Your Profile</Text>
+        {/* Playlist Banner */}
+        <TouchableOpacity style={styles.playlistBanner}>
+          <Image
+            source={{ uri: "https://picsum.photos/100/100?random=9" }}
+            style={styles.bannerImage}
+          />
+          <View style={styles.bannerContent}>
+            <Text style={styles.bannerText}>
+              Playlist music that accompanies you on the way home
+            </Text>
+          </View>
         </TouchableOpacity>
-      </Link>
-    </View>
+
+        {/* Hits Music Section */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Hits Music 🎹</Text>
+            <TouchableOpacity>
+              <Text style={styles.seeAll}>See all</Text>
+            </TouchableOpacity>
+          </View>
+
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.hitsScroll}
+          >
+            {hitsMusic.map((item) => (
+              <TouchableOpacity key={item.id} style={styles.hitCard}>
+                <View
+                  style={[
+                    styles.hitImageContainer,
+                    { backgroundColor: item.color },
+                  ]}
+                >
+                  <Image source={{ uri: item.image }} style={styles.hitImage} />
+                </View>
+                <Text style={styles.hitTitle}>{item.title}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+
+        {/* Moodbooster Section */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Moodbooster 🔥</Text>
+            <TouchableOpacity>
+              <Text style={styles.seeAll}>See all</Text>
+            </TouchableOpacity>
+          </View>
+
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.moodboosterScroll}
+          >
+            {moodbooster.map((item) => (
+              <TouchableOpacity key={item.id} style={styles.moodboosterCard}>
+                <Image
+                  source={{ uri: item.image }}
+                  style={styles.moodboosterImage}
+                />
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 16,
-    gap: 16,
-    backgroundColor: "#000000",
+    backgroundColor: "#232323",
   },
-  title: {
-    fontSize: 32,
+  scrollContent: {
+    paddingBottom: 40,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+  },
+  greeting: {
+    fontSize: 24,
     fontWeight: "bold",
     color: "#FFFFFF",
   },
-  paragraph: {
-    textAlign: "center",
-    fontSize: 16,
-    color: "#A0A0A0",
-  },
-  button: {
-    backgroundColor: "#B794F6",
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-    minWidth: 200,
+  headerRight: {
+    flexDirection: "row",
     alignItems: "center",
+    gap: 12,
   },
-  buttonText: {
-    color: "#000000",
-    fontSize: 16,
+  iconButton: {
+    padding: 4,
+  },
+  profileButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    overflow: "hidden",
+  },
+  profileImage: {
+    width: 40,
+    height: 40,
+  },
+  moodChipsScroll: {
+    paddingHorizontal: 16,
+    gap: 12,
+    marginBottom: 20,
+  },
+  moodChip: {
+    backgroundColor: "#2A2A2A",
+    borderRadius: 4,
+    padding: 0,
+    paddingLeft: 0,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    width: 250,
+    overflow: "hidden",
+  },
+  moodChipImage: {
+    width: 65,
+    height: 65,
+  },
+  moodChipText: {
+    color: "#FFFFFF",
+    fontSize: 14,
     fontWeight: "600",
+    flex: 1,
+    lineHeight: 18,
+  },
+  playlistBanner: {
+    flexDirection: "row",
+    backgroundColor: "#2952E8",
+    marginHorizontal: 14,
+    marginLeft: 80,
+    borderRadius: 4,
+    alignItems: "center",
+    marginTop: 18,
+    marginBottom: 54,
+    height: 80,
+    padding: 6,
+  },
+  bannerImage: {
+    width: 90,
+    height: 110,
+    borderRadius: 2,
+    marginLeft: -60,
+    transform: [{ rotate: "6deg" }],
+  },
+  bannerContent: {
+    flex: 1,
+    marginLeft: 12,
+    marginRight: 8,
+    justifyContent: "center",
+  },
+  bannerText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "700",
+    lineHeight: 22,
+  },
+  bannerMenu: {
+    padding: 8,
+  },
+  section: {
+    marginBottom: 32,
+  },
+  sectionHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#FFFFFF",
+  },
+  seeAll: {
+    fontSize: 14,
+    color: "#999",
+    fontWeight: "500",
+  },
+  hitsScroll: {
+    paddingHorizontal: 16,
+    gap: 16,
+  },
+  hitCard: {
+    width: 150,
+  },
+  hitImageContainer: {
+    width: 150,
+    height: 150,
+    borderRadius: 4,
+    overflow: "hidden",
+    marginBottom: 8,
+  },
+  hitImage: {
+    width: "100%",
+    height: "100%",
+  },
+  hitTitle: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#FFFFFF",
+  },
+  moodboosterScroll: {
+    paddingHorizontal: 16,
+    gap: 16,
+  },
+  moodboosterCard: {
+    width: 150,
+    height: 150,
+    borderRadius: 4,
+    overflow: "hidden",
+  },
+  moodboosterImage: {
+    width: "100%",
+    height: "100%",
   },
 });

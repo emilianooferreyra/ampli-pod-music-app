@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter, Link } from "expo-router";
-import Logo from "@assets/Logo.svg";
+import AmpliLogo from "@assets/ampli-logo-white.svg";
 
 const SignUp = () => {
   const router = useRouter();
@@ -40,8 +40,7 @@ const SignUp = () => {
           {/* Header */}
           <View style={styles.header}>
             <View style={styles.logoContainer}>
-              <Logo width={40} height={40} />
-              <Text style={styles.logoText}>Ampli</Text>
+              <AmpliLogo width={120} height={40} />
             </View>
           </View>
 
@@ -145,7 +144,7 @@ const SignUp = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000000",
+    backgroundColor: "#232323",
   },
   keyboardView: {
     flex: 1,

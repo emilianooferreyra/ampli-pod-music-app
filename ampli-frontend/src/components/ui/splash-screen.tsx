@@ -1,10 +1,10 @@
 import { View, StyleSheet } from "react-native";
-import SplashLogo from "@assets/SplashLogo.svg";
+import AmpliIcon from "@assets/ampli-app-icon.svg";
 
 const SplashScreen = () => {
   return (
     <View style={styles.container}>
-      <SplashLogo />
+      <AmpliIcon width={100} height={100} />
     </View>
   );
 };
