@@ -15,6 +15,7 @@ import type { SvgProps } from "react-native-svg";
 import AmpliLogo from "@assets/ampli-logo-white.svg";
 import Onboarding1 from "@assets/onboarding-1.svg";
 import Onboarding2 from "@assets/onboarding-2.svg";
+import colors from "@/constants/colors";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
@@ -146,7 +147,8 @@ export default function OnboardingScreen() {
             style={[
               styles.dot,
               {
-                backgroundColor: index === currentIndex ? "#B794F6" : "#4A4A4A",
+                backgroundColor:
+                  index === currentIndex ? colors.WHITE : colors.GRAY_700,
               },
             ]}
           />
@@ -265,9 +267,9 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
   },
   button: {
-    backgroundColor: "#B794F6",
+    backgroundColor: colors.WHITE,
     paddingVertical: 18,
-    borderRadius: 12,
+    borderRadius: 28,
     alignItems: "center",
   },
   buttonText: {

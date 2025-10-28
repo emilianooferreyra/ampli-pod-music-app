@@ -243,8 +243,8 @@ const styles = StyleSheet.create({
     width: 90,
     height: 110,
     borderRadius: 2,
-    marginLeft: -60,
-    transform: [{ rotate: "6deg" }],
+    marginLeft: -65,
+    transform: [{ rotate: "4deg" }],
   },
   bannerContent: {
     flex: 1,

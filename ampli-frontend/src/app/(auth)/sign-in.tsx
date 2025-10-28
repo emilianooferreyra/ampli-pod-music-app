@@ -12,6 +12,8 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter, Link } from "expo-router";
 import AmpliLogo from "@assets/ampli-logo-white.svg";
+import { Globe, Apple } from "lucide-react-native";
+import colors from "@/constants/colors";
 
 const SignIn = () => {
   const router = useRouter();
@@ -35,14 +37,12 @@ const SignIn = () => {
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
         >
-          {/* Header */}
           <View style={styles.header}>
             <View style={styles.logoContainer}>
               <AmpliLogo width={120} height={40} />
             </View>
           </View>
 
-          {/* Title */}
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Welcome Back</Text>
             <Text style={styles.subtitle}>
@@ -50,13 +50,11 @@ const SignIn = () => {
             </Text>
           </View>
 
-          {/* Form */}
           <View style={styles.form}>
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Email</Text>
               <TextInput
                 style={styles.input}
-                placeholder="Enter your email"
+                placeholder="Email"
                 placeholderTextColor="#666"
                 value={email}
                 onChangeText={setEmail}
@@ -66,20 +64,19 @@ const SignIn = () => {
             </View>
 
             <View style={styles.inputContainer}>
-              <View style={styles.labelRow}>
-                <Text style={styles.label}>Password</Text>
-                <TouchableOpacity>
-                  <Text style={styles.forgotPassword}>Forgot Password?</Text>
-                </TouchableOpacity>
-              </View>
               <TextInput
                 style={styles.input}
-                placeholder="Enter your password"
+                placeholder="Password"
                 placeholderTextColor="#666"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
               />
+              <View style={styles.labelRow}>
+                <TouchableOpacity>
+                  <Text style={styles.forgotPassword}>Forgot Password?</Text>
+                </TouchableOpacity>
+              </View>
             </View>
 
             <TouchableOpacity
@@ -90,22 +87,17 @@ const SignIn = () => {
               <Text style={styles.signInButtonText}>Sign In</Text>
             </TouchableOpacity>
 
-            <View style={styles.divider}>
-              <View style={styles.dividerLine} />
-              <Text style={styles.dividerText}>or</Text>
-              <View style={styles.dividerLine} />
-            </View>
-
             <TouchableOpacity style={styles.socialButton} activeOpacity={0.8}>
+              <Globe size={20} color={colors.BLACK} />
               <Text style={styles.socialButtonText}>Continue with Google</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.socialButton} activeOpacity={0.8}>
+              <Apple size={20} color={colors.BLACK} />
               <Text style={styles.socialButtonText}>Continue with Apple</Text>
             </TouchableOpacity>
           </View>
 
-          {/* Sign Up Link */}
           <View style={styles.footer}>
             <Text style={styles.footerText}>Don&apos;t have an account? </Text>
             <Link href="/sign-up" asChild>
@@ -157,7 +149,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 16,
-    color: "#A0A0A0",
+    color: colors.TEXT_SECONDARY,
     lineHeight: 24,
   },
   form: {
@@ -174,27 +166,27 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: "500",
-    color: "#FFFFFF",
+    color: colors.WHITE,
   },
   forgotPassword: {
     fontSize: 14,
-    color: "#B794F6",
+    color: colors.TEXT_SECONDARY,
     fontWeight: "500",
   },
   input: {
     backgroundColor: "#1A1A1A",
     borderWidth: 1,
     borderColor: "#2A2A2A",
-    borderRadius: 12,
+    borderRadius: 4,
     paddingHorizontal: 16,
-    paddingVertical: 14,
+    paddingVertical: 16,
     fontSize: 16,
     color: "#FFFFFF",
   },
   signInButton: {
-    backgroundColor: "#B794F6",
+    backgroundColor: colors.WHITE,
     paddingVertical: 16,
-    borderRadius: 12,
+    borderRadius: 24,
     alignItems: "center",
     marginTop: 8,
   },
@@ -203,31 +195,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
   },
-  divider: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-    marginVertical: 8,
-  },
-  dividerLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: "#2A2A2A",
-  },
-  dividerText: {
-    color: "#666",
-    fontSize: 14,
-  },
+
   socialButton: {
-    backgroundColor: "#1A1A1A",
+    backgroundColor: "#FFFF",
     borderWidth: 1,
     borderColor: "#2A2A2A",
     paddingVertical: 14,
-    borderRadius: 12,
+    borderRadius: 24,
     alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 8,
   },
   socialButtonText: {
-    color: "#FFFFFF",
+    color: colors.BLACK,
     fontSize: 16,
     fontWeight: "500",
   },
@@ -243,9 +224,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   signUpLink: {
-    color: "#B794F6",
+    color: colors.WHITE,
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: "bold",
   },
 });
 

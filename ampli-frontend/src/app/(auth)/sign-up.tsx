@@ -12,6 +12,8 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter, Link } from "expo-router";
 import AmpliLogo from "@assets/ampli-logo-white.svg";
+import { Globe, Apple } from "lucide-react-native";
+import colors from "@/constants/colors";
 
 const SignUp = () => {
   const router = useRouter();
@@ -37,14 +39,12 @@ const SignUp = () => {
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
         >
-          {/* Header */}
           <View style={styles.header}>
             <View style={styles.logoContainer}>
               <AmpliLogo width={120} height={40} />
             </View>
           </View>
 
-          {/* Title */}
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Create Account</Text>
             <Text style={styles.subtitle}>
@@ -52,13 +52,11 @@ const SignUp = () => {
             </Text>
           </View>
 
-          {/* Form */}
           <View style={styles.form}>
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Full Name</Text>
               <TextInput
                 style={styles.input}
-                placeholder="Enter your name"
+                placeholder="Full Name"
                 placeholderTextColor="#666"
                 value={name}
                 onChangeText={setName}
@@ -67,10 +65,9 @@ const SignUp = () => {
             </View>
 
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Email</Text>
               <TextInput
                 style={styles.input}
-                placeholder="Enter your email"
+                placeholder="Email"
                 placeholderTextColor="#666"
                 value={email}
                 onChangeText={setEmail}
@@ -80,10 +77,9 @@ const SignUp = () => {
             </View>
 
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Password</Text>
               <TextInput
                 style={styles.input}
-                placeholder="Create a password"
+                placeholder="Password"
                 placeholderTextColor="#666"
                 value={password}
                 onChangeText={setPassword}
@@ -92,10 +88,9 @@ const SignUp = () => {
             </View>
 
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Confirm Password</Text>
               <TextInput
                 style={styles.input}
-                placeholder="Confirm your password"
+                placeholder="Confirm Password"
                 placeholderTextColor="#666"
                 value={confirmPassword}
                 onChangeText={setConfirmPassword}
@@ -111,22 +106,17 @@ const SignUp = () => {
               <Text style={styles.signUpButtonText}>Sign Up</Text>
             </TouchableOpacity>
 
-            <View style={styles.divider}>
-              <View style={styles.dividerLine} />
-              <Text style={styles.dividerText}>or</Text>
-              <View style={styles.dividerLine} />
-            </View>
-
             <TouchableOpacity style={styles.socialButton} activeOpacity={0.8}>
+              <Globe size={20} color={colors.BLACK} />
               <Text style={styles.socialButtonText}>Continue with Google</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.socialButton} activeOpacity={0.8}>
+              <Apple size={20} color={colors.BLACK} />
               <Text style={styles.socialButtonText}>Continue with Apple</Text>
             </TouchableOpacity>
           </View>
 
-          {/* Sign In Link */}
           <View style={styles.footer}>
             <Text style={styles.footerText}>Already have an account? </Text>
             <Link href="/sign-in" asChild>
@@ -196,16 +186,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#1A1A1A",
     borderWidth: 1,
     borderColor: "#2A2A2A",
-    borderRadius: 12,
+    borderRadius: 4,
     paddingHorizontal: 16,
     paddingVertical: 14,
     fontSize: 16,
     color: "#FFFFFF",
   },
   signUpButton: {
-    backgroundColor: "#B794F6",
+    backgroundColor: colors.WHITE,
     paddingVertical: 16,
-    borderRadius: 12,
+    borderRadius: 24,
     alignItems: "center",
     marginTop: 8,
   },
@@ -214,31 +204,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
   },
-  divider: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-    marginVertical: 8,
-  },
-  dividerLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: "#2A2A2A",
-  },
-  dividerText: {
-    color: "#666",
-    fontSize: 14,
-  },
+
   socialButton: {
-    backgroundColor: "#1A1A1A",
+    backgroundColor: colors.WHITE,
     borderWidth: 1,
     borderColor: "#2A2A2A",
     paddingVertical: 14,
-    borderRadius: 12,
+    borderRadius: 24,
     alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 8,
   },
   socialButtonText: {
-    color: "#FFFFFF",
+    color: colors.BLACK,
     fontSize: 16,
     fontWeight: "500",
   },
