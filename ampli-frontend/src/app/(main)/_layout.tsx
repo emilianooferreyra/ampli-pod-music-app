@@ -1,58 +1,37 @@
 import React from "react";
-import { Tabs } from "expo-router";
-import { House, Search, Compass, Settings } from "lucide-react-native";
+import { Drawer } from "expo-router/drawer";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-import { HapticTab } from "@/components/ui/haptic-tab";
+import { CustomDrawerContent } from "@/components/ui/custom-drawer-content";
 
-export default function AppLayout() {
+export default function MainLayout() {
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: "#FFFFFF",
-        tabBarInactiveTintColor: "#FFFFFF",
-        tabBarStyle: {
-          backgroundColor: "#232323",
-          borderTopColor: "#232323",
-        },
-
-        headerShown: false,
-        tabBarButton: HapticTab,
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          href: null,
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Drawer
+        drawerContent={CustomDrawerContent}
+        screenOptions={{
+          drawerActiveTintColor: "#FF6B35",
+          drawerInactiveTintColor: "#999",
+          drawerStyle: {
+            backgroundColor: "#1a1a1a",
+            width: "90%",
+          },
+          drawerLabelStyle: {
+            fontSize: 14,
+            fontWeight: "500",
+            marginLeft: -12,
+          },
+          headerShown: false,
         }}
-      />
-      <Tabs.Screen
-        name="(home)"
-        options={{
-          title: "Home",
-          tabBarIcon: ({ color }) => <House size={28} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="(search)"
-        options={{
-          title: "Search",
-          tabBarIcon: ({ color }) => <Search size={28} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="(explore)"
-        options={{
-          title: "Explore",
-          tabBarIcon: ({ color }) => <Compass size={28} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="(settings)"
-        options={{
-          title: "Settings",
-          tabBarIcon: ({ color }) => <Settings size={28} color={color} />,
-        }}
-      />
-    </Tabs>
+      >
+        <Drawer.Screen
+          name="(drawer)"
+          options={{
+            drawerLabel: "App",
+            drawerItemStyle: { display: "none" },
+          }}
+        />
+      </Drawer>
+    </GestureHandlerRootView>
   );
 }

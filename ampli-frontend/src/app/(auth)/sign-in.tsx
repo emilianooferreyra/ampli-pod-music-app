@@ -12,11 +12,11 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter, Link } from "expo-router";
 import { Controller } from "react-hook-form";
-import AmpliLogo from "@assets/ampli-logo-white.svg";
 import { Globe, Apple } from "lucide-react-native";
 import { useSignInForm } from "@/hooks/useAuthForm";
 import { useAuth } from "@/hooks/useAuth";
 import colors from "@/constants/colors";
+import AmpliLogo from "@assets/ampli-logo-white.svg";
 
 const SignIn = () => {
   const router = useRouter();
@@ -31,8 +31,9 @@ const SignIn = () => {
 
   const onSubmit = handleSubmit(async (data) => {
     const response = await signIn(data);
+
     if (response.success) {
-      router.replace("/(main)/(home)");
+      router.replace("/(main)/(drawer)/(home)");
     }
   });
 

@@ -42,15 +42,15 @@ const browseCategories = [
 ];
 
 const newReleases = [
-  { id: "1", title: "Midnight Jazz", subtitle: "The Quartet", image: "https://picsum.photos/100/100?random=10" },
-  { id: "2", title: "Electric Dreams", subtitle: "Synth Wave", image: "https://picsum.photos/100/100?random=11" },
-  { id: "3", title: "Indie Vibes", subtitle: "Alt Rock", image: "https://picsum.photos/100/100?random=12" },
+  { id: "1", title: "Midnight Jazz", subtitle: "The Quartet", color: "#6C3EDB" },
+  { id: "2", title: "Electric Dreams", subtitle: "Synth Wave", color: "#FF6B35" },
+  { id: "3", title: "Indie Vibes", subtitle: "Alt Rock", color: "#E91E63" },
 ];
 
 const charts = [
-  { id: "1", title: "Global Top 50", rank: "🔥", image: "https://picsum.photos/100/100?random=13" },
-  { id: "2", title: "Pop Rising", rank: "📈", image: "https://picsum.photos/100/100?random=14" },
-  { id: "3", title: "Hip Hop Heat", rank: "🎤", image: "https://picsum.photos/100/100?random=15" },
+  { id: "1", title: "Global Top 50", rank: "🔥", color: "#E74C3C" },
+  { id: "2", title: "Pop Rising", rank: "📈", color: "#4ECDC4" },
+  { id: "3", title: "Hip Hop Heat", rank: "🎤", color: "#A78BFA" },
 ];
 
 export default function SearchScreen() {
@@ -102,9 +102,8 @@ export default function SearchScreen() {
           >
             {newReleases.map((item) => (
               <TouchableOpacity key={item.id} style={styles.itemCard}>
-                <Image
-                  source={{ uri: item.image }}
-                  style={styles.itemImage}
+                <View
+                  style={[styles.itemImage, { backgroundColor: item.color }]}
                 />
                 <Text style={styles.itemTitle}>{item.title}</Text>
                 <Text style={styles.itemSubtitle}>{item.subtitle}</Text>
@@ -129,9 +128,8 @@ export default function SearchScreen() {
           >
             {charts.map((item) => (
               <TouchableOpacity key={item.id} style={styles.itemCard}>
-                <Image
-                  source={{ uri: item.image }}
-                  style={styles.itemImage}
+                <View
+                  style={[styles.itemImage, { backgroundColor: item.color }]}
                 />
                 <Text style={styles.itemTitle}>{item.title}</Text>
                 <Text style={styles.itemSubtitle}>{item.rank}</Text>

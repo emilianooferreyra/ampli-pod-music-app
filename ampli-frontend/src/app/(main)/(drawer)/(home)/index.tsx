@@ -4,23 +4,23 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
+import type { DrawerNavigationProp } from "@react-navigation/drawer";
 import { Bell } from "lucide-react-native";
-import { getGreetingByTime } from "@/lib/time";
 
 // Temporary placeholder data
 const moodChips = [
   {
     id: "1",
     title: "Japanese Street Pop 00s",
-    image: "https://picsum.photos/80/80?random=1",
+    color: "#FF6B35",
   },
   {
     id: "2",
     title: "Throwback Rock Music 90s",
-    image: "https://picsum.photos/80/80?random=2",
+    color: "#6C3EDB",
   },
 ];
 
@@ -28,45 +28,50 @@ const hitsMusic = [
   {
     id: "1",
     title: "Indonesia Hot Hits",
-    image: "https://picsum.photos/200/200?random=3",
     color: "#E74C3C",
   },
   {
     id: "2",
     title: "Soft Pop Hits",
-    image: "https://picsum.photos/200/200?random=4",
     color: "#6C3EDB",
   },
   {
     id: "3",
     title: "Anime Hot",
-    image: "https://picsum.photos/200/200?random=5",
     color: "#E91E63",
   },
 ];
 
 const moodbooster = [
-  { id: "1", image: "https://picsum.photos/200/200?random=6" },
-  { id: "2", image: "https://picsum.photos/200/200?random=7" },
-  { id: "3", image: "https://picsum.photos/200/200?random=8" },
+  { id: "1", color: "#FF6B35" },
+  { id: "2", color: "#6C3EDB" },
+  { id: "3", color: "#E91E63" },
 ];
 
 export default function HomeScreen() {
+  const navigation = useNavigation<DrawerNavigationProp<any>>();
+
+  const handleProfilePress = () => {
+    navigation.openDrawer();
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.greeting}>{getGreetingByTime()}</Text>
+          <Text style={styles.greeting}>Good morning moods</Text>
           <View style={styles.headerRight}>
             <TouchableOpacity style={styles.iconButton}>
               <Bell size={24} color="#FFFFFF" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.profileButton}>
-              <Image
-                source={{ uri: "https://picsum.photos/40/40" }}
-                style={styles.profileImage}
-              />
+            <TouchableOpacity
+              style={[styles.profileButton, { backgroundColor: "#FF6B35" }]}
+              onPress={handleProfilePress}
+            >
+              <Text style={{ color: "#FFF", fontSize: 18, fontWeight: "700" }}>
+                E
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -79,9 +84,8 @@ export default function HomeScreen() {
         >
           {moodChips.map((chip) => (
             <TouchableOpacity key={chip.id} style={styles.moodChip}>
-              <Image
-                source={{ uri: chip.image }}
-                style={styles.moodChipImage}
+              <View
+                style={[styles.moodChipImage, { backgroundColor: chip.color }]}
               />
               <Text style={styles.moodChipText} numberOfLines={2}>
                 {chip.title}
@@ -92,10 +96,7 @@ export default function HomeScreen() {
 
         {/* Playlist Banner */}
         <TouchableOpacity style={styles.playlistBanner}>
-          <Image
-            source={{ uri: "https://picsum.photos/100/100?random=9" }}
-            style={styles.bannerImage}
-          />
+          <View style={[styles.bannerImage, { backgroundColor: "#FF6B35" }]} />
           <View style={styles.bannerContent}>
             <Text style={styles.bannerText}>
               Playlist music that accompanies you on the way home
@@ -124,9 +125,7 @@ export default function HomeScreen() {
                     styles.hitImageContainer,
                     { backgroundColor: item.color },
                   ]}
-                >
-                  <Image source={{ uri: item.image }} style={styles.hitImage} />
-                </View>
+                />
                 <Text style={styles.hitTitle}>{item.title}</Text>
               </TouchableOpacity>
             ))}
@@ -149,9 +148,11 @@ export default function HomeScreen() {
           >
             {moodbooster.map((item) => (
               <TouchableOpacity key={item.id} style={styles.moodboosterCard}>
-                <Image
-                  source={{ uri: item.image }}
-                  style={styles.moodboosterImage}
+                <View
+                  style={[
+                    styles.moodboosterImage,
+                    { backgroundColor: item.color },
+                  ]}
                 />
               </TouchableOpacity>
             ))}
@@ -195,6 +196,8 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     overflow: "hidden",
+    justifyContent: "center",
+    alignItems: "center",
   },
   profileImage: {
     width: 40,

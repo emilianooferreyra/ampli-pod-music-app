@@ -16,19 +16,19 @@ const trendingPodcasts = [
     id: "1",
     title: "ON PURPOSE",
     subtitle: "with Jay Shetty",
-    image: "https://picsum.photos/200/300?random=1",
+    color: "#FF6B35",
   },
   {
     id: "2",
     title: "Heal your Heartbreak",
     subtitle: "with Alex Brusk by Renée",
-    image: "https://picsum.photos/200/300?random=2",
+    color: "#6C3EDB",
   },
   {
     id: "3",
     title: "Mindvalley Podcast",
     subtitle: "Mindvalley",
-    image: "https://picsum.photos/200/300?random=3",
+    color: "#E91E63",
   },
 ];
 
@@ -71,9 +71,8 @@ export default function ExploreScreen() {
           >
             {trendingPodcasts.map((podcast) => (
               <TouchableOpacity key={podcast.id} style={styles.podcastCard}>
-                <Image
-                  source={{ uri: podcast.image }}
-                  style={styles.podcastImage}
+                <View
+                  style={[styles.podcastImage, { backgroundColor: podcast.color }]}
                 />
                 <View style={styles.podcastInfo}>
                   <Text style={styles.podcastTitle}>{podcast.title}</Text>

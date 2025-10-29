@@ -12,11 +12,11 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter, Link } from "expo-router";
 import { Controller } from "react-hook-form";
-import AmpliLogo from "@assets/ampli-logo-white.svg";
 import { Globe, Apple } from "lucide-react-native";
 import { useSignUpForm } from "@/hooks/useAuthForm";
 import { useAuth } from "@/hooks/useAuth";
 import colors from "@/constants/colors";
+import AmpliLogo from "@assets/ampli-logo-white.svg";
 
 const SignUp = () => {
   const router = useRouter();
@@ -25,7 +25,6 @@ const SignUp = () => {
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
-    watch,
   } = useSignUpForm();
 
   const { error: apiError } = useAuth();
@@ -33,8 +32,8 @@ const SignUp = () => {
   const onSubmit = handleSubmit(async (data) => {
     const response = await signUp(data);
     if (response.success) {
-      // Navegar a la pantalla de verificación de email
       const userId = response.data?.user?.id;
+
       if (userId) {
         router.push(`/(auth)/verify-email?userId=${userId}`);
       }
@@ -151,12 +150,13 @@ const SignUp = () => {
               )}
             </View>
 
-            {apiError && (
-              <Text style={styles.apiErrorText}>{apiError}</Text>
-            )}
+            {apiError && <Text style={styles.apiErrorText}>{apiError}</Text>}
 
             <TouchableOpacity
-              style={[styles.signUpButton, isSubmitting && styles.signUpButtonDisabled]}
+              style={[
+                styles.signUpButton,
+                isSubmitting && styles.signUpButtonDisabled,
+              ]}
               onPress={onSubmit}
               activeOpacity={0.8}
               disabled={isSubmitting}
