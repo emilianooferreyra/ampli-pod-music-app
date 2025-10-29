@@ -18,6 +18,7 @@ import {
 import "react-native-reanimated";
 import * as SplashScreen from "expo-splash-screen";
 import CustomSplashScreen from "@/components/ui/splash-screen";
+import { AppNotification } from "@/components/ui/app-notification";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -42,7 +43,12 @@ function RootLayoutNav() {
     return <CustomSplashScreen />;
   }
 
-  return <Slot />;
+  return (
+    <>
+      <Slot />
+      <AppNotification />
+    </>
+  );
 }
 
 export default function RootLayout() {

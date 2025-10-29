@@ -4,7 +4,6 @@
     "slug": "ampli-frontend",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/ampli-app-icon.svg",
     "scheme": "amplifrontend",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -12,31 +11,11 @@
       "supportsTablet": true
     },
     "android": {
-      "adaptiveIcon": {
-        "backgroundColor": "#232323",
-        "foregroundImage": "./assets/ampli-app-icon.svg"
-      },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false
     },
-    "web": {
-      "output": "static",
-      "favicon": "./assets/ampli-app-icon.svg"
-    },
     "plugins": [
-      "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "image": "./assets/ampli-logo-white.svg",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#B794F6",
-          "dark": {
-            "backgroundColor": "#B794F6"
-          }
-        }
-      ]
+      "expo-router"
     ],
     "experiments": {
       "typedRoutes": true,

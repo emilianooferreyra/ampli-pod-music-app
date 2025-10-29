@@ -1,10 +1,10 @@
-import { View, StyleSheet } from "react-native";
-import AmpliIcon from "@assets/ampli-app-icon.svg";
+import { View, StyleSheet, Text } from "react-native";
+import colors from "@/constants/colors";
 
 const SplashScreen = () => {
   return (
     <View style={styles.container}>
-      <AmpliIcon width={100} height={100} />
+      <Text style={styles.text}>Ampli</Text>
     </View>
   );
 };
@@ -16,6 +16,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#ffff",
+    backgroundColor: colors.BACKGROUND,
+  },
+  text: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: colors.ACCENT,
   },
 });

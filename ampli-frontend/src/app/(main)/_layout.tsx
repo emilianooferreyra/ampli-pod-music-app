@@ -1,5 +1,5 @@
-import { Tabs } from "expo-router";
 import React from "react";
+import { Tabs } from "expo-router";
 import { House, Search, Compass, Settings } from "lucide-react-native";
 
 import { HapticTab } from "@/components/ui/haptic-tab";

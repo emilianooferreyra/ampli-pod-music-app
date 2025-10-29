@@ -25,20 +25,15 @@ export default function SettingsScreen() {
   const [autoplay, setAutoplay] = useState(false);
 
   const handleLogout = () => {
-    // TODO: Implement logout logic
-    console.log("Logging out...");
     router.replace("/(auth)/sign-in");
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        {/* Header */}
         <Text style={styles.header}></Text>
 
-        {/* Settings Options */}
         <View style={styles.section}>
-          {/* Your Account */}
           <TouchableOpacity style={styles.option}>
             <View style={styles.optionLeft}>
               <User size={24} color="#FFFFFF" />
@@ -47,7 +42,6 @@ export default function SettingsScreen() {
             <ChevronRight size={24} color="#FFFFFF" />
           </TouchableOpacity>
 
-          {/* Notifications */}
           <TouchableOpacity style={styles.option}>
             <View style={styles.optionLeft}>
               <Bell size={24} color="#FFFFFF" />
@@ -56,7 +50,6 @@ export default function SettingsScreen() {
             <ChevronRight size={24} color="#FFFFFF" />
           </TouchableOpacity>
 
-          {/* Audio Quality */}
           <TouchableOpacity style={styles.option}>
             <View style={styles.optionLeft}>
               <Music2 size={24} color="#FFFFFF" />
@@ -68,7 +61,6 @@ export default function SettingsScreen() {
             <ChevronRight size={24} color="#FFFFFF" />
           </TouchableOpacity>
 
-          {/* Auto Downloading */}
           <View style={styles.option}>
             <View style={styles.optionLeft}>
               <Download size={24} color="#FFFFFF" />
@@ -82,7 +74,6 @@ export default function SettingsScreen() {
             />
           </View>
 
-          {/* Autoplay */}
           <View style={styles.option}>
             <View style={styles.optionLeft}>
               <Play size={24} color="#FFFFFF" />
@@ -97,7 +88,6 @@ export default function SettingsScreen() {
           </View>
         </View>
 
-        {/* Log Out */}
         <View style={styles.section}>
           <TouchableOpacity style={styles.option} onPress={handleLogout}>
             <View style={styles.optionLeft}>

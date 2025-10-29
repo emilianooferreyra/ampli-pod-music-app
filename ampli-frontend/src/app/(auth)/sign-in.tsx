@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   View,
   Text,
@@ -8,24 +7,34 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter, Link } from "expo-router";
+import { Controller } from "react-hook-form";
 import AmpliLogo from "@assets/ampli-logo-white.svg";
 import { Globe, Apple } from "lucide-react-native";
+import { useSignInForm } from "@/hooks/useAuthForm";
+import { useAuth } from "@/hooks/useAuth";
 import colors from "@/constants/colors";
 
 const SignIn = () => {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { signIn } = useAuth();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useSignInForm();
 
-  const handleSignIn = () => {
-    // TODO: Implementar lógica de sign in
-    console.log("Sign in:", { email, password });
-    // Por ahora, navegar directo a la app
-    router.replace("/(main)/(home)");
-  };
+  const { error: apiError } = useAuth();
+
+  const onSubmit = handleSubmit(async (data) => {
+    const response = await signIn(data);
+    if (response.success) {
+      router.replace("/(main)/(home)");
+    }
+  });
 
   return (
     <SafeAreaView style={styles.container}>
@@ -52,26 +61,44 @@ const SignIn = () => {
 
           <View style={styles.form}>
             <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.input}
-                placeholder="Email"
-                placeholderTextColor="#666"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
+              <Controller
+                control={control}
+                name="email"
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    style={[styles.input, errors.email && styles.inputError]}
+                    placeholder="Email"
+                    placeholderTextColor={colors.TEXT_TERTIARY}
+                    onChangeText={onChange}
+                    value={value}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                  />
+                )}
               />
+              {errors.email && (
+                <Text style={styles.errorText}>{errors.email.message}</Text>
+              )}
             </View>
 
             <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.input}
-                placeholder="Password"
-                placeholderTextColor="#666"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
+              <Controller
+                control={control}
+                name="password"
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    style={[styles.input, errors.password && styles.inputError]}
+                    placeholder="Password"
+                    placeholderTextColor={colors.TEXT_TERTIARY}
+                    onChangeText={onChange}
+                    value={value}
+                    secureTextEntry
+                  />
+                )}
               />
+              {errors.password && (
+                <Text style={styles.errorText}>{errors.password.message}</Text>
+              )}
               <View style={styles.labelRow}>
                 <TouchableOpacity>
                   <Text style={styles.forgotPassword}>Forgot Password?</Text>
@@ -79,12 +106,22 @@ const SignIn = () => {
               </View>
             </View>
 
+            {apiError && <Text style={styles.apiErrorText}>{apiError}</Text>}
+
             <TouchableOpacity
-              style={styles.signInButton}
-              onPress={handleSignIn}
+              style={[
+                styles.signInButton,
+                isSubmitting && styles.signInButtonDisabled,
+              ]}
+              onPress={onSubmit}
               activeOpacity={0.8}
+              disabled={isSubmitting}
             >
-              <Text style={styles.signInButtonText}>Sign In</Text>
+              {isSubmitting ? (
+                <ActivityIndicator color={colors.BLACK} />
+              ) : (
+                <Text style={styles.signInButtonText}>Sign In</Text>
+              )}
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.socialButton} activeOpacity={0.8}>
@@ -131,11 +168,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-  },
-  logoText: {
-    fontSize: 20,
-    fontWeight: "600",
-    color: "#FFFFFF",
   },
   titleContainer: {
     marginTop: 24,
@@ -190,10 +222,29 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 8,
   },
+  signInButtonDisabled: {
+    backgroundColor: colors.GRAY_400,
+    opacity: 0.6,
+  },
   signInButtonText: {
     color: "#000000",
     fontSize: 16,
     fontWeight: "600",
+  },
+  inputError: {
+    borderColor: colors.ERROR,
+  },
+  errorText: {
+    color: colors.ERROR,
+    fontSize: 12,
+    marginTop: 4,
+  },
+  apiErrorText: {
+    color: colors.ERROR,
+    fontSize: 14,
+    marginBottom: 16,
+    textAlign: "center",
+    fontWeight: "500",
   },
 
   socialButton: {
