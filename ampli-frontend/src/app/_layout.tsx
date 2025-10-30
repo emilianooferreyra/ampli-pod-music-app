@@ -8,6 +8,7 @@ import { Slot, useRouter, useSegments } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
 import { useColorScheme } from "@/hooks/use-color-scheme";
+import { useInitializePlayer } from "@/hooks/useInitializePlayer";
 import {
   Geist_300Light,
   Geist_400Regular,
@@ -26,6 +27,9 @@ function RootLayoutNav() {
   const segments = useSegments();
   const router = useRouter();
   const [isNavigationReady, setIsNavigationReady] = useState(false);
+
+  // Inicializar player con datos de prueba
+  useInitializePlayer();
 
   useEffect(() => {
     const inOnboardingGroup = segments[0] === "(onboarding)";

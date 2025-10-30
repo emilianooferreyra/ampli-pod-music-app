@@ -1,7 +1,6 @@
 import type { SignInInput, SignUpInput } from "@/lib/validation/auth";
 import { getClient } from "@/api/client";
-import { useAuthStore } from "@/store/auth";
-import { useNotificationStore } from "@/store/notification";
+import { useAuthStore, useNotificationStore } from "@/store";
 import { saveToAsyncStorage, Keys } from "@/utils/asyncStorage";
 
 export interface AuthResponse<T = any> {

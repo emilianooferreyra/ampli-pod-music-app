@@ -14,7 +14,10 @@ export default function TabsLayout() {
           backgroundColor: "#232323",
           borderTopColor: "#232323",
         },
-
+        sceneContainerStyle: {
+          backgroundColor: "#232323",
+        },
+        animationEnabled: false,
         headerShown: false,
         tabBarButton: HapticTab,
       }}
@@ -91,6 +94,18 @@ export default function TabsLayout() {
       />
       <Tabs.Screen
         name="(settings)"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="upload-track"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="create-playlist"
         options={{
           href: null,
         }}

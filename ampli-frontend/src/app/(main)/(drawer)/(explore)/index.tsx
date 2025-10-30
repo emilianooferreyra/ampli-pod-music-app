@@ -2,64 +2,71 @@ import {
   View,
   Text,
   StyleSheet,
-  TextInput,
   ScrollView,
   TouchableOpacity,
-  Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Search } from "lucide-react-native";
 
 // Temporary placeholder data
-const trendingPodcasts = [
+const trendingTracks = [
   {
     id: "1",
-    title: "ON PURPOSE",
-    subtitle: "with Jay Shetty",
+    title: "Synthwave Dreams",
+    subtitle: "Various Artists",
     color: "#FF6B35",
   },
   {
     id: "2",
-    title: "Heal your Heartbreak",
-    subtitle: "with Alex Brusk by Renée",
+    title: "Indie Folk Classics",
+    subtitle: "Various Artists",
     color: "#6C3EDB",
   },
   {
     id: "3",
-    title: "Mindvalley Podcast",
-    subtitle: "Mindvalley",
+    title: "Lo-Fi Hip Hop Beats",
+    subtitle: "Various Artists",
     color: "#E91E63",
   },
 ];
 
-const genres = [
-  { id: "1", name: "Crime", color: "#2D5F4F" },
-  { id: "2", name: "Art", color: "#6B6B6B" },
-  { id: "3", name: "Technology", color: "#1E3A5F" },
-  { id: "4", name: "Culture", color: "#8B4513" },
-  { id: "5", name: "Thriller", color: "#2C2C2C" },
-  { id: "6", name: "Educational", color: "#E67E22" },
+const categories = [
+  {
+    id: "1",
+    name: "New Releases",
+    color: "#FF6B6B",
+  },
+  {
+    id: "2",
+    name: "Top Charts",
+    color: "#FBBF24",
+  },
+  { id: "3", name: "Pop", color: "#6C3EDB" },
+  { id: "4", name: "Hip Hop", color: "#1E3A5F" },
+  { id: "5", name: "Rock", color: "#8B4513" },
+  { id: "6", name: "Electronic", color: "#E67E22" },
 ];
 
 export default function ExploreScreen() {
+  const handleCategoryPress = (categoryId: string) => {
+    // Handle category navigation
+    console.log("Category pressed:", categoryId);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        {/* Search Bar */}
-        <View style={styles.searchContainer}>
-          <Search size={20} color="#999" style={styles.searchIcon} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Podcast, Artist, Genre..."
-            placeholderTextColor="#999"
-          />
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Explore</Text>
+          <Text style={styles.headerSubtitle}>
+            Discover new music and curated collections
+          </Text>
         </View>
 
-        {/* Popular & Trending */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Popular & Trending</Text>
-            <TouchableOpacity>
+            <TouchableOpacity activeOpacity={0.7}>
               <Text style={styles.seeAll}>See all</Text>
             </TouchableOpacity>
           </View>
@@ -69,36 +76,47 @@ export default function ExploreScreen() {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.trendingScroll}
           >
-            {trendingPodcasts.map((podcast) => (
-              <TouchableOpacity key={podcast.id} style={styles.podcastCard}>
+            {trendingTracks.map((track) => (
+              <TouchableOpacity
+                key={track.id}
+                style={styles.trackCard}
+                activeOpacity={0.7}
+              >
                 <View
-                  style={[styles.podcastImage, { backgroundColor: podcast.color }]}
+                  style={[styles.trackImage, { backgroundColor: track.color }]}
                 />
-                <View style={styles.podcastInfo}>
-                  <Text style={styles.podcastTitle}>{podcast.title}</Text>
-                  <Text style={styles.podcastSubtitle}>{podcast.subtitle}</Text>
+                <View style={styles.trackInfo}>
+                  <Text style={styles.trackTitle}>{track.title}</Text>
+                  <Text style={styles.trackSubtitle}>{track.subtitle}</Text>
                 </View>
               </TouchableOpacity>
             ))}
           </ScrollView>
         </View>
 
-        {/* Search by Genre */}
+        {/* Categories Grid */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Search by genre</Text>
-            <TouchableOpacity>
+            <Text style={styles.sectionTitle}>Browse</Text>
+            <TouchableOpacity activeOpacity={0.7}>
               <Text style={styles.seeAll}>See all</Text>
             </TouchableOpacity>
           </View>
 
-          <View style={styles.genreGrid}>
-            {genres.map((genre) => (
+          <View style={styles.categoryGrid}>
+            {categories.map((category) => (
               <TouchableOpacity
-                key={genre.id}
-                style={[styles.genreCard, { backgroundColor: genre.color }]}
+                key={category.id}
+                style={[
+                  styles.categoryCard,
+                  {
+                    backgroundColor: category.color,
+                  },
+                ]}
+                onPress={() => handleCategoryPress(category.id)}
+                activeOpacity={0.7}
               >
-                <Text style={styles.genreText}>{genre.name}</Text>
+                <Text style={styles.categoryText}>{category.name}</Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -116,24 +134,20 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingBottom: 40,
   },
-  searchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#1A1A1A",
-    borderRadius: 12,
-    marginHorizontal: 16,
-    marginTop: 16,
-    marginBottom: 24,
+  header: {
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingVertical: 24,
   },
-  searchIcon: {
-    marginRight: 8,
-  },
-  searchInput: {
-    flex: 1,
+  headerTitle: {
+    fontSize: 32,
+    fontWeight: "bold",
     color: "#FFFFFF",
+    marginBottom: 8,
+  },
+  headerSubtitle: {
     fontSize: 16,
+    color: "#A0A0A0",
+    lineHeight: 22,
   },
   section: {
     marginBottom: 32,
@@ -159,44 +173,46 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     gap: 12,
   },
-  podcastCard: {
+  trackCard: {
     width: 130,
   },
-  podcastImage: {
+  trackImage: {
     width: 130,
     height: 130,
     borderRadius: 4,
     marginBottom: 8,
   },
-  podcastInfo: {
+  trackInfo: {
     gap: 4,
   },
-  podcastTitle: {
+  trackTitle: {
     fontSize: 14,
     fontWeight: "bold",
     color: "#FFFFFF",
   },
-  podcastSubtitle: {
+  trackSubtitle: {
     fontSize: 12,
     color: "#999",
   },
-  genreGrid: {
+  categoryGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
     paddingHorizontal: 16,
     gap: 12,
   },
-  genreCard: {
+  categoryCard: {
     width: "47%",
-    height: 80,
-    borderRadius: 4,
+    height: 100,
+    borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
+    gap: 8,
   },
-  genreText: {
-    fontSize: 16,
+  categoryText: {
+    fontSize: 14,
     fontWeight: "bold",
     color: "#FFFFFF",
+    textAlign: "center",
   },
 });

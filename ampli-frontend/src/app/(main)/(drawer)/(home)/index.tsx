@@ -9,8 +9,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import type { DrawerNavigationProp } from "@react-navigation/drawer";
 import { Bell } from "lucide-react-native";
+import { getGreetingByTime } from "@/lib/time";
 
-// Temporary placeholder data
+// Temporary placeholder data - expanded
 const moodChips = [
   {
     id: "1",
@@ -21,6 +22,34 @@ const moodChips = [
     id: "2",
     title: "Throwback Rock Music 90s",
     color: "#6C3EDB",
+  },
+  {
+    id: "3",
+    title: "Chill Vibes",
+    color: "#4ECDC4",
+  },
+  {
+    id: "4",
+    title: "Workout Energy",
+    color: "#E74C3C",
+  },
+];
+
+const forYou = [
+  {
+    id: "1",
+    title: "Because You Listened...",
+    color: "#B794F6",
+  },
+  {
+    id: "2",
+    title: "Your Daily Mix",
+    color: "#2952E8",
+  },
+  {
+    id: "3",
+    title: "New Releases For You",
+    color: "#FF6B35",
   },
 ];
 
@@ -60,14 +89,15 @@ export default function HomeScreen() {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.greeting}>Good morning moods</Text>
+          <Text style={styles.greeting}>{getGreetingByTime()}</Text>
           <View style={styles.headerRight}>
-            <TouchableOpacity style={styles.iconButton}>
+            <TouchableOpacity style={styles.iconButton} activeOpacity={0.7}>
               <Bell size={24} color="#FFFFFF" />
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.profileButton, { backgroundColor: "#FF6B35" }]}
               onPress={handleProfilePress}
+              activeOpacity={0.7}
             >
               <Text style={{ color: "#FFF", fontSize: 18, fontWeight: "700" }}>
                 E
@@ -83,7 +113,11 @@ export default function HomeScreen() {
           contentContainerStyle={styles.moodChipsScroll}
         >
           {moodChips.map((chip) => (
-            <TouchableOpacity key={chip.id} style={styles.moodChip}>
+            <TouchableOpacity
+              key={chip.id}
+              style={styles.moodChip}
+              activeOpacity={0.7}
+            >
               <View
                 style={[styles.moodChipImage, { backgroundColor: chip.color }]}
               />
@@ -95,7 +129,7 @@ export default function HomeScreen() {
         </ScrollView>
 
         {/* Playlist Banner */}
-        <TouchableOpacity style={styles.playlistBanner}>
+        <TouchableOpacity style={styles.playlistBanner} activeOpacity={0.7}>
           <View style={[styles.bannerImage, { backgroundColor: "#FF6B35" }]} />
           <View style={styles.bannerContent}>
             <Text style={styles.bannerText}>
@@ -104,11 +138,43 @@ export default function HomeScreen() {
           </View>
         </TouchableOpacity>
 
+        {/* For You Section */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>For You 💎</Text>
+            <TouchableOpacity activeOpacity={0.7}>
+              <Text style={styles.seeAll}>See all</Text>
+            </TouchableOpacity>
+          </View>
+
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.forYouScroll}
+          >
+            {forYou.map((item) => (
+              <TouchableOpacity
+                key={item.id}
+                style={styles.forYouCard}
+                activeOpacity={0.7}
+              >
+                <View
+                  style={[
+                    styles.forYouImageContainer,
+                    { backgroundColor: item.color },
+                  ]}
+                />
+                <Text style={styles.forYouTitle}>{item.title}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+
         {/* Hits Music Section */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Hits Music 🎹</Text>
-            <TouchableOpacity>
+            <TouchableOpacity activeOpacity={0.7}>
               <Text style={styles.seeAll}>See all</Text>
             </TouchableOpacity>
           </View>
@@ -203,6 +269,31 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
   },
+  quickActionsContainer: {
+    flexDirection: "row",
+    paddingHorizontal: 16,
+    marginBottom: 24,
+    gap: 12,
+  },
+  quickAction: {
+    flex: 1,
+    alignItems: "center",
+    gap: 8,
+  },
+  quickActionIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 8,
+    backgroundColor: "#2A2A2A",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  quickActionLabel: {
+    fontSize: 11,
+    fontWeight: "600",
+    color: "#A0A0A0",
+    textAlign: "center",
+  },
   moodChipsScroll: {
     paddingHorizontal: 16,
     gap: 12,
@@ -283,6 +374,25 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#999",
     fontWeight: "500",
+  },
+  forYouScroll: {
+    paddingHorizontal: 16,
+    gap: 16,
+  },
+  forYouCard: {
+    width: 150,
+  },
+  forYouImageContainer: {
+    width: 150,
+    height: 150,
+    borderRadius: 4,
+    overflow: "hidden",
+    marginBottom: 8,
+  },
+  forYouTitle: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#FFFFFF",
   },
   hitsScroll: {
     paddingHorizontal: 16,

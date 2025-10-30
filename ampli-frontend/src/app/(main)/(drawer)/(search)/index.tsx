@@ -5,10 +5,9 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
-  Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Search, Flame, TrendingUp, Sparkles, Music } from "lucide-react-native";
+import { Search } from "lucide-react-native";
 
 const browseCategories = [
   {
@@ -42,8 +41,18 @@ const browseCategories = [
 ];
 
 const newReleases = [
-  { id: "1", title: "Midnight Jazz", subtitle: "The Quartet", color: "#6C3EDB" },
-  { id: "2", title: "Electric Dreams", subtitle: "Synth Wave", color: "#FF6B35" },
+  {
+    id: "1",
+    title: "Midnight Jazz",
+    subtitle: "The Quartet",
+    color: "#6C3EDB",
+  },
+  {
+    id: "2",
+    title: "Electric Dreams",
+    subtitle: "Synth Wave",
+    color: "#FF6B35",
+  },
   { id: "3", title: "Indie Vibes", subtitle: "Alt Rock", color: "#E91E63" },
 ];
 
@@ -57,7 +66,6 @@ export default function SearchScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        {/* Search Bar */}
         <View style={styles.searchContainer}>
           <Search size={20} color="#999" style={styles.searchIcon} />
           <TextInput

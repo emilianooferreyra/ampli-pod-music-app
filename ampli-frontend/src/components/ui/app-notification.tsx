@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useNotificationStore } from "@/store/notification";
+import { useNotificationStore } from "@/store";
 import colors from "@/constants/colors";
 import {
   X,
