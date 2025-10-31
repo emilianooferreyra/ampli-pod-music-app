@@ -4,7 +4,6 @@ import { Drawer } from "expo-router/drawer";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { CustomDrawerContent } from "@/components/ui/custom-drawer-content";
-import { MiniAudioPlayer } from "@/components/player";
 
 export default function MainLayout() {
   return (
@@ -35,7 +34,6 @@ export default function MainLayout() {
             }}
           />
         </Drawer>
-        <MiniAudioPlayer />
       </View>
     </GestureHandlerRootView>
   );

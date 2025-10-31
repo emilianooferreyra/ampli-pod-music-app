@@ -18,15 +18,13 @@ import { getClient } from "@/api/client";
 import { useFetchIsFavorite } from "@/hooks/query";
 import { useNavigation } from "@react-navigation/native";
 import type { DrawerNavigationProp } from "@react-navigation/drawer";
-import AudioPlayer from "./AudioPlayer";
+import { AudioPlayer } from "./AudioPlayer";
 
 export const MiniPlayerHeight = 60;
 
 type DrawerNavigation = DrawerNavigationProp<any>;
 
-interface MiniAudioPlayerProps {}
-
-export const MiniAudioPlayer: React.FC<MiniAudioPlayerProps> = () => {
+export const MiniAudioPlayer = () => {
   const { currentTrack } = usePlayerStore();
   const { user } = useAuthStore();
   const { addNotification } = useNotificationStore();
@@ -52,7 +50,7 @@ export const MiniAudioPlayer: React.FC<MiniAudioPlayerProps> = () => {
 
   const favoriteMutation = useMutation({
     mutationFn: async (id: string) => toggleIsFav(id),
-    onMutate: (id: string) => {
+    onMutate: () => {
       queryClient.setQueryData<boolean>(
         ["favorite", currentTrack?.id],
         (oldData) => !oldData
@@ -143,54 +141,59 @@ export const MiniAudioPlayer: React.FC<MiniAudioPlayerProps> = () => {
 
 const styles = StyleSheet.create({
   progressBar: {
-    height: 2,
+    height: 3,
     backgroundColor: colors.SECONDARY,
     width: "0%",
   },
   container: {
     width: "100%",
     height: MiniPlayerHeight,
-    backgroundColor: colors.PRIMARY,
-    padding: 5,
+    backgroundColor: "#1a1a1a",
+    paddingHorizontal: 12,
+    paddingVertical: 8,
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
   },
   contentContainer: {
     flex: 1,
     height: "100%",
-    padding: 5,
+    paddingHorizontal: 12,
     justifyContent: "center",
   },
   poster: {
-    height: MiniPlayerHeight - 10,
-    width: MiniPlayerHeight - 10,
-    borderRadius: 5,
+    height: MiniPlayerHeight - 16,
+    width: MiniPlayerHeight - 16,
+    borderRadius: 8,
     backgroundColor: colors.GRAY_800,
   },
   title: {
     color: colors.TEXT_PRIMARY,
     fontWeight: "700",
-    paddingHorizontal: 5,
-    fontSize: 13,
+    paddingHorizontal: 0,
+    fontSize: 14,
+    marginBottom: 2,
   },
   name: {
-    color: colors.SECONDARY,
-    fontWeight: "700",
-    paddingHorizontal: 5,
-    fontSize: 11,
+    color: "#999999",
+    fontWeight: "500",
+    paddingHorizontal: 0,
+    fontSize: 12,
   },
   favoriteButton: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 8,
+    paddingVertical: 8,
     justifyContent: "center",
     alignItems: "center",
   },
   playButton: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
     justifyContent: "center",
     alignItems: "center",
   },
   playButtonText: {
-    fontSize: 16,
+    fontSize: 24,
     color: colors.TEXT_PRIMARY,
   },
 });

@@ -12,7 +12,7 @@ import { Music, ListMusic, Plus, X } from "lucide-react-native";
 import { useRouter } from "expo-router";
 import * as Haptics from "expo-haptics";
 
-export default function CreateScreen() {
+const CreateScreen = () => {
   const router = useRouter();
 
   const handleUploadTrackPress = () => {
@@ -98,7 +98,9 @@ export default function CreateScreen() {
       <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
     </SafeAreaView>
   );
-}
+};
+
+export default CreateScreen;
 
 const styles = StyleSheet.create({
   emptyTab: {

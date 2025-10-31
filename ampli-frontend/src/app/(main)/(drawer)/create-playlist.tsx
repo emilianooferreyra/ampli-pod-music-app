@@ -26,7 +26,7 @@ interface CreatePlaylistFormData {
   } | null;
 }
 
-export default function CreatePlaylistScreen() {
+const CreatePlaylistScreen = () => {
   const router = useRouter();
   const [formData, setFormData] = useState<CreatePlaylistFormData>({
     name: "",
@@ -195,7 +195,9 @@ export default function CreatePlaylistScreen() {
       <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
     </SafeAreaView>
   );
-}
+};
+
+export default CreatePlaylistScreen;
 
 const styles = StyleSheet.create({
   container: {

@@ -20,6 +20,7 @@ import "react-native-reanimated";
 import * as SplashScreen from "expo-splash-screen";
 import CustomSplashScreen from "@/components/ui/splash-screen";
 import { AppNotification } from "@/components/ui/app-notification";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -55,6 +56,8 @@ function RootLayoutNav() {
   );
 }
 
+const queryClient = new QueryClient();
+
 export default function RootLayout() {
   const colorScheme = useColorScheme();
 
@@ -77,9 +80,11 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <RootLayoutNav />
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <RootLayoutNav />
+        <StatusBar style="auto" />
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
