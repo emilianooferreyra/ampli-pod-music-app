@@ -18,7 +18,7 @@ export const AudioListItem: React.FC<AudioListItemProps> = ({
   onLongPress,
 }) => {
   const getSource = (poster?: string) => {
-    return poster ? { uri: poster } : require('@/assets/music.png');
+    return poster ? { uri: poster } : require('../../../assets/images/music.png');
   };
 
   return (

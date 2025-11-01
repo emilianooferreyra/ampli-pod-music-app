@@ -1,7 +1,7 @@
-import colors from '@/constants/colors';
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import PulseAnimationContainer from './PulseAnimationContainer';
+import colors from "@/constants/colors";
+import React from "react";
+import { View, StyleSheet } from "react-native";
+import { PulseAnimationContainer } from "./PulseAnimationContainer";
 
 interface AudioListLoadingUIProps {
   items?: number;
@@ -10,7 +10,7 @@ interface AudioListLoadingUIProps {
 export const AudioListLoadingUI: React.FC<AudioListLoadingUIProps> = ({
   items = 8,
 }) => {
-  const dummyData = new Array(items).fill('');
+  const dummyData = new Array(items).fill("");
 
   return (
     <PulseAnimationContainer>
@@ -26,7 +26,7 @@ export const AudioListLoadingUI: React.FC<AudioListLoadingUIProps> = ({
 const styles = StyleSheet.create({
   dummyListItem: {
     height: 50,
-    width: '100%',
+    width: "100%",
     backgroundColor: colors.GRAY_700,
     borderRadius: 5,
     marginBottom: 15,

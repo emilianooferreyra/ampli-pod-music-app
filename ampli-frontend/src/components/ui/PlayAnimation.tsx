@@ -1,7 +1,7 @@
-import colors from '@/constants/colors';
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import AnimatedStroke from './AnimatedStroke';
+import colors from "@/constants/colors";
+import React from "react";
+import { View, StyleSheet } from "react-native";
+import { AnimatedStroke } from "./AnimatedStroke";
 
 interface PlayAnimationProps {
   visible: boolean;
@@ -24,14 +24,14 @@ export const PlayAnimation: React.FC<PlayAnimationProps> = ({ visible }) => {
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     backgroundColor: colors.OVERLAY,
     borderRadius: 5,
   },
   strokeContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
+    flexDirection: "row",
+    alignItems: "flex-end",
     height: 20,
   },
 });

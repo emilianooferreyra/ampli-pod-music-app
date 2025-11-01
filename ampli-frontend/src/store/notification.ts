@@ -36,7 +36,6 @@ export const useNotificationStore = create<NotificationState>((set) => ({
       notifications: [...state.notifications, notification],
     }));
 
-    // Auto-remove after duration
     if (duration > 0) {
       setTimeout(() => {
         set((state) => ({

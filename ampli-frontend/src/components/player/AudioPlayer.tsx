@@ -1,67 +1,90 @@
-import React, { useState } from "react";
+import AppLink from "@/components/ui/AppLink";
+import AudioInfoContainer from "@/components/audio/AudioInfoContainer";
+import colors from "@/constants/colors";
+import { useState } from "react";
 import {
   View,
   StyleSheet,
   Image,
   Text,
   Pressable,
-  ActivityIndicator,
+  Modal,
+  ScrollView,
 } from "react-native";
-import {
-  useProgress,
-  usePlaybackState,
-  State,
-} from "react-native-track-player";
-import colors from "@/constants/colors";
+import Slider from "@react-native-community/slider";
+import { useProgress } from "react-native-track-player";
 import { usePlayerStore } from "@/store";
 import { useAudioController } from "@/hooks/useAudioController";
-import {
-  Info,
-  SkipBack,
-  SkipForward,
-  RotateCcw,
-  RotateCw,
-} from "lucide-react-native";
-import Slider from "@react-native-community/slider";
+import { Info, SkipBack, SkipForward, Music } from "lucide-react-native";
 
-interface AudioPlayerProps {
+interface Props {
   visible: boolean;
-  onRequestClose: () => void;
-  onListOptionPress?: () => void;
-  onProfileLinkPress?: () => void;
+  onRequestClose(): void;
+  onListOptionPress?(): void;
+  onProfileLinkPress?(): void;
 }
 
-const formatDuration = (seconds: number): string => {
+const formatDuration = (seconds: number = 0): string => {
   const mins = Math.floor(seconds / 60);
   const secs = Math.floor(seconds % 60);
   return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
 };
 
-export const AudioPlayer: React.FC<AudioPlayerProps> = ({
+const AudioPlayer = ({
   visible,
   onRequestClose,
   onListOptionPress,
   onProfileLinkPress,
-}) => {
+}: Props) => {
   const [showAudioInfo, setShowAudioInfo] = useState(false);
-  const { currentTrack, playbackRate } = usePlayerStore();
-  const playbackState = usePlaybackState();
-  const { position, duration } = useProgress();
+  const { currentTrack } = usePlayerStore();
   const {
     isPalying,
     isBusy,
     onNextPress,
     onPreviousPress,
     seekTo,
-    skipTo,
     togglePlayPause,
-    setPlaybackRate,
   } = useAudioController();
 
   const poster = currentTrack?.poster;
-  const source = poster
-    ? { uri: poster }
-    : require("../../../assets/images/music.png");
+  const source =
+    poster && poster !== ""
+      ? { uri: poster }
+      : require("../../../assets/images/music.png");
+
+  const { duration, position } = useProgress();
+
+  // Estado para rastrear el inicio del swipe
+  const [swipeStartX, setSwipeStartX] = useState(0);
+
+  // Manejador para el inicio del swipe
+  const handlePosterPressIn = (e: any) => {
+    setSwipeStartX(e.nativeEvent.pageX);
+  };
+
+  // Manejador para el fin del swipe
+  const handlePosterPressOut = (e: any) => {
+    const endX = e.nativeEvent.pageX;
+    const deltaX = swipeStartX - endX;
+
+    // Si se desliza más de 50px, cambiar de canción
+    if (deltaX > 50) {
+      // Deslizar a la izquierda (restar) → siguiente canción
+      onNextPress();
+    } else if (deltaX < -50) {
+      // Deslizar a la derecha (sumar) → canción anterior
+      onPreviousPress();
+    }
+  };
+
+  const handleSliderChange = async (value: number) => {
+    await seekTo(value);
+  };
+
+  if (!currentTrack) {
+    return null;
+  }
 
   const handleOnNextPress = async () => {
     await onNextPress();
@@ -71,132 +94,138 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
     await onPreviousPress();
   };
 
-  const updateSeek = async (value: number) => {
-    await seekTo(value);
-  };
-
-  const handleSkipTo = async (skipType: "forward" | "reverse") => {
-    if (skipType === "forward") await skipTo(10);
-    if (skipType === "reverse") await skipTo(-10);
-  };
-
-  const onPlaybackRatePress = async (rate: number) => {
-    await setPlaybackRate(rate);
-  };
-
-  if (!visible || !currentTrack) {
-    return null;
-  }
 
   return (
-    <View style={styles.container}>
-      <Pressable onPress={() => setShowAudioInfo(true)} style={styles.infoBtn}>
-        <Info size={24} color={colors.TEXT_PRIMARY} />
-      </Pressable>
-
-      <Image source={source} style={styles.poster} />
-
-      <View style={styles.contentContainer}>
-        <Text style={styles.title} numberOfLines={2}>
-          {currentTrack.title}
-        </Text>
-
-        <Pressable onPress={onProfileLinkPress}>
-          <Text style={styles.artist}>{currentTrack.owner.name}</Text>
-        </Pressable>
-
-        <View style={styles.durationContainer}>
-          <Text style={styles.duration}>{formatDuration(position)}</Text>
-          <Text style={styles.duration}>{formatDuration(duration)}</Text>
-        </View>
-
-        <Slider
-          minimumValue={0}
-          maximumValue={duration || 1}
-          minimumTrackTintColor={colors.ACCENT}
-          maximumTrackTintColor={colors.GRAY_700}
-          value={position}
-          onSlidingComplete={updateSeek}
-          style={styles.slider}
+    <Modal
+      visible={visible}
+      animationType="fade"
+      transparent={false}
+      onRequestClose={onRequestClose}
+    >
+      <View style={styles.container}>
+        <AudioInfoContainer
+          visible={showAudioInfo}
+          closeHandler={setShowAudioInfo}
         />
 
-        <View style={styles.controles}>
-          {/* Previous */}
-          <Pressable onPress={handleOnPreviousPress}>
-            <SkipBack size={24} color={colors.TEXT_PRIMARY} />
-          </Pressable>
+        <Pressable
+          onPress={() => setShowAudioInfo(true)}
+          style={styles.infoBtn}
+        >
+          <Info size={24} color={colors.TEXT_PRIMARY} />
+        </Pressable>
 
-          {/* Skip Time Left */}
-          <Pressable onPress={() => handleSkipTo("reverse")}>
-            <View style={styles.skipButton}>
-              <RotateCcw size={16} color={colors.TEXT_PRIMARY} />
-              <Text style={styles.skipText}>-10s</Text>
-            </View>
-          </Pressable>
+        {/* Poster con swipe para cambiar de canción */}
+        <Pressable
+          onPressIn={handlePosterPressIn}
+          onPressOut={handlePosterPressOut}
+        >
+          <Image source={source} style={styles.poster} />
+        </Pressable>
 
-          {/* Play Pause */}
-          <Pressable
-            style={styles.playButton}
-            onPress={togglePlayPause}
-            disabled={isBusy}
-          >
-            {isBusy ? (
-              <ActivityIndicator size="large" color={colors.PRIMARY} />
-            ) : (
-              <Text style={styles.playButtonText}>{isPalying ? "⏸" : "▶"}</Text>
-            )}
-          </Pressable>
+        <ScrollView style={styles.contentContainer}>
+          <Text style={styles.title} numberOfLines={2}>
+            {currentTrack.title}
+          </Text>
 
-          {/* Skip Time Right */}
-          <Pressable onPress={() => handleSkipTo("forward")}>
-            <View style={styles.skipButton}>
-              <RotateCw size={16} color={colors.TEXT_PRIMARY} />
-              <Text style={styles.skipText}>+10s</Text>
-            </View>
-          </Pressable>
+          <AppLink
+            onPress={onProfileLinkPress}
+            title={currentTrack.owner.name || ""}
+          />
 
-          {/* Next */}
-          <Pressable onPress={handleOnNextPress}>
-            <SkipForward size={24} color={colors.TEXT_PRIMARY} />
-          </Pressable>
-        </View>
+          <View style={styles.durationContainer}>
+            <Text style={styles.duration}>{formatDuration(position)}</Text>
+            <Text style={styles.duration}>{formatDuration(duration)}</Text>
+          </View>
 
-        {/* Playback Rate Selector */}
-        <View style={styles.playbackRateContainer}>
-          {[0.5, 0.75, 1, 1.25, 1.5, 1.75, 2].map((rate) => (
+          {/* Slider de progreso */}
+          <Slider
+            style={styles.slider}
+            minimumValue={0}
+            maximumValue={duration}
+            value={position}
+            onValueChange={handleSliderChange}
+            minimumTrackTintColor={colors.ACCENT}
+            maximumTrackTintColor={colors.GRAY_700}
+            thumbTintColor={colors.ACCENT}
+          />
+
+          <View style={styles.controles}>
+            {/* Previous */}
+            <Pressable onPress={handleOnPreviousPress}>
+              <SkipBack size={24} color={colors.TEXT_PRIMARY} />
+            </Pressable>
+
+            {/* Skip Time Left 
+            <Pressable onPress={() => handleSkipTo("reverse")}>
+              <View style={styles.skipButton}>
+                <RotateCcw size={16} color={colors.TEXT_PRIMARY} />
+                <Text style={styles.skipText}>-10s</Text>
+              </View>
+            </Pressable>*/}
+
+            {/* Play Pause */}
             <Pressable
-              key={rate}
-              style={[
-                styles.rateButton,
-                playbackRate === rate && styles.rateButtonActive,
-              ]}
-              onPress={() => onPlaybackRatePress(rate)}
+              style={styles.playButton}
+              onPress={togglePlayPause}
+              disabled={isBusy}
             >
-              <Text
-                style={[
-                  styles.rateButtonText,
-                  playbackRate === rate && styles.rateButtonTextActive,
-                ]}
-              >
-                {rate}x
+              <Text style={styles.playButtonText}>
+                {isBusy ? "⌛" : isPalying ? "⏸" : "▶"}
               </Text>
             </Pressable>
-          ))}
-        </View>
 
-        {/* List Option Button */}
-        <View style={styles.listOptionBtnContainer}>
-          <Pressable onPress={onListOptionPress}>
-            <Text style={styles.playlistIcon}>🎵</Text>
-          </Pressable>
-        </View>
+            {/* Skip Time Right 
+            <Pressable onPress={() => handleSkipTo("forward")}>
+              <View style={styles.skipButton}>
+                <RotateCw size={16} color={colors.TEXT_PRIMARY} />
+                <Text style={styles.skipText}>+10s</Text>
+              </View>
+            </Pressable>*/}
+
+            {/* Next */}
+            <Pressable onPress={handleOnNextPress}>
+              <SkipForward size={24} color={colors.TEXT_PRIMARY} />
+            </Pressable>
+          </View>
+
+          {/* Playback Rate Selector 
+          <View style={styles.playbackRateContainer}>
+            {[0.5, 0.75, 1, 1.25, 1.5, 1.75, 2].map((rate) => (
+              <Pressable
+                key={rate}
+                style={[
+                  styles.rateButton,
+                  playbackRate === rate && styles.rateButtonActive,
+                ]}
+                onPress={() => handlePlaybackRatePress(rate)}
+              >
+                <Text
+                  style={[
+                    styles.rateButtonText,
+                    playbackRate === rate && styles.rateButtonTextActive,
+                  ]}
+                >
+                  {rate}x
+                </Text>
+              </Pressable>
+            ))}
+          </View>*/}
+
+          {/* List Option Button */}
+          <View style={styles.listOptionBtnContainer}>
+            <Pressable onPress={onListOptionPress}>
+              <Music size={24} color={colors.TEXT_PRIMARY} />
+            </Pressable>
+          </View>
+        </ScrollView>
+
+        {/* Close Button */}
+        <Pressable style={styles.closeButton} onPress={onRequestClose}>
+          <Text style={styles.closeButtonText}>×</Text>
+        </Pressable>
       </View>
-
-      {/* Close Button */}
-      <Pressable style={styles.closeButton} onPress={onRequestClose}>
-        <Text style={styles.closeButtonText}>×</Text>
-      </Pressable>
-    </View>
+    </Modal>
   );
 };
 
@@ -206,16 +235,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     backgroundColor: colors.BACKGROUND,
+    paddingTop: 100,
   },
   poster: {
-    width: 200,
-    height: 200,
+    width: 300,
+    height: 400,
     borderRadius: 10,
     backgroundColor: colors.GRAY_800,
   },
   contentContainer: {
     width: "100%",
-    flex: 1,
     marginTop: 20,
   },
   title: {
@@ -223,11 +252,6 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: colors.TEXT_PRIMARY,
     marginBottom: 8,
-  },
-  artist: {
-    fontSize: 14,
-    color: colors.ACCENT,
-    marginBottom: 16,
   },
   durationContainer: {
     flexDirection: "row",
@@ -303,20 +327,18 @@ const styles = StyleSheet.create({
   listOptionBtnContainer: {
     alignItems: "flex-end",
     marginTop: 16,
-  },
-  playlistIcon: {
-    fontSize: 28,
+    paddingBottom: 30,
   },
   infoBtn: {
     position: "absolute",
     right: 10,
-    top: 10,
+    top: 50,
     zIndex: 10,
     padding: 8,
   },
   closeButton: {
     position: "absolute",
-    top: 40,
+    top: 50,
     left: 20,
     width: 40,
     height: 40,

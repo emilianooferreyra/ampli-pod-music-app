@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
   },
   seeAll: {
     fontSize: 14,
-    color: "#B794F6",
+    color: "#FFFFFF",
     fontWeight: "600",
   },
   trendingScroll: {

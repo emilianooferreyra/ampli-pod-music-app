@@ -11,13 +11,15 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.emilianoferreyra.amplifrontend",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "UIBackgroundModes": ["audio"]
       }
     },
     "android": {
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.emilianoferreyra.amplifrontend"
+      "package": "com.emilianoferreyra.amplifrontend",
+      "permissions": ["android.permission.FOREGROUND_SERVICE"]
     },
     "plugins": [
       "expo-router"

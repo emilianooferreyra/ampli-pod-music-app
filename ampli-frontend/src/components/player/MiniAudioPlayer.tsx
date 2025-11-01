@@ -18,7 +18,8 @@ import { getClient } from "@/api/client";
 import { useFetchIsFavorite } from "@/hooks/query";
 import { useNavigation } from "@react-navigation/native";
 import type { DrawerNavigationProp } from "@react-navigation/drawer";
-import { AudioPlayer } from "./AudioPlayer";
+import AudioPlayer from "./AudioPlayer";
+import CurrentAudioList from "./CurrentAudioList";
 
 export const MiniPlayerHeight = 60;
 
@@ -31,6 +32,7 @@ export const MiniAudioPlayer = () => {
   const { isPalying, isBusy, togglePlayPause } = useAudioController();
   const progress = useProgress();
   const [playerVisibility, setPlayerVisibility] = useState(false);
+  const [showCurrentList, setShowCurrentList] = useState(false);
   const navigation = useNavigation<DrawerNavigation>();
 
   const { data: isFav } = useFetchIsFavorite(currentTrack?.id || "");
@@ -70,6 +72,15 @@ export const MiniAudioPlayer = () => {
 
   const closePlayerModal = () => {
     setPlayerVisibility(false);
+  };
+
+  const handleOnCurrentListClose = () => {
+    setShowCurrentList(false);
+  };
+
+  const handleOnListOptionPress = () => {
+    closePlayerModal();
+    setShowCurrentList(true);
   };
 
   const handleOnProfileLinkPress = () => {
@@ -133,7 +144,12 @@ export const MiniAudioPlayer = () => {
       <AudioPlayer
         visible={playerVisibility}
         onRequestClose={closePlayerModal}
+        onListOptionPress={handleOnListOptionPress}
         onProfileLinkPress={handleOnProfileLinkPress}
+      />
+      <CurrentAudioList
+        visible={showCurrentList}
+        onRequestClose={handleOnCurrentListClose}
       />
     </>
   );
