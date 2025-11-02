@@ -17,8 +17,8 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { AudioData, CompletePlaylist } from '@/types/audio';
 import { getClient } from '@/api/client';
-import { useFetchPlaylistAudios } from '@/hooks/query';
-import { useAudioController } from '@/hooks/useAudioController';
+import { useFetchPlaylistAudios } from "@/hooks/use-query";
+import { useAudioController } from "@/hooks/use-audio-controller";
 import { usePlayerStore, usePlaylistModalStore, useNotificationStore } from '@/store';
 import AppModal from '@/components/ui/AppModal';
 import AudioListItem from '@/components/ui/AudioListItem';

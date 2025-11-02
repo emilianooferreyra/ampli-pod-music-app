@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
+import { router } from "expo-router";
 import {
   Plus,
   Music,
@@ -36,8 +37,11 @@ const getIcon = (iconName: string) => {
 };
 
 export function CustomDrawerContent(props: DrawerContentProps) {
-  const handleNavigate = (screenName: string) => {
-    props.navigation.navigate("(drawer)", { screen: screenName });
+  const handleNavigate = (screenName: string, isNested: boolean = false) => {
+    const route = isNested
+      ? `/(main)/(drawer)/${screenName}`
+      : `/(main)/(drawer)/(menu)/${screenName}`;
+    router.push(route as any);
     props.navigation.closeDrawer();
   };
 
@@ -66,7 +70,7 @@ export function CustomDrawerContent(props: DrawerContentProps) {
     {
       iconName: "settings",
       label: "Configuración y privacidad",
-      onPress: () => handleNavigate("(settings)"),
+      onPress: () => handleNavigate("(menu)/(settings)", true),
     },
   ];
 
@@ -116,7 +120,6 @@ export function CustomDrawerContent(props: DrawerContentProps) {
         </View>
       </TouchableOpacity>
 
-      {/* Menu Items */}
       <View style={{ paddingVertical: 12 }}>
         {menuItems.map((item, index) => {
           const IconComponent = getIcon(item.iconName);

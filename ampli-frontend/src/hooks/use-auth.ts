@@ -1,7 +1,7 @@
 import type { SignInInput, SignUpInput } from "@/lib/validation/auth";
 import { getClient } from "@/api/client";
 import { useAuthStore, useNotificationStore } from "@/store";
-import { saveToAsyncStorage, Keys } from "@/utils/asyncStorage";
+import { saveToAsyncStorage, Keys } from "@/lib/storage/async-storage";
 
 export interface AuthResponse<T = any> {
   success: boolean;

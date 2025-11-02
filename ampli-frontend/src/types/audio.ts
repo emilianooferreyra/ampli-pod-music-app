@@ -1,4 +1,4 @@
-import type { categoriesTypes } from "@/utils/categories";
+import type { categoriesTypes } from "@/lib/utils/categories";
 
 export interface AudioData {
   id: string;

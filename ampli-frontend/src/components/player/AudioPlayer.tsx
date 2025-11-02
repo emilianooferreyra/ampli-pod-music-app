@@ -14,7 +14,7 @@ import {
 import Slider from "@react-native-community/slider";
 import { useProgress } from "react-native-track-player";
 import { usePlayerStore } from "@/store";
-import { useAudioController } from "@/hooks/useAudioController";
+import { useAudioController } from "@/hooks/use-audio-controller";
 import { Info, SkipBack, SkipForward, Music } from "lucide-react-native";
 
 interface Props {
@@ -39,12 +39,12 @@ const AudioPlayer = ({
   const [showAudioInfo, setShowAudioInfo] = useState(false);
   const { currentTrack } = usePlayerStore();
   const {
-    isPalying,
-    isBusy,
+    isPlaying,
+    isLoading,
     onNextPress,
     onPreviousPress,
     seekTo,
-    togglePlayPause,
+    playOrPause,
   } = useAudioController();
 
   const poster = currentTrack?.poster;
@@ -167,11 +167,11 @@ const AudioPlayer = ({
             {/* Play Pause */}
             <Pressable
               style={styles.playButton}
-              onPress={togglePlayPause}
-              disabled={isBusy}
+              onPress={playOrPause}
+              disabled={isLoading}
             >
               <Text style={styles.playButtonText}>
-                {isBusy ? "⌛" : isPalying ? "⏸" : "▶"}
+                {isLoading ? "⌛" : isPlaying ? "⏸" : "▶"}
               </Text>
             </Pressable>
 

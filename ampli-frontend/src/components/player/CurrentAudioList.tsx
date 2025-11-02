@@ -1,7 +1,7 @@
 import AudioListModal from '@/components/ui/AudioListModal';
 import type { FC } from 'react';
 import { usePlayerStore } from '@/store';
-import { useAudioController } from '@/hooks/useAudioController';
+import { useAudioController } from "@/hooks/use-audio-controller";
 
 interface Props {
   visible: boolean;

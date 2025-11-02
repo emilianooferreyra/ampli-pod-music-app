@@ -8,7 +8,7 @@ import { Slot, useRouter, useSegments } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import { useInitializePlayer } from "@/hooks/useInitializePlayer";
+import { useInitializePlayer } from "@/hooks/use-initialize-player";
 import {
   Geist_300Light,
   Geist_400Regular,

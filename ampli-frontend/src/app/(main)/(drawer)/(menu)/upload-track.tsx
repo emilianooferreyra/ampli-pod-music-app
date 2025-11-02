@@ -40,7 +40,7 @@ export default function UploadTrackScreen() {
   const handleBack = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     // Volver a Create, no al home
-    router.push("/(main)/(drawer)/create");
+    router.push("/(main)/(drawer)/(tabs)/create");
   };
 
   const handleAudioFilePick = async () => {

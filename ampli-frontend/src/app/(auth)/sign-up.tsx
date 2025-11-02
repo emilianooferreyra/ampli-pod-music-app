@@ -13,8 +13,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter, Link } from "expo-router";
 import { Controller } from "react-hook-form";
 import { Globe, Apple } from "lucide-react-native";
-import { useSignUpForm } from "@/hooks/useAuthForm";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/use-auth";
+import { useSignUpForm } from "@/hooks/use-auth-form";
 import colors from "@/constants/colors";
 import AmpliLogo from "@assets/ampli-logo-white.svg";
 

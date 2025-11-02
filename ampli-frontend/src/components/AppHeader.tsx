@@ -1,8 +1,8 @@
-import { useNavigation } from '@react-navigation/native';
-import colors from '@/constants/colors';
-import { FC } from 'react';
-import { View, StyleSheet, Pressable, Text } from 'react-native';
-import { ArrowLeft } from 'lucide-react-native';
+import { useNavigation } from "@react-navigation/native";
+import colors from "@/constants/colors";
+import type { FC } from "react";
+import { View, StyleSheet, Pressable, Text } from "react-native";
+import { ArrowLeft } from "lucide-react-native";
 
 interface Props {
   title: string;
@@ -26,9 +26,9 @@ const AppHeader: FC<Props> = ({ title }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     backgroundColor: colors.BACKGROUND_SECONDARY,
     height: 45,
     paddingHorizontal: 16,
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   title: {
     color: colors.TEXT_PRIMARY,
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });
 

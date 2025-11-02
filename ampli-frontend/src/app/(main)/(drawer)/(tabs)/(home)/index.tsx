@@ -9,7 +9,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import type { DrawerNavigationProp } from "@react-navigation/drawer";
 import { Bell } from "lucide-react-native";
-import { getGreetingByTime } from "@/lib/time";
+import { getGreetingByTime } from "@/lib/utils/time";
 
 // Temporary placeholder data - expanded
 const moodChips = [

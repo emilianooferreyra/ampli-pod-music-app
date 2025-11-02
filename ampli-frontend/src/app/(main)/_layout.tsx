@@ -27,7 +27,7 @@ export default function MainLayout() {
           }}
         >
           <Drawer.Screen
-            name="(drawer)"
+            name="(drawer)/(tabs)"
             options={{
               drawerLabel: "App",
               drawerItemStyle: { display: "none" },

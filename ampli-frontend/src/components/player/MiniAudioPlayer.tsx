@@ -10,12 +10,12 @@ import {
 import { useProgress } from "react-native-track-player";
 import colors from "@/constants/colors";
 import { usePlayerStore, useAuthStore, useNotificationStore } from "@/store";
-import { useAudioController } from "@/hooks/useAudioController";
-import { mapRange } from "@/utils/math";
+import { useAudioController } from "@/hooks/use-audio-controller";
+import { mapRange } from "@/lib/utils/math";
 import { Heart } from "lucide-react-native";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { getClient } from "@/api/client";
-import { useFetchIsFavorite } from "@/hooks/query";
+import { useFetchIsFavorite } from "@/hooks/use-query";
 import { useNavigation } from "@react-navigation/native";
 import type { DrawerNavigationProp } from "@react-navigation/drawer";
 import AudioPlayer from "./AudioPlayer";
@@ -29,7 +29,7 @@ export const MiniAudioPlayer = () => {
   const { currentTrack } = usePlayerStore();
   const { user } = useAuthStore();
   const { addNotification } = useNotificationStore();
-  const { isPalying, isBusy, togglePlayPause } = useAudioController();
+  const { isPlaying, isLoading, playOrPause } = useAudioController();
   const progress = useProgress();
   const [playerVisibility, setPlayerVisibility] = useState(false);
   const [showCurrentList, setShowCurrentList] = useState(false);
@@ -132,11 +132,11 @@ export const MiniAudioPlayer = () => {
           />
         </Pressable>
 
-        {isBusy ? (
+        {isLoading ? (
           <ActivityIndicator size="small" color={colors.ACCENT} />
         ) : (
-          <Pressable onPress={togglePlayPause} style={styles.playButton}>
-            <Text style={styles.playButtonText}>{isPalying ? "⏸" : "▶"}</Text>
+          <Pressable onPress={playOrPause} style={styles.playButton}>
+            <Text style={styles.playButtonText}>{isPlaying ? "⏸" : "▶"}</Text>
           </Pressable>
         )}
       </View>

@@ -17,12 +17,12 @@ const CreateScreen = () => {
 
   const handleUploadTrackPress = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    router.push("/(main)/(drawer)/upload-track");
+    router.push("/(main)/(drawer)/(menu)/upload-track");
   };
 
   const handleCreatePlaylistPress = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    router.push("/(main)/(drawer)/create-playlist");
+    router.push("/(main)/(drawer)/(menu)/create-playlist");
   };
 
   const handleCloseModal = () => {

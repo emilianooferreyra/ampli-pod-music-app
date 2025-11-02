@@ -32,13 +32,13 @@ export const useAudioController = () => {
   const { currentTrack, playlist, setCurrentTrack, setPlaylist } =
     usePlayerStore();
 
-  const isPalyerReady = state !== undefined && state !== State.None;
-  const isPalying = state === State.Playing;
+  const isPlayerReady = state !== undefined && state !== State.None;
+  const isPlaying = state === State.Playing;
   const isPaused = state === State.Paused;
-  const isBusy = state === State.Buffering || state === State.Connecting;
+  const isLoading = state === State.Buffering || state === State.Connecting;
 
   const onAudioPress = async (item: AudioData, data: AudioData[]) => {
-    if (!isPalyerReady) {
+    if (!isPlayerReady) {
       // Playing audio for the first time.
       await updateQueue(data);
       setCurrentTrack(item);
@@ -79,38 +79,9 @@ export const useAudioController = () => {
     }
   };
 
-  const togglePlayPause = async () => {
-    try {
-      console.log(
-        "togglePlayPause - state:",
-        state,
-        "isPalying:",
-        isPalying,
-        "isPaused:",
-        isPaused,
-        "isPalyerReady:",
-        isPalyerReady,
-        "currentTrack:",
-        currentTrack?.id
-      );
-
-      if (isPalying) {
-        console.log("togglePlayPause - Pausing...");
-        await TrackPlayer.pause();
-      } else if (isPaused || state === "none" || state === "ready") {
-        console.log("togglePlayPause - Playing...");
-        // Si está en pausa, en estado 'none' o 'ready', reproducir
-        if (currentTrack) {
-          await TrackPlayer.play();
-        } else {
-          console.log("togglePlayPause - No track selected");
-        }
-      } else {
-        console.log("togglePlayPause - Unknown state:", state);
-      }
-    } catch (error) {
-      console.error("Error in togglePlayPause:", error);
-    }
+  const playOrPause = async () => {
+    if (isPlaying) await TrackPlayer.pause();
+    if (isPaused) await TrackPlayer.play();
   };
 
   const seekTo = async (position: number) => {
@@ -258,12 +229,12 @@ export const useAudioController = () => {
     onNextPress,
     onPreviousPress,
     seekTo,
-    togglePlayPause,
+    playOrPause,
     setPlaybackRate,
     skipTo,
-    isBusy,
-    isPalyerReady,
-    isPalying,
+    isLoading,
+    isPlayerReady,
+    isPlaying,
   };
 };
 

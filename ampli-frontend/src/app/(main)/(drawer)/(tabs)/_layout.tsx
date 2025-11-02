@@ -62,60 +62,6 @@ export default function TabsLayout() {
             tabBarIcon: ({ color }) => <Plus size={28} color={color} />,
           }}
         />
-        <Tabs.Screen
-          name="profile"
-          options={{
-            href: null,
-          }}
-        />
-        <Tabs.Screen
-          name="subscriptions"
-          options={{
-            href: null,
-          }}
-        />
-        <Tabs.Screen
-          name="add-account"
-          options={{
-            href: null,
-          }}
-        />
-        <Tabs.Screen
-          name="news"
-          options={{
-            href: null,
-          }}
-        />
-        <Tabs.Screen
-          name="recent"
-          options={{
-            href: null,
-          }}
-        />
-        <Tabs.Screen
-          name="messages"
-          options={{
-            href: null,
-          }}
-        />
-        <Tabs.Screen
-          name="(settings)"
-          options={{
-            href: null,
-          }}
-        />
-        <Tabs.Screen
-          name="upload-track"
-          options={{
-            href: null,
-          }}
-        />
-        <Tabs.Screen
-          name="create-playlist"
-          options={{
-            href: null,
-          }}
-        />
       </Tabs>
       <View style={[styles.miniPlayerWrapper, { bottom: bottomOffset }]}>
         <View style={styles.miniPlayerContainer}>

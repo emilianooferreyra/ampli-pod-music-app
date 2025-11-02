@@ -39,7 +39,7 @@ const CreatePlaylistScreen = () => {
 
   const handleBack = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    router.push("/(main)/(drawer)/create");
+    router.push("/(main)/(drawer)/(tabs)/create");
   };
 
   const handleCoverImagePick = async () => {

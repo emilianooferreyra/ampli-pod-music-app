@@ -1,4 +1,4 @@
-import { getFromAsyncStorage, Keys } from "@/utils/asyncStorage";
+import { getFromAsyncStorage, Keys } from "@/lib/storage/async-storage";
 import axios, { type CreateAxiosDefaults } from "axios";
 
 const baseURL = "http://192.168.100.79:8989";

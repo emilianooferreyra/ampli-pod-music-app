@@ -1,8 +1,8 @@
-import BasicModalContainer from '@/components/ui/BasicModalContainer';
-import colors from '@/constants/colors';
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, TextInput, Pressable, Text } from 'react-native';
-import { CheckCircle2, Circle } from 'lucide-react-native';
+import { BasicModalContainer } from "@/components/ui/BasicModalContainer";
+import colors from "@/constants/colors";
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, TextInput, Pressable, Text } from "react-native";
+import { CheckCircle2, Circle } from "lucide-react-native";
 
 export interface PlaylistInfo {
   title: string;
@@ -24,7 +24,7 @@ export const PlaylistForm: React.FC<PlaylistFormProps> = ({
 }) => {
   const [isForUpdate, setIsForUpdate] = useState(false);
   const [playlistInfo, setPlaylistInfo] = useState<PlaylistInfo>({
-    title: '',
+    title: "",
     private: false,
   });
 
@@ -37,7 +37,7 @@ export const PlaylistForm: React.FC<PlaylistFormProps> = ({
   };
 
   const handleClose = () => {
-    setPlaylistInfo({ title: '', private: false });
+    setPlaylistInfo({ title: "", private: false });
     setIsForUpdate(false);
     onRequestClose();
   };
@@ -53,7 +53,7 @@ export const PlaylistForm: React.FC<PlaylistFormProps> = ({
     <BasicModalContainer visible={visible} onRequestClose={handleClose}>
       <View style={styles.container}>
         <Text style={styles.title}>
-          {isForUpdate ? 'Update Playlist' : 'Create New Playlist'}
+          {isForUpdate ? "Update Playlist" : "Create New Playlist"}
         </Text>
 
         <TextInput
@@ -97,7 +97,7 @@ export const PlaylistForm: React.FC<PlaylistFormProps> = ({
           disabled={!playlistInfo.title.trim()}
         >
           <Text style={styles.submitBtnText}>
-            {isForUpdate ? 'Update' : 'Create'}
+            {isForUpdate ? "Update" : "Create"}
           </Text>
         </Pressable>
       </View>
@@ -107,13 +107,13 @@ export const PlaylistForm: React.FC<PlaylistFormProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
+    width: "100%",
     padding: 16,
   },
   title: {
     fontSize: 18,
     color: colors.TEXT_PRIMARY,
-    fontWeight: '700',
+    fontWeight: "700",
     marginBottom: 16,
   },
   input: {
@@ -130,24 +130,24 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: colors.TEXT_SECONDARY,
     marginBottom: 16,
-    textAlign: 'right',
+    textAlign: "right",
   },
   privateSelector: {
     height: 45,
-    alignItems: 'center',
-    flexDirection: 'row',
+    alignItems: "center",
+    flexDirection: "row",
     gap: 12,
     marginBottom: 16,
   },
   privateLabel: {
     color: colors.TEXT_PRIMARY,
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   submitBtn: {
     height: 45,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     borderWidth: 1,
     borderColor: colors.ACCENT,
     borderRadius: 7,
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
   },
   submitBtnText: {
     color: colors.BLACK,
-    fontWeight: '700',
+    fontWeight: "700",
     fontSize: 14,
   },
 });
